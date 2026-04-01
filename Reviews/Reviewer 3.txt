@@ -1,0 +1,49 @@
+Review of JMIV Submission: Explainable Binary Classification of
+Separable Shape Ensembles
+This paper presents a novel method for ensembles of curves leveraging so called separable
+shape tensors (SST) (introduced in [1]) arising from eigenspaces of composite integral operators.
+This approach offers rigid-invariant decompositions of curves into generalized scale variations and
+undulations. The use of SST representations of curves allows for binary classification of samples of
+curves utilizing a product maximum mean discrepancy with interpretable feature spaces allowing
+for explainable binary classification. This work presents a robust set of experiments highlighting
+the effectiveness and explainability of their model with focus on comparing distributions of curves
+segmented from images.
+This paper has several significant strengths:
+• The numerical experiments support the paper nicely and support the paper’s approach to
+binary shape classification and offer clear evidence of of the explainability of the model.
+• The paper offers a lot of math background to the approach to explainable binary classification
+of curves. The proofs are presented with sufficient detail for the reader to follow. My primary
+feedback is that the presentation of the statements of these results can be hard to parse, but
+the proofs themselves are well presented.
+Comments
+• The statements of lemmas and theorems in Section 2 are presented with varying levels of
+formality. Specifically:
+a. Lemma 1, Lemma 3, and Theorem 1 could be presented more formally. i.e. for Lemma
+1 ”Let c ∈ Cd, then ...”
+b. Lemma 2 reads more formally, but the wording of ”Kτ [c] such that Kτ [c] = ...” is
+awkward and the operator could just be introduced as Kτ [c] := ....
+• Along with this, I found Section 2 and Section 3 felt difficult to follow due to the use of
+acronyms. Especially when they are used in the context of mathematical statements. For
+instance, PRRTI and CLO have rigorous mathematical definitions and would benefit from
+being presented in a definition environment. This would make it easier for a reader unfamiliar
+with these terms to quickly reference the meaning of these terms rather than needing to look
+for the first in-text uses of these terms. In particular,
+a. I suggest using a definition environment for the CLO or dropping the acronym entirely
+and using the symbol for the composite linear operator throughout. It is a bit confusing
+having an acronym and math symbol being used interchangeably throughout the paper.
+b. For the PRRTI, I would suggest ”Definition N (PRRTI condition). We say an operator is
+permutation, rotation, rescale, and translation invariant (PRRTI) if for any c ∈ Cd,R ∈
+O(d), ...”
+1
+Typos and Minor Comments
+• The paper begins using acronyms such as SST for separable shape tensor and HS for Hilbert-
+Schmidt without introducing the acronym on the initial use. This makes the paper difficult
+to follow at times.
+• The paper contains several typos, difficult to parse sentences, and incorrect word choices i.e.
+”elude” vs. ”allude”. The paper would benefit from a pass for grammar.
+Conclusion
+Recommendation: Accept after revisions, focusing on improving the formal presentation of the
+statements of Theorems, Lemmas, and Definitions of key concepts.
+References
+[1] Z. J. Grey, O. A. Doronina, and A. Glaws. Separable shape tensors for aerodynamic design.
+Journal of Computational Design and Engineering, 10(1):468–487, 01 2023.
