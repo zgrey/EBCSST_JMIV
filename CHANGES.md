@@ -1,6 +1,6 @@
 # Changes Applied to `sn-article-revised.tex`
 
-Detailed log of all edits for revision items 1–5 (low-effort tasks).
+Detailed log of all edits by revision item. Updated each pass.
 
 ---
 
@@ -71,23 +71,43 @@ Detailed log of all edits for revision items 1–5 (low-effort tasks).
 
 ---
 
-## Item 5 — Revise title, abstract, and hypothesis-testing terminology (R1, R2, R4)
+## Item 5 — Revise abstract and hypothesis-testing terminology (R1, R2, R4)
 
 ### Title
-- Changed from "Explainable Binary Classification via Separable Shape Tensors" to **"Explainable Imaging Discrepancies with Separable Shape Ensembles"**
+- **Preserved** as "Explainable Binary Classification of Separable Shape Ensembles" — the original title was temporarily changed to "Explainable Imaging Discrepancies with Separable Shape Ensembles" but reverted to preserve the author's preferred framing
 
 ### Abstract
-- Revised to foreground the statistical comparison / hypothesis-testing contribution
-- Added language framing hypothesis testing as a binary mapping from pairs of distributions into a binary conclusion
-- Removed classification-centric framing
+- Reordered: hypothesis-testing-as-binary-mapping sentence moved earlier (before the demonstration sentence) to foreground the statistical framing
+- Restored "explainable binary classification" language in the demonstration sentence
+- Removed intermediate "discrepancy testing" phrasing that had replaced classification language
+
+### Sec. 1 intro (line ~136)
+- "explainable discrepancy testing" → "explainable binary classifications" (reverted to original framing)
+
+### Sec. 1.1 — Hypothesis testing vs. clustering paragraph
+- Revised: "hypothesis testing rather than clustering or classification" → "hypothesis testing which implies a classification rather than clustering"
+- Removed sentence about clustering not providing "a binary decision with quantifiable statistical guarantees" (streamlined)
 
 ### Terminology update
-- **Table 1** (Sec. 4): "Accept" → "FTR" (Fail To Reject) in all relevant cells — this is the statistically correct terminology for a hypothesis test that does not reject the null
+- **Table 1** (Sec. 3.5): "Accept" → "FTR" (Fail To Reject) — retained from initial edit pass
 
-### New paragraph: hypothesis testing vs. clustering (Sec. 4.1)
-- Added a paragraph addressing R4's question of why not use clustering given the proposed distance
-- Key argument: hypothesis testing provides a binary conclusion (reject/fail-to-reject) with statistical guarantees, while clustering aggregates similar features without a formal decision rule
-- Noted that clustering remains a valid complementary approach for exploratory analysis of SSTs
+### Conclusion (Sec. 5)
+- "explainable discrepancy testing" → "explainable hypothesis testing" (lines 981, 985)
+- Note: conclusion uses "hypothesis testing" rather than "binary classification" — this is intentional as the conclusion discusses the test procedure itself
 
-### Conclusion
-- Updated to reflect revised title and terminology (ensembles rather than classification)
+### Removed
+- Stray comment line `%% GivenName -> \fnm{Joergen W.}` cleaned up
+
+---
+
+## Item 6 — Justify hypothesis testing as explainable binary classification (R1, R2, R4)
+
+### Status: in progress (placeholders inserted, awaiting author text)
+
+### Sec. 1 placeholder (line ~138)
+- Red all-caps `\textcolor{red}{PLACEHOLDER: ...}` inserted after the "explainable binary classifications" definition
+- Requests: technical description of two-sample testing as binary decision rule, distinction from supervised-learning classification, connection to title
+
+### Sec. 3.5 placeholder (line ~834)
+- Red all-caps `\textcolor{red}{PLACEHOLDER: ...}` inserted after the "formal problem statement" paragraph
+- Requests: formal justification that pMMD constitutes a binary classifier, connection of separable Truth Table to explainability, address R1/R2/R4 confusion with supervised learning
