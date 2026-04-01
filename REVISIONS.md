@@ -1,49 +1,69 @@
-# Revision To‑Do List
+# Revision To-Do List
 
-1. [ ] **Simplify notation in Sections 2‑3 and add illustrative figures** (Reviewer 1, Reviewer 3, Reviewer 4)  
-   Reduce heavy mathematical notation to improve readability. Provide clear diagrams for landmark representation, registration process, and manifold features to aid comprehension.
+Items sorted by estimated effort (low to high). Types: **D** = document edits, **W** = written response, **N** = numerical experiment.
 
-2. [ ] **Revise abstract to highlight statistical comparison; replace “Accept” with “Fail to Reject Null” in Table 1 and Section 3.5** (Reviewer 1, Reviewer 2, Reviewer 4)  
-   Update the manuscript's explainable binary classification definition to reflect hypothesis‑testing focus. Adjust abstract language accordingly. Change decision terminology in Table 1 and Section 3.5 to “Fail to Reject Null” for consistency with statistical conventions.
+## Low effort
 
-3. [ ] **Replace random template in cyclic Procrustes with Fréchet‑mean template or provide justification** (Reviewer 1, Reviewer 4)  
-   Implement a Fréchet‑mean based template for cyclic Procrustes registration to improve stability. If retaining the random template, add a detailed justification of its adequacy and computational trade‑offs.
+1. [x] **[D] Insert missing references [1]--[5]** (R4)
+   Add the cited works to the bibliography with correct formatting and cross-referencing.
 
-4. [ ] **Detail MMD hypothesis‑test procedure: number of permutations, algorithmic steps, integration of cyclic Procrustes, kernel choice, and p‑value computation** (Reviewer 1, Reviewer 2, Reviewer 4)  
-   Specify the exact number of permutations used and outline the algorithmic workflow. Explain how cyclic Procrustes is applied within each permutation and describe the kernel selection. Provide a clear formula for p‑value calculation.
+2. [ ] **[D] Correct typos, grammar, and word-choice errors throughout** (R2, R3)
+   Full copy-editing pass: fix "it sufficient" -> "it is sufficient", "elude" -> "allude", difficult-to-parse sentences, and similar issues.
 
-5. [ ] **Add multiple‑testing correction for joint product‑MMD test (e.g., Bonferroni, Holm‑Bonferroni)** (Reviewer 2)  
-   Discuss the inflation of Type I error when testing undulation and scale separately. Implement and report a correction method such as Bonferroni or Holm‑Bonferroni for the joint test.
+3. [ ] **[D] Introduce all acronyms on first use (SST, HS, CLO, PRRTI, etc.)** (R3)
+   Define each acronym at its first occurrence. Use LaTeX definition environments for CLO and PRRTI (or drop the CLO acronym in favor of the math symbol throughout). Present SST and HS definitions formally as well.
 
-6. [ ] **Provide guidelines for selecting dimensionality r and quadrature nodes n** (Reviewer 2)  
-   Offer criteria (e.g., cumulative variance threshold, stability of MMD statistic) for choosing the number of retained dimensions r and quadrature nodes n. Include a short discussion of the impact on test power.
+4. [ ] **[D] Formalize statements of lemmas, theorems, and definitions** (R3)
+   Rewrite Lemma 1, Lemma 3, and Theorem 1 in standard formal style ("Let c in C_d, then ..."). Fix Lemma 2 wording (use `:=` notation). Number all definitions and use definition environments.
 
-7. [ ] **Conduct simulated‑data study to assess type I error and power; include at least one non‑EBSD dataset or benchmark comparison** (Reviewer 1, Reviewer 2)  
-   Generate synthetic curve ensembles to evaluate the MMD test’s Type I error rate and statistical power. Add a comparative experiment using a non‑EBSD dataset or a benchmark method.
+5. [ ] **[D] Revise title, abstract, and hypothesis-testing terminology** (R1, R2, R4)
+   - Decide on title: current "Explainable Binary Classification" vs. R2's suggestion "Explainable Discrepancy Tests of Separable Shape Ensembles" or similar.
+   - Revise abstract to foreground the statistical comparison / hypothesis-testing contribution.
+   - Replace "Accept" with "Fail to Reject Null" in Table 1 and Section 3.5.
+   - Add a brief justification for hypothesis testing over clustering (R4 asks why not use clustering given the proposed distance).
 
-8. [ ] **Report computational cost/runtime estimates for each pipeline stage** (Reviewer 1, Reviewer 4)  
-   Provide runtime measurements or complexity estimates for preprocessing, cyclic Procrustes, dimensionality reduction, and hypothesis testing. Summarize these in a table.
+## Medium effort
 
-9. [ ] **Demonstrate interpretability of shape features and discuss recent AI/varifold methods, optionally with comparative experiment** (Reviewer 4)  
-   Show how extracted shape features correspond to physical differences and aid interpretation. Cite recent AI/varifold approaches and, if feasible, include a small comparative experiment.
+6. [ ] **[D] Simplify notation in Sections 2--3 and add illustrative figures** (R1, R3, R4)
+   Reduce heavy notation to improve readability. Add clear diagrams for: (a) landmark representation and registration, (b) manifold feature spaces, (c) nonlinear undulation vs. linear scale/rotation/shear (the schematic requested by R2). Also add a pipeline algorithm figure (flowchart or pseudocode of the full method, explicitly requested by R4).
 
-10. [x] **Insert missing references [1]–[5]** (Reviewer 4)
-    Add the cited works to the bibliography, ensuring correct formatting and cross‑referencing.
+7. [ ] **[D] Restructure manuscript: foreground contributions, move background to supplement** (R2)
+   Move detailed background (Sections 2--3) to supplementary material. Place core contributions earlier in the main text. Clearly delineate which results are from prior work vs. new to this manuscript (R2 found this hard to distinguish).
 
-11. [ ] **Discuss separability assumption of undulation and scale; propose diagnostic for violations** (Reviewer 2)  
-    Analyze whether undulation and scale can be assumed independent in real data. Propose a diagnostic test (e.g., correlation analysis) to detect violations.
+8. [ ] **[W] Discuss separability assumption; propose a diagnostic for violations** (R2)
+   Analyze whether undulation and scale can be assumed independent in real data. Propose a diagnostic (e.g., correlation analysis of Grassmannian and SPD normal coordinates) to detect violations. Discuss ramifications for tangent PCA and MMD tests.
 
-12. [ ] **Add schematic figure contrasting nonlinear undulation vs. linear scale/rotation/shear** (Reviewer 2)  
-    Create a clear schematic illustrating the distinction between undulation and scale/rotation/shear effects to aid reader understanding.
+9. [ ] **[W] Detail the MMD hypothesis-test procedure** (R1, R2, R4)
+   Specify: number of permutations, full algorithmic workflow, how cyclic Procrustes is applied within each permutation (R1 notes ensemble changes require re-registration), kernel choice and justification, and p-value computation formula.
 
-13. [ ] **Re‑structure manuscript: move detailed background to supplementary material, place core contributions earlier** (Reviewer 2)  
-    Relocate extensive methodological background to a supplementary appendix. Reorder the main text so that the primary contributions appear in the early sections.
+10. [ ] **[W] Add multiple-testing correction for joint product-MMD** (R2)
+    Discuss Type I error inflation when testing undulation and scale separately. Implement and report a correction (Bonferroni or Holm-Bonferroni) for the joint test. Reconcile with the DeMorgan equivalence argument in Section 3.5.
 
-14. [ ] **Formalize statements of lemmas, theorems, and definitions; use definition environments for acronyms (CLO, PRRTI, SST, HS)** (Reviewer 3)  
-    Rewrite lemmas, theorems, and definitions in a formal style with proper numbering. Use LaTeX definition environments for the listed acronyms.
+11. [ ] **[W] Provide guidelines for selecting r and n** (R2)
+    Offer criteria (cumulative variance threshold, MMD stability, etc.) for choosing retained dimensions r and quadrature nodes n. Discuss impact on test power, noting that discrepancies may only appear in later dimensions with low variance contribution.
 
-15. [ ] **Introduce all acronyms on first use and provide clear definitions** (Reviewer 3)  
-    Ensure each acronym (e.g., SST, HS) is defined at its first occurrence in the manuscript.
+12. [ ] **[W] Replace random Procrustes template with Frechet mean or justify** (R1, R4)
+    Implement a Frechet-mean-based template for cyclic Procrustes to improve stability. If retaining the random template, provide detailed justification of adequacy, sensitivity analysis, and computational trade-offs.
 
-16. [ ] **Correct typographical errors and improve grammar throughout (e.g., “it sufficient” → “it is sufficient”)** (Reviewer 2, Reviewer 3)  
-    Perform a thorough copy‑editing pass to fix typos, grammatical issues, and improve overall readability.
+## High effort
+
+13. [ ] **[N] Conduct simulated-data study for Type I error and power** (R1, R2)
+    Generate synthetic curve ensembles to evaluate the MMD test's Type I error rate and statistical power under controlled conditions.
+
+14. [ ] **[N] Include a non-EBSD dataset or benchmark comparison** (R1, R4)
+    Add a comparative experiment on a standard shape dataset (e.g., MPEG-7 or similar to Kaltenmark et al. 2017). R4 specifically requests evaluation beyond EBSD.
+
+15. [ ] **[W/N] Demonstrate interpretability and compare with AI/varifold methods** (R4)
+    Show how extracted shape features correspond to physical differences. Cite recent AI and varifold approaches (Kaltenmark 2017, Pierson 2022, Bauer 2017, Hartman 2023, Hartman 2021). Include a comparative experiment if feasible.
+
+16. [ ] **[N] Report computational cost / runtime estimates per pipeline stage** (R1, R4)
+    Measure or estimate runtime for preprocessing, cyclic Procrustes, dimensionality reduction, and hypothesis testing. Summarize in a table.
+
+## Reviewer cross-reference
+
+| Reviewer | Points | To-do items |
+|----------|--------|-------------|
+| R1 | 6 | 1, 5, 6, 9, 12, 13, 14, 16 |
+| R2 | 8 | 2, 5, 7, 8, 9, 10, 11, 6 |
+| R3 | 4 | 2, 3, 4, 6 |
+| R4 | 7 | 1, 5, 6, 9, 12, 14, 15, 16 |
