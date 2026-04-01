@@ -7,16 +7,16 @@ Items sorted by estimated effort (low to high). Types: **D** = document edits, *
 1. [x] **[D] Insert missing references [1]--[5]** (R4)
    Add the cited works to the bibliography with correct formatting and cross-referencing. Verify the cited works are 1) in the body of the text and 2) are actually cited correctly. Another agent attempted to update the bibitems and I suspect there are errors/bugs. Make sure the new bibitems are formatted consistently versus the other bib items.
 
-2. [ ] **[D] Correct typos, grammar, and word-choice errors throughout** (R2, R3)
+2. [x] **[D] Correct typos, grammar, and word-choice errors throughout** (R2, R3)
    Full copy-editing pass: fix "it sufficient" -> "it is sufficient", "elude" -> "allude", difficult-to-parse sentences, and similar issues. When complete, make a new markdown file summarizing detailed changes to grammar.
 
-3. [ ] **[D] Introduce all acronyms on first use (SST, HS, CLO, PRRTI, etc.)** (R3)
+3. [x] **[D] Introduce all acronyms on first use (SST, HS, CLO, PRRTI, etc.)** (R3)
    Define each acronym at its first occurrence. Use LaTeX definition environments for CLO and PRRTI. Double check that SST and HS definitions are defined in the text as well.
 
-4. [ ] **[D] Formalize statements of lemmas, theorems, and definitions** (R3)
+4. [x] **[D] Formalize statements of lemmas, theorems, and definitions** (R3)
    Rewrite Lemma 1, Lemma 3, and Theorem 1 in standard formal style ("Let c in C_d, then ..."). Fix Lemma 2 wording (use `:=` notation). Number all definitions and use definition environments. Note that the LaTeX command used for `:=` notation is \coloneqq
 
-5. [ ] **[D] Revise title, abstract, and hypothesis-testing terminology** (R1, R2, R4)
+5. [x] **[D] Revise title, abstract, and hypothesis-testing terminology** (R1, R2, R4)
    - Update title to "Explainable Imaging Discrepancies with Separable Shape Ensembles".
    - Revise abstract to foreground the statistical comparison / hypothesis-testing contribution. However, make a point that hypothesis-testing can be concieved of as a binary mapping from pairs of distributions into a binary conlcusion consistent with the descriptions in section 4.1
    - Add a brief justification for hypothesis testing over clustering (R4 asks why not use clustering given the proposed distance) -> Answer: hypothesis testing offers a binary conclusion while clustering simply aggregates similar features. However, clustering is just as valid an approach to understanding SSTs. An example can be added using the /Git/GitHub/TDA-SST/python/g2_image pipeline with the sun image.

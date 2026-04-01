@@ -91,7 +91,7 @@
 
 \begin{document}
 
-\title[Explainable Binary Classification of Separable Shape Ensembles]{Explainable Binary Classification of Separable Shape Ensembles}
+\title[Explainable Imaging Discrepancies with Separable Shape Ensembles]{Explainable Imaging Discrepancies with Separable Shape Ensembles}
 
 %%=============================================================%%
 %% GivenName	-> \fnm{Joergen W.}
@@ -121,7 +121,7 @@
 %% Sample for unstructured abstract %%
 %%==================================%%
 
-\abstract{Scientists, engineers, biologists, and technology specialists universally leverage image segmentation to extract shape ensembles containing many thousands of curves representing patterns in observations and measurements. These large curve ensembles facilitate inferences about important changes when comparing and contrasting images. We introduce novel pattern recognition formalisms combined with inference methods over large ensembles of segmented curves. Our formalism involves accurately approximating eigenspaces of composite integral operators to motivate discrete, dual representations of curves collocated at quadrature nodes. Approximations are projected onto underlying matrix manifolds and the resulting separable shape tensors constitute rigid-invariant decompositions of curves into generalized (linear) scale variations and complementary (nonlinear) undulations. With thousands of curves segmented from pairs of images, we demonstrate how data-driven features of separable shape tensors inform explainable binary classification utilizing a product maximum mean discrepancy; absent labeled data, building interpretable feature spaces in seconds without high performance computation, and detecting discrepancies below cursory visual inspections.}
+\abstract{Scientists, engineers, biologists, and technology specialists universally leverage image segmentation to extract shape ensembles containing many thousands of curves representing patterns in observations and measurements. These large curve ensembles facilitate statistical inferences about important changes when comparing and contrasting images. We introduce novel pattern recognition formalisms combined with two-sample hypothesis testing over large ensembles of segmented curves. Our formalism involves accurately approximating eigenspaces of composite integral operators to motivate discrete, dual representations of curves collocated at quadrature nodes. Approximations are projected onto underlying matrix manifolds and the resulting separable shape tensors constitute rigid-invariant decompositions of curves into generalized (linear) scale variations and complementary (nonlinear) undulations. With thousands of curves segmented from pairs of images, we demonstrate how data-driven features of separable shape tensors inform explainable discrepancy testing utilizing a product maximum mean discrepancy; absent labeled data, building interpretable feature spaces in seconds without high performance computation, and detecting discrepancies below cursory visual inspections. Hypothesis testing over the separable feature space can be conceived of as a binary mapping from pairs of distributions into a binary conclusion---reject or fail to reject---offering principled, explainable decisions consistent with statistical conventions.}
 
 \keywords{separable shape tensors, reproducing kernel Hilbert space, maximum mean discrepancy}
 
@@ -134,13 +134,13 @@
 \section{Introduction}
 \label{sec:intro}
 
-Precise measurement and quantification of shape is ubiquitous in imaging science. For example, applications involve engineering design~\cite{Grey2017,Doronina2023}, materials science~\cite{atindama2023restoration,bachmann2010inferential,Fan2020,FAN2021116810}, medical imaging~\cite{mang2019claire,durrleman2014morphometry}, functional data analysis~\cite{tucker2013generative, srivastava2016functional}, biology~\cite{hartman2023elastic,srivastava2010shape,hagwood2013testing}, and ecology~\cite{lynch2023satellite,gonccalves2021fine}. Many of these applications benefit from separate parametrizations of shape planar translations (\emph{where is it?}), scale variations (\emph{how big is it?}), rotations/reflections (\emph{how is it oriented?}), and everything else that remains (\emph{how nonlinear is it?}). In several applications, a choice of invariance against one or multiple of types of similarity transforms~\cite{kendall2009shape}---among other transformations~\cite{bauer2014overview}---is beneficial for defining \emph{shape}. And in a variety of applications, scientists and engineers simply want to ask a binary question: \emph{is this the same as that}? But often necessitate some explanation: \emph{if they're different, why?} We refer to solutions of this general class of problems as \emph{explainable binary classifications}.
+Precise measurement and quantification of shape is ubiquitous in imaging science. For example, applications involve engineering design~\cite{Grey2017,Doronina2023}, materials science~\cite{atindama2023restoration,bachmann2010inferential,Fan2020,FAN2021116810}, medical imaging~\cite{mang2019claire,durrleman2014morphometry}, functional data analysis~\cite{tucker2013generative, srivastava2016functional}, biology~\cite{hartman2023elastic,srivastava2010shape,hagwood2013testing}, and ecology~\cite{lynch2023satellite,gonccalves2021fine}. Many of these applications benefit from separate parametrizations of shape planar translations (\emph{where is it?}), scale variations (\emph{how big is it?}), rotations/reflections (\emph{how is it oriented?}), and everything else that remains (\emph{how nonlinear is it?}). In several applications, a choice of invariance against one or multiple of types of similarity transforms~\cite{kendall2009shape}---among other transformations~\cite{bauer2014overview}---is beneficial for defining \emph{shape}. And in a variety of applications, scientists and engineers simply want to ask a binary question: \emph{is this the same as that}? But often necessitate some explanation: \emph{if they're different, why?} We refer to solutions of this general class of problems as \emph{explainable discrepancy testing}---hypothesis testing that not only renders a binary decision (reject or fail to reject) but also explains \emph{why} the discrepancy exists.
 
 Applications involve a variety of imaging modalities including but are not limited to: electron microscopy, X-ray computed tomography, optical imagery from satellite, video, or cameras, photo-luminescent cell microscopy, solar ultraviolet imaging, modeled or measured level-sets of Lagrangian averaged vorticity deviations, images generated by artificial intelligence (AI), etc. 
 
 In the first example, electron backscatter diffraction (EBSD)~\cite{schwartz2009electron} of material samples can offer high resolution image segmentation of the material's microstructure~\cite{SAVILLE2021102118,stoudt2020location}. Denoised images~\cite{atindama2023restoration} and subsequent segmentation~\cite{bachmann2010texture,FAN2021116810} lead to a large ensemble of planar curves as data. An example of a segmented EBSD image given by deformed ice, utilizing an open-source software called MTEX~\cite{Hielscher:cg5083,Fan2020,FAN2021116810}, is shown in Figure~\ref{fig:eg_grains}. The segmented image in Figure~\ref{fig:eg_grains} is juxtaposed to an example `grain boundary' or, simply, `grain' representing a single extracted planar curve from the tiled ensemble. 
 
-Beyond this particular imaging modality, our interpretations are extensible to \textit{any imaging combined with subsequent segmentation informing a large ensemble of planar curves}. Additional examples of alternative image modalities are shown in~\ref{fig:eg_other_images}.
+Beyond this particular imaging modality, our interpretations are extensible to \textit{any imaging combined with subsequent segmentation informing a large ensemble of planar curves}. Additional examples of alternative image modalities are shown in Figure~\ref{fig:eg_other_images}.
 
 \subsection{Problem Statement}
 
@@ -178,12 +178,14 @@ Moreover, scientists often utilize expertise and visual inspection to suggest ho
 
 The stochastic notion of difference in this application is based on (maximum mean) \emph{discrepancy}: are the approximated distributions of \emph{representative} shape features over the ensemble in one image statistically significant from the ensemble in another? To answer this question, we first i) represent shapes augmented by \emph{separating important distinguishing features}, ii) discretize to \emph{approximate feature distributions} of the shapes from both images, and finally iii) \emph{test for statistically significant discrepancies} in distributions between two ensembles. This final step is referred to as a two-sample test~\cite{gretton2012kernel}. For the specific materials application under consideration, this corresponds to \emph{statistically comparing thousands of shapes in two ensembles given two EBSD images}. %Moreover, we augment the statistical test by also determining if those statistically significant differences are a result of linear or nonlinear features of shape distortions which, in combination, provably draw the same logical conclusions in the aggregate.
 
-It is important to note that shape is only one significant piece of the quite literal puzzles in Figures~\ref{fig:eg_grains}-\ref{fig:eg_other_images}. However, for this work, we ignore the role of textures intrinsic to the tiling---i.e., the spatial arrangement of the shapes---and instead treat the ensemble of shapes as independent realizations from some generating distribution. %Related efforts are focused towards unifying both the topology of the spatial tiling and features of shapes in image. 
+It is important to note that shape is only one significant piece of the quite literal puzzles in Figures~\ref{fig:eg_grains}-\ref{fig:eg_other_images}. However, for this work, we ignore the role of textures intrinsic to the tiling---i.e., the spatial arrangement of the shapes---and instead treat the ensemble of shapes as independent realizations from some generating distribution. %Related efforts are focused towards unifying both the topology of the spatial tiling and features of shapes in image.
+
+We emphasize that our framework is formulated as \emph{hypothesis testing} rather than clustering or classification. While the learned feature space naturally admits distance-based clustering, hypothesis testing offers a principled binary conclusion---reject or fail to reject---with a controlled significance level, directly answering whether two ensembles are statistically discrepant. Clustering, by contrast, aggregates similar features but does not provide a binary decision with quantifiable statistical guarantees. That said, clustering over the SST feature space is a complementary and equally valid approach for exploratory analysis of shape ensembles.
 
 \subsection{Technical Outline}
 In subsequent introductory sections, we review related work and motivate a class of shapes for consideration which is sufficient in representing segmented curves from images.
 
-In Section~\ref{sec:FIE}, we formalize interpretations transforming continuous boundary curves as preshapes into separately encode principled features of \textit{generalized scale} and \textit{undulation}. Specifically, in Thm.~\ref{theorem:eigfuncs}, we offer a novel interpretation that separable shape tensors are approximations of dual representations over a vector-valued reproducing kernel Hilbert space (RKHS). 
+In Section~\ref{sec:FIE}, we formalize interpretations transforming continuous boundary curves as preshapes into separately encode principled features of \textit{generalized scale} and \textit{undulation}. Specifically, in Thm.~\ref{theorem:eigfuncs}, we offer a novel interpretation that separable shape tensors (SSTs) are approximations of dual representations over a vector-valued reproducing kernel Hilbert space (RKHS). 
 
 In Section~\ref{sec:numerics}, we utilize discrete approximations of the formally developed shape features to test four logical combinations of statistical hypotheses with data. Numerically, the discretizations are weighted according to a reinterpretation of Nystr\"om method, coined \textit{square-root quadrature decomposition} (SRQD), and matrix decompositions are motivated as approximations of curve (dual) representations. Finally, we utilize discrete approximations to map into parameter distributions over underlying matrix manifolds as a feature space informed by the large ensembles of curves in the images. We then discuss the implications of an explainable binary classification informed by maximum mean discrepancy (MMD) over separate parameter distributions supported on the learned feature space.
 
@@ -264,7 +266,7 @@ As before, preshapes are defined as open or closed curves $\boldsymbol{c}:\mathc
         \begin{equation}\label{eq:reg_Hilbert_space}
              \mathcal{C}_d(\lambda_r) \coloneqq \lbrace \boldsymbol{c} \,:\, \Vert \boldsymbol{c}(u) - \boldsymbol{c}(s)\Vert \leq \lambda_r\vert u - s\vert\rbrace,
         \end{equation}
-for all $u,s\in \mathcal{I}$, to explicitly control nonlinear \emph{undulations}. Notice, for boundedness it sufficient to assume the individual components of curve $\boldsymbol{c} = (c_1, c_2, \dots, c_d)$ are Lipschitz, such that $\vert c_i(u) - c_i(s) \vert \leq \lambda_{i,r}\vert u - s\vert$ with $\lambda_r \leq \Vert (\lambda_{1,r}, \lambda_{2,r},\dots, \lambda_{d,r})^\top\Vert <\infty$.
+for all $u,s\in \mathcal{I}$, to explicitly control nonlinear \emph{undulations}. Notice, for boundedness it is sufficient to assume the individual components of curve $\boldsymbol{c} = (c_1, c_2, \dots, c_d)$ are Lipschitz, such that $\vert c_i(u) - c_i(s) \vert \leq \lambda_{i,r}\vert u - s\vert$ with $\lambda_r \leq \Vert (\lambda_{1,r}, \lambda_{2,r},\dots, \lambda_{d,r})^\top\Vert <\infty$.
 
 We will generally refer to these curves as \emph{integrable curves} for some $d\mu$, such that $\int_{\mathcal{I}} \boldsymbol{c} \,d\mu < \infty$ and $\int_{\mathcal{I}} \Vert \dot{\boldsymbol{c}} \Vert\, d\mu < \infty$ where $\dot{\boldsymbol{c}}$ represents the $d$ component-wise derivative over $\mathcal{I} \subset \mathbb{R}$, with respect to some curve parameter. In other words, by Rademacher's theorem~\cite{rudin1987real}, we argue $\boldsymbol{c} \in \mathcal{C}_d(\lambda_r)$ with derivative $\dot{\boldsymbol{c}}$ almost everywhere admits integrable speed, $\Vert \dot{\boldsymbol{c}}\Vert$, over bounded $\mathcal{I}$.
 
@@ -299,10 +301,10 @@ Notably, we may reinterpret changes in the scale of velocity, $\vert \dot{\gamma
 \end{align}
 Here, $\gamma$ is any diffeomorphism constituting a \textit{reparametrization}. As a simple identification, we take $d\mu(s) \coloneqq \rho(s)ds/\Vert \dot{\boldsymbol{c}}(s)\Vert$ for $\rho(s)$ uniform so that $\xi^{-1}(t) = t$. Thus $d\mu(s)$ becomes a natural choice of \textit{fixed} integral measure which utilizes a \textit{uniformly weighted} (weak) arc-length reparametrization as our integral measure. Moreover, by composition with differentiation and the norm, the \textit{arc-length measure is invariant to rigid actions} on $\boldsymbol{c}$. Other applications may be interested in an alternative weighting (density) $\rho$, which integrates to one, to collect points near hand-picked landmarks of interest~\cite{Doronina2023, grey2023separable}.
 
-Alternative treatments may also identify any diffeomorphism $\gamma$, up to scale, with the cumulative distribution function and corresponding nonnegative probability density, $\rho \propto \dot{\gamma}(s)$. Moreover, this identification could be extended to the Fourier dual (characteristic function) of $\gamma$. These identifications are reminiscent of the \textit{varifolds}~\cite{younes2008metric, charon2013varifold, kaltenmark2017varifolds, pierson2022shape} and applications of Fisher-Rao metrics in functional data analysis~\cite{tucker2013generative, srivastava2016functional} as a promising flexible treatment of reparametrizations.
+Alternative treatments may also identify any diffeomorphism $\gamma$, up to scale, with the cumulative distribution function and corresponding nonnegative probability density, $\rho \propto \dot{\gamma}(s)$. Moreover, this identification could be extended to the Fourier dual (characteristic function) of $\gamma$. These identifications are reminiscent of the \textit{varifolds}~\cite{younes2008metric, charon2013varifold, kaltenmark2017varifolds, pierson2022shape} and applications of Sobolev metrics~\cite{bauer2017sobolev} and Fisher-Rao metrics in functional data analysis~\cite{tucker2013generative, srivastava2016functional} as a promising flexible treatment of reparametrizations.
 
 \subsubsection{Related ambient spaces}
-Most applications study an ambient space of curves with Sobolev-type metrics that are crucial for controlling regularity and other pathological issues such as vanishing distances over the (manifold) topologies of preshapes and shapes~\cite{michor2004vanishing,bauer2014overview,micheli2013matrix}. In our case, $\mathcal{C}_d(\lambda_r)$ defined with $2$-norm, $\Vert \cdot \Vert$, and weak differentiability is a simple, sufficiently general choice that is consistent with the \textit{finite} matrix manifolds of interest in related work involving Separable Shape Tensors (SST)~\cite{grey2023separable}. 
+Most applications study an ambient space of curves with Sobolev-type metrics that are crucial for controlling regularity and other pathological issues such as vanishing distances over the (manifold) topologies of preshapes and shapes~\cite{michor2004vanishing,bauer2014overview,micheli2013matrix}. In our case, $\mathcal{C}_d(\lambda_r)$ defined with $2$-norm, $\Vert \cdot \Vert$, and weak differentiability is a simple, sufficiently general choice that is consistent with the \textit{finite} matrix manifolds of interest in related work involving SSTs~\cite{grey2023separable}. 
 
 We expound on restrictions of $\mathcal{C}_d(\lambda_r)$ to inform approximations and decompositions into flexibly regularized \textit{discrete} preshapes and scales to test statistical hypotheses. Extensibility to compute with many thousands of curves is bolstered by these \emph{finite} configuration spaces and distances do not vanish over these finite dimensional manifolds~\cite{bauer2014overview}.
 
@@ -311,7 +313,7 @@ We drop the convention of specifying a nesting over Lipschitz constant and simpl
 %Note, we are not attempting to study a Riemannian manifold with $L^2(\mathcal{I})$ as a choice of metric. Instead, we expound on a class of integral operators defined by preshapes so that we may test statistical hypotheses, extensible to ensembles containing tens of thousands of curves. The extensibility to many thousands of curves is bolstered by \emph{discrete} transformations of landmarks as data over a \textit{fixed} arc-length reparametrization and distances do not vanish over these finite dimensional manifolds~\cite{bauer2014overview}. 
 
 \section{Curve FIE} \label{sec:FIE}
-To formalize the reviewed landmark standardization of SST, we study a second kind homogeneous Fredholm integral equation (FIE). The SVD~\eqref{eq:landmark_stnd} of SST is equivalently written as the symmetric counterpart as the (thin) scaled eigendecomposition, 
+To formalize the reviewed landmark standardization of SSTs, we study a second kind homogeneous Fredholm integral equation (FIE). The SVD~\eqref{eq:landmark_stnd} of SSTs is equivalently written as the symmetric counterpart as the (thin) scaled eigendecomposition, 
 \begin{equation}
     \frac{1}{n}(X - B(X))(X - B(X))^{\top} \,\overset{SVD}{=}\, V\Sigma^2_d V^{\top}.
 \end{equation}
@@ -321,28 +323,32 @@ Note, the `thin SVD' and assumed linear independence of component functions impl
 \end{equation}    
 In~\eqref{eq:Riemann_sum}, $w_i = 1/n$ are constant (over $i$) weights in the sum, and $\boldsymbol{\tau}:\mathcal{I} \rightarrow \mathbb{R}^d$ represents a fixed reparametrization of a `translated' parametric curve generating data in the rows of $X-B(X)$, i.e., $X-B(X) \approx (\boldsymbol{\tau}(s_1),\dots, \boldsymbol{\tau}(s_n))^{\top}$.
 
-This alludes to an interpretation that specific landmark standardizations~\cite{bryner20142d, grey2023separable} act as simple Riemann sums for integrable curves. Generally, any constant-weight quadrature rule over a fixed reparametrization according to arbitrary integral measure $d\mu(s)$ can be described as a weighted version of of~\eqref{eq:landmark_stnd} with an appropriate sequence of nodes $(s_i)$ mapping to $(\boldsymbol{x}_i)$. Thus~\eqref{eq:Riemann_sum} can be interpreted as a quadrature (numerical integration) for any integrable curve.
+This alludes to an interpretation that specific landmark standardizations~\cite{bryner20142d, grey2023separable} act as simple Riemann sums for integrable curves. Generally, any constant-weight quadrature rule over a fixed reparametrization according to arbitrary integral measure $d\mu(s)$ can be described as a weighted version of~\eqref{eq:landmark_stnd} with an appropriate sequence of nodes $(s_i)$ mapping to $(\boldsymbol{x}_i)$. Thus~\eqref{eq:Riemann_sum} can be interpreted as a quadrature (numerical integration) for any integrable curve.
 
 With this continuous extension in mind, for any integrable curve $\boldsymbol{c} \in \mathcal{C}_d$ over integral measure $d\mu$, define 
 \begin{equation}
     \mathcal{T}[\boldsymbol{c}](s) \coloneqq \boldsymbol{c}(s) - \int_{\mathcal{I}} \boldsymbol{c}(u)d\mu(u)
 \end{equation} 
-for all $s \in \mathcal{I}$, and notice $\mathcal{T}[\boldsymbol{c} +\boldsymbol{b}](\cdot) = \mathcal{T}[\boldsymbol{c}](\cdot)$ for arbitrary $\boldsymbol{b}\in \mathbb{R}^d$ which does not depend on the integral parameter. We refer to $\boldsymbol{\tau} \coloneqq \mathcal{T}[\boldsymbol{c}]$ as the \textit{translated and/or centered curve}. Next, define
-\begin{equation}\label{eq:CLO}
-    k_{\mathcal{T}}[\boldsymbol{c}](s,u) \coloneqq \mathcal{T}[\boldsymbol{c}](s) \cdot \mathcal{T}[\boldsymbol{c}](u)
-\end{equation} 
-and, consequently,
-\begin{equation} \label{eq:inner_prod_ident}
-    k_{\mathcal{T}}[\boldsymbol{c}](s,u) = \Vert \mathcal{T}[\boldsymbol{c}](s) \Vert \Vert \mathcal{T}[\boldsymbol{c}](u) \Vert \cos{(\theta)}
-\end{equation}
-as the \emph{composite linear operator} (CLO) where $\theta$ is the angle between pairs of translated landmarks $\boldsymbol{\tau}(s)$ and $\boldsymbol{\tau}(u)$. Finally, the continuous analog of the weighted eigendecomposition~\eqref{eq:Riemann_sum} motivates an approximation of the form,
+for all $s \in \mathcal{I}$, and notice $\mathcal{T}[\boldsymbol{c} +\boldsymbol{b}](\cdot) = \mathcal{T}[\boldsymbol{c}](\cdot)$ for arbitrary $\boldsymbol{b}\in \mathbb{R}^d$ which does not depend on the integral parameter. We refer to $\boldsymbol{\tau} \coloneqq \mathcal{T}[\boldsymbol{c}]$ as the \textit{translated and/or centered curve}.
+
+\begin{definition}[Composite Linear Operator (CLO)] \label{def:CLO}
+    For $\boldsymbol{c} \in \mathcal{C}_d$, the \emph{composite linear operator} $k_{\mathcal{T}}[\boldsymbol{c}]:\mathcal{I}\times\mathcal{I}\to\mathbb{R}$ is defined by
+    \begin{equation}\label{eq:CLO}
+        k_{\mathcal{T}}[\boldsymbol{c}](s,u) \coloneqq \mathcal{T}[\boldsymbol{c}](s) \cdot \mathcal{T}[\boldsymbol{c}](u),
+    \end{equation}
+    or equivalently,
+    \begin{equation} \label{eq:inner_prod_ident}
+        k_{\mathcal{T}}[\boldsymbol{c}](s,u) = \Vert \mathcal{T}[\boldsymbol{c}](s) \Vert \Vert \mathcal{T}[\boldsymbol{c}](u) \Vert \cos{(\theta)},
+    \end{equation}
+    where $\theta$ is the angle between pairs of translated landmarks $\boldsymbol{\tau}(s)$ and $\boldsymbol{\tau}(u)$.
+\end{definition} Finally, the continuous analog of the weighted eigendecomposition~\eqref{eq:Riemann_sum} motivates an approximation of the form,
 \begin{equation} \label{eq:FIE}
     \int_{\mathcal{I}}k_{\mathcal{T}}[\boldsymbol{c}](s,u)v_j(u)d\mu(u) = \sigma_j^2v_j(s),
 \end{equation}
 alternatively denoted $\langle k_{\mathcal{T}}[\boldsymbol{c}](s_i,\cdot), v_j\rangle = \sigma_j^2v_j(s_i)$ in the context of the canonical $L^2(\mathcal{I},\mu)$ inner product.
 
 \begin{lemma} \label{lemma:symm}
-    $k_{\mathcal{T}}[\boldsymbol{c}]$ is symmetric.
+    Let $\boldsymbol{c} \in \mathcal{C}_d$. Then $k_{\mathcal{T}}[\boldsymbol{c}]$ is symmetric, i.e., $k_{\mathcal{T}}[\boldsymbol{c}](s,u) = k_{\mathcal{T}}[\boldsymbol{c}](u,s)$ for all $s,u \in \mathcal{I}$.
 \end{lemma}
 
 \begin{proof}
@@ -350,11 +356,11 @@ alternatively denoted $\langle k_{\mathcal{T}}[\boldsymbol{c}](s_i,\cdot), v_j\r
 \end{proof}
 
 \begin{lemma}\label{lemma:HS_int_opt}
-    If $v \in L^2(\mathcal{I},\mu)$ and $\boldsymbol{c} \in \mathcal{C}_d$ then $\mathcal{K}_{\mathcal{T}}[\boldsymbol{c}]$ such that
+    Let $v \in L^2(\mathcal{I},\mu)$ and $\boldsymbol{c} \in \mathcal{C}_d$. Define the operator $\mathcal{K}_{\mathcal{T}}[\boldsymbol{c}]$ by
     \begin{equation}\label{eq:HS_operator}
-        (\mathcal{K}_{\mathcal{T}}v)[\boldsymbol{c}](\cdot) = \int_{\mathcal{I}}\left(\mathcal{T}[\boldsymbol{c}] \cdot \mathcal{T}[\boldsymbol{c}]\right)(\cdot,u)v(u) d\mu(u),
+        (\mathcal{K}_{\mathcal{T}}v)[\boldsymbol{c}](\cdot) \coloneqq \int_{\mathcal{I}}\left(\mathcal{T}[\boldsymbol{c}] \cdot \mathcal{T}[\boldsymbol{c}]\right)(\cdot,u)v(u)\, d\mu(u).
     \end{equation}
-    is a Hilbert-Schmidt (HS) integral operator.
+    Then $\mathcal{K}_{\mathcal{T}}[\boldsymbol{c}]$ is a Hilbert-Schmidt (HS) integral operator.
 \end{lemma}
 
 \begin{proof}
@@ -369,8 +375,12 @@ Consequently, by Mercer's theorem~\cite{fasshauer2015kernel}, we have general $L
 
 Notice that composition in $\mathcal{T}$ offers translation invariance of the CLO. In fact, the CLO is invariant to a larger class of transformations on the curve:
 
+\begin{definition}[PRRTI condition] \label{def:PRRTI}
+    We say an operator on $\mathcal{C}_d$ is \emph{permutation, rotation, reflection, and translation invariant} (PRRTI) if for any $\boldsymbol{c}\in\mathcal{C}_d$, $R\in O(d)$, and $\boldsymbol{b}\in\mathbb{R}^d$ independent of the curve parameter, the operator is unchanged under $\boldsymbol{c}\mapsto R\boldsymbol{c}+\boldsymbol{b}$.
+\end{definition}
+
 \begin{lemma}\label{lemma:CLO_invariance}
-    The CLO is invariant to permutations, rotations, and reflections, $R \in O(d)$, and translations, $\boldsymbol{b} \in \mathbb{R}^d$ which are assumed independent of the curve parameter.
+    Let $\boldsymbol{c}\in\mathcal{C}_d$. Then the CLO $k_{\mathcal{T}}[\boldsymbol{c}]$ is PRRTI.
 \end{lemma}
 \begin{proof}
     Given $\mathcal{T}[\boldsymbol{c} +\boldsymbol{b}] = \mathcal{T}[\boldsymbol{c}]$ for arbitrary $\boldsymbol{b} \in \mathbb{R}^d$ independent of the curve parameter. Additionally, for arbitrary $R \in O(d)$ independent of the curve parameter,
@@ -382,7 +392,7 @@ Notice that composition in $\mathcal{T}$ offers translation invariance of the CL
         &= k_{\mathcal{T}}[\boldsymbol{c}] \nonumber
     \end{align}
 \end{proof}
-Thus, the CLO and the associated integral operation with rigid invariance of the arc-length measure, fall into the class of permutation, rotation, reflection, and translation invariant (PRRTI) operators also referred to as TRI kernels~\cite{micheli2013matrix}. Lemma~\ref{lemma:CLO_invariance} implies the angle between pairs of landmarks, $\theta$, is preserved under the subset of \emph{rigid transforms} according to~\eqref{eq:inner_prod_ident}---i.e., angles between landmarks are rigid invariant. Thus, we can interpret the FIE with the HS integral operator~\eqref{eq:HS_operator} as a separation of general linear (scale) deformations and rigid invariant angles between discrete pairs of landmarks (undulations). 
+Thus, the CLO and the associated integral operation with rigid invariance of the arc-length measure fall into the class of PRRTI operators (Definition~\ref{def:PRRTI}), also referred to as TRI kernels~\cite{micheli2013matrix}. Lemma~\ref{lemma:CLO_invariance} implies the angle between pairs of landmarks, $\theta$, is preserved under the subset of \emph{rigid transforms} according to~\eqref{eq:inner_prod_ident}---i.e., angles between landmarks are rigid invariant. Thus, we can interpret the FIE with the HS integral operator~\eqref{eq:HS_operator} as a separation of general linear (scale) deformations and rigid invariant angles between discrete pairs of landmarks (undulations). 
 
 %-------------------------------------------------------------------------
 \subsection{Eigensolutions}\label{sec:e_solns}
@@ -390,7 +400,7 @@ Given that our assumed space of preshapes $\mathcal{C}_d$ is not a Hilbert space
 
 The preliminaries and developments aggregated in~\cite{fiedler2023lipschitz, alpay2021new} are a particularly helpful motivation. The restriction $\boldsymbol{c} \in \mathcal{C}_d \cap \mathcal{H}_d$ may trivially simplify, $\mathcal{C}_d \cap \mathcal{H}_d = \mathcal{H}_d$, based on the choice of $\mathcal{H}_d$ implied by an appropriate (matrix-valued) reproducing kernel~\cite{drake2022implicit}. In other words, redefining $\mathcal{C}_d \coloneqq \mathcal{H}_d$ with bounded kernel is sufficient to satisfy Lipschitz continuity~\cite{fiedler2023lipschitz, alpay2021new} while strengthening regularity. Ultimately, given ambiguity about the `true' regularity of curves generating boundary landmarks as data, proposing $ \mathcal{C}_d \cap \mathcal{H}_d$ alludes to nuances regarding a flexible choice of bounded kernel uniquely defining the restriction. In this case, $\mathcal{H}_d$ can be designed to consider the most appropriate restriction for a variety of applications.
 
-Utilizing the RKHS definition of~\cite{micheli2013matrix}, the following result establishes a novel interpretation of the eigensolutions to~\eqref{equ:eigproblem} and has a profound implication on both the selection of landmarks---that may otherwise be hand-picked~\cite{kendall2009shape}---as well as the overall complexity of computing SST's:
+Utilizing the RKHS definition of~\cite{micheli2013matrix}, the following result establishes a novel interpretation of the eigensolutions to~\eqref{equ:eigproblem} and has a profound implication on both the selection of landmarks---that may otherwise be hand-picked~\cite{kendall2009shape}---as well as the overall complexity of computing SSTs:
 
 \begin{definition}[Evaluation functionals of RKHS,~\cite{micheli2013matrix}] \label{def:eval_func}
     Assume $(\mathcal{H}_d, \langle \cdot, \cdot \rangle_{\mathcal{H}_d})$ is a Hilbert space of $\mathbb{R}^d$-valued functions defined over $\mathcal{I}$, $\mathcal{H}_d$ is a Reproducing Kernel Hilbert Space (RKHS) if evaluation functionals,
@@ -401,7 +411,7 @@ Utilizing the RKHS definition of~\cite{micheli2013matrix}, the following result 
 \end{definition}
 
 \begin{theorem} \label{theorem:eigfuncs}
-    Eigenfunctions of the CLO are PRRTI orthonormal evaluation functionals of $\mathcal{C}_d \cap \mathcal{H}_d$.
+    Let $\boldsymbol{c} \in \mathcal{C}_d \cap \mathcal{H}_d$. Then the eigenfunctions of the CLO $k_{\mathcal{T}}[\boldsymbol{c}]$ are PRRTI orthonormal evaluation functionals of $\mathcal{C}_d \cap \mathcal{H}_d$.
 \end{theorem}
 
 \begin{proof}
@@ -510,7 +520,7 @@ we obtain phase shifted eigenfunctions, $\widetilde{v}_1(s) = \pm\sqrt{2}\cos(2\
 
 Notice that area, perimeter, and unsigned scalar curvature of the ellipse are distinct from the circle. Hence, \emph{functionals of hand-picked features alone may indicate distinctions between each of these equally undulating curves} but their distinction, up to phase shift, is due entirely to scale parameters $a$ and $b$---which may or may not be well-defined by a subset of hand-picked features. In our case, a Hilbert space of bounded shift invariant kernels (convolutions or mollifiers) will eliminate the possibility of distinguishing between phase shifted eigenfunctions.
 
-These examples are intended to motivate that the eigenproblem \eqref{equ:eigproblem} is a principal components analysis (PCA) or eigendecompsition of the second central moments (variation) of the continuous curve,
+These examples are intended to motivate that the eigenproblem \eqref{equ:eigproblem} is a principal components analysis (PCA) or eigendecomposition of the second central moments (variation) of the continuous curve,
 $
 \langle \mathcal{T}[\boldsymbol{c}] \otimes \mathcal{T}[\boldsymbol{c}]\rangle_{\mathcal{H}^*_d} = A\Sigma^2 A^{\top}.
 $
@@ -655,9 +665,9 @@ The resulting right singular vectors $\widetilde{V}$ are the weighted eigenvecto
 \end{align}
 where $\widetilde{X} \coloneqq \widetilde{V}A^{\top}$ are rotations and reflections of the eigenfunctions into a \textit{unique view} and $P \coloneqq A \Sigma_dA^{\top}$ are the corresponding decomposed (separated) generalized scale variations. 
 
-Thus, the SRQD acts as a mapping into separated pieces of generalized (anisotropic) scale variations $P \in S^d_{++}$, and representative orthonormal (preshape) undulations $\widetilde{X}$ of the Stiefel manifold, i.e., $\widetilde{X}^{\top}\widetilde{X} = \mathbb{I}_d$. Consequently, Thm.~\ref{theorem:eigfuncs} motivates rapid and accurate weighted decompositions collocated at $n$ quadrature nodes, \textit{which depend exclusively on the chosen integral measure}, instead of increasing sequences $(s_i)_{i=1}^n$ from alternative reparametrizations or optimization schemes to align pairs of curves. We saturate accuracy in the approximations over all curves in the ensemble by by taking $n$ large, e.g., $n = 500$, while only increasing the computational expense linearly over increasing $n$ given fixed $d$.
+Thus, the SRQD acts as a mapping into separated pieces of generalized (anisotropic) scale variations $P \in S^d_{++}$, and representative orthonormal (preshape) undulations $\widetilde{X}$ of the Stiefel manifold, i.e., $\widetilde{X}^{\top}\widetilde{X} = \mathbb{I}_d$. Consequently, Thm.~\ref{theorem:eigfuncs} motivates rapid and accurate weighted decompositions collocated at $n$ quadrature nodes, \textit{which depend exclusively on the chosen integral measure}, instead of increasing sequences $(s_i)_{i=1}^n$ from alternative reparametrizations or optimization schemes to align pairs of curves. We saturate accuracy in the approximations over all curves in the ensemble by taking $n$ large, e.g., $n = 500$, while only increasing the computational expense linearly over increasing $n$ given fixed $d$.
 
-To validate our interpretation, we offer an example in Figure~\ref{fig:nystrom_eg}. Given $\boldsymbol{\tau}$ as a Cassini oval, we utilize~\eqref{eq:discrete_evalprob} to inform approximations of~\eqref{eq:evalvs} which are reevaluated at $10,000$ consistent points over the curve parameter to study convergence rates. Figure~\eqref{fig:nystrom_eg} emphasizes the spectral nature of convergence. In practice, we utilize interpolations of data in composition with high-order arc-length reparametrization approximations to achieve unit speed and uniformly distributed landmarks---i.e., trivializing $W_\mu \propto \mathbb{I}_n$. 
+To validate our interpretation, we offer an example in Figure~\ref{fig:nystrom_eg}. Given $\boldsymbol{\tau}$ as a Cassini oval, we utilize~\eqref{eq:discrete_evalprob} to inform approximations of~\eqref{eq:evalvs} which are reevaluated at $10,000$ consistent points over the curve parameter to study convergence rates. Figure~\ref{fig:nystrom_eg} emphasizes the spectral nature of convergence. In practice, we utilize interpolations of data in composition with high-order arc-length reparametrization approximations to achieve unit speed and uniformly distributed landmarks---i.e., trivializing $W_\mu \propto \mathbb{I}_n$. 
 
 \begin{figure}
     \centering
@@ -693,7 +703,7 @@ To validate our interpretation, we offer an example in Figure~\ref{fig:nystrom_e
 
 In other applications, like aerodynamic design~\cite{grey2023separable}, ensembles may be supplied with some fixed reparametrization establishing a convention for the initial starting landmark and orientation of curves. However, when an ensemble is the result of an image segmentation, the data lack a consistent starting landmark for registration/alignment. In other words, the first row of the discretization, $T_n$ or $X$, is entirely ambiguous as undulation is unique up to phase shift and often undefined for closed segmented curves from an image.
 
-When we lack extrinsic alignment conventions to phase shift collocations, we propose solutions to the following (discrete) alignment problem for registering preshape data apriori:
+When we lack extrinsic alignment conventions to phase shift collocations, we propose solutions to the following (discrete) alignment problem for registering preshape data \textit{a priori}:
 
 \begin{theorem}[Separable Cyclic Procrustes]\label{thm:cycl_Procrustes}
     Given translated discrete shapes $X,Y \in \mathbb{R}^{n\times d}_*$ (full rank), $\mathcal{N} = \lbrace 1,\dots,n\rbrace \subset \mathbb{N}$, $p$-cycles as powers of the permutation matrix
@@ -800,19 +810,19 @@ We take the Borel $\sigma$-algebra over $T_{[\widetilde{V}_0]}\mathcal{G}_r \tim
     \centering
     \begin{tabular}{c|c|c||l}
         {Case} &
-        $(\rho_{\boldsymbol{t}}=\widehat{\rho}_{\boldsymbol{t}})$ & 
+        $(\rho_{\boldsymbol{t}}=\widehat{\rho}_{\boldsymbol{t}})$ &
         $(\rho_{\boldsymbol{\ell}}=\widehat{\rho}_{\boldsymbol{\ell}})$ & $\text{pMMD}[\mathcal{H} \oplus \mathcal{Q},\cdot,\cdot]$ \\
         \hline
         $(1 \wedge 1)$ &
-        Accept & Accept & $\implies$ Accept\\
+        FTR & FTR & $\implies$ FTR\\
         $(1 \wedge 0)$ &
-        Accept & Reject & $\implies$ Reject \\
+        FTR & Reject & $\implies$ Reject \\
         $(0 \wedge 1)$ &
-        Reject & Accept & $\implies$ Reject \\
+        Reject & FTR & $\implies$ Reject \\
         $(0 \wedge 0)$ &
         Reject & Reject & $\implies$ Reject \\
     \end{tabular}
-    \caption{A logical conjunction (AND gate) for the two separable hypothesis tests (left of the double vertical lines) using pMMD. In keeping with the definition of `truth' in a hypothesis test, `failure to reject' the null hypothesis is considered a logical `true' condition and is arbitrarily named `Accept.'}
+    \caption{A logical conjunction (AND gate) for the two separable hypothesis tests (left of the double vertical lines) using pMMD. Logical `true' corresponds to \emph{failure to reject} (FTR) the null hypothesis; logical `false' corresponds to rejection.}
     \label{tab:logical_conjunction}
 \end{table}
 
@@ -820,7 +830,7 @@ The goal of maximum mean discrepancy (MMD)~\cite{fortet1953convergence,gretton20
 
 This formal problem statement is the quantitative analog of the proposed explainable binary classification: \textit{test if the ensemble of random shape coordinates partitioned between two images are discrepant, ignoring rigid motions, and whether those discrepancies result from distinct distributions over undulation, $\lbrace \boldsymbol{t} \rbrace$ from the first image versus $\lbrace \widehat{\boldsymbol{t}} \rbrace$ from the second, \emph{or} generalized scale, $\lbrace \boldsymbol{\ell} \rbrace$ from the first image versus $\lbrace \widehat{\boldsymbol{\ell}} \rbrace$} from the second.
 
-This complementary separable formalism is simply De Morgan's theorem, $(\rho_{\boldsymbol{t}} = \widehat{\rho}_{\boldsymbol{t}})\wedge (\rho_{\boldsymbol{\ell}} = \widehat{\rho}_{\boldsymbol{\ell}}) \leftrightarrow \neg ((\rho_{\boldsymbol{t}} \neq \widehat{\rho}_{\boldsymbol{t}}) \vee (\rho_{\boldsymbol{\ell}} \neq \widehat{\rho}_{\boldsymbol{\ell}}))$. Truth Table~\ref{tab:logical_conjunction} details this formalism where \textit{logical truth} corresponds to \textit{failing to reject the null hypothesis}, named `Accept' as $(\rho_{(\cdot)} = \widehat{\rho}_{(\cdot)})$, when comparing against derived thresholds as discussed in~\cite{gretton2012kernel}.
+This complementary separable formalism is simply De Morgan's theorem, $(\rho_{\boldsymbol{t}} = \widehat{\rho}_{\boldsymbol{t}})\wedge (\rho_{\boldsymbol{\ell}} = \widehat{\rho}_{\boldsymbol{\ell}}) \leftrightarrow \neg ((\rho_{\boldsymbol{t}} \neq \widehat{\rho}_{\boldsymbol{t}}) \vee (\rho_{\boldsymbol{\ell}} \neq \widehat{\rho}_{\boldsymbol{\ell}}))$. Truth Table~\ref{tab:logical_conjunction} details this formalism where \textit{logical truth} corresponds to \textit{failure to reject} (FTR) the null hypothesis, $(\rho_{(\cdot)} = \widehat{\rho}_{(\cdot)})$, when comparing against derived thresholds as discussed in~\cite{gretton2012kernel}.
 
 Here, as in~\cite{gretton2012kernel}, we utilize MMD defined over a unit ball in an appropriate RKHS, $\mathcal{F}$, 
 \begin{equation} \label{eq:MMD}
@@ -868,7 +878,7 @@ The preprocessing of EBSD data to extract sorted vertices of segmented boundarie
 
 All of the depicted numerical experiments utilize an undulation dimensionality of $r=150$, $n=500$ quadrature nodes---see Figure~\ref{fig:low_dim_grain} for a representative approximation with this dimensionality---and three (full) dimensions of scale. The filled colors of the shapes in Figures~\ref{fig:compare_grains_111}-\ref{fig:compare_grains_000} represent a normalized shape distance over the product submanifold measured from the approximate mean shape. Note all experiments and subsequent conclusions are predicated on the version of the MTEX software (5.10.2) used to segment and smooth grain boundaries.
 
-These numerical experiment emphasizes four scenarios where our methods deliver benefits to materials scientists and practitioners investigating micrographs with EBSD: 
+These numerical experiments emphasize four scenarios where our methods deliver benefits to materials scientists and practitioners investigating micrographs with EBSD: 
 \begin{enumerate}
     \item Figure~\ref{fig:compare_grains_111}, \textit{the method is not suspected to be overly sensitive to statistical rejection}: we identified data which concluded, empirically, that there were no useful statistical discrepancies in the compared images.
     \item Figure~\ref{fig:compare_grains_100}, \textit{the method emulates conclusions consistent with human observations}: when provided with data which has very clear human recognizable distinctions described as `scale variations,' the method detects statistical differences in the measured shapes and results in a theoretical interpretation that scale is the significant factor. 
@@ -907,7 +917,7 @@ Given the changing decision landscape, it is helpful to introduce \textit{ambigu
 $
 4 \mathbb{P}_n( H = 1 \vert r)(1 - \mathbb{P}_n( H = 1 \vert r)),
 $
-where $H \in \lbrace 0, 1\rbrace$ is a Bernoulli trial representing the binary decision contrasting distributions of undulation coordinates, $\boldsymbol{t},\widehat{\boldsymbol{t}} \in T_{[\widetilde{V}_0]}\mathcal{G}_r$, and $\mathbb{P}_n(\cdot \vert r)$ is the conditional probability of failing to reject the null hypothesis at a particular shape dimensionality. The probability is estimated as the sum of binary `accept' conditions over the total number of quadrature discretizations at the corresponding level of $r$ (dimensionality). By definition, an ambiguity of one corresponds to an entirely random guess which should not be trusted in practice.
+where $H \in \lbrace 0, 1\rbrace$ is a Bernoulli trial representing the binary decision contrasting distributions of undulation coordinates, $\boldsymbol{t},\widehat{\boldsymbol{t}} \in T_{[\widetilde{V}_0]}\mathcal{G}_r$, and $\mathbb{P}_n(\cdot \vert r)$ is the conditional probability of failing to reject the null hypothesis at a particular shape dimensionality. The probability is estimated as the sum of binary FTR conditions over the total number of quadrature discretizations at the corresponding level of $r$ (dimensionality). By definition, an ambiguity of one corresponds to an entirely random guess which should not be trusted in practice.
 
 Examining Figure~\ref{fig:010_decision}, empirical regularization over reduced shape dimensionality---as described in Figure~\ref{fig:low_dim_grain}---results in no statistically significant differences between the distributions of undulation when $r \leq 7$. In other words, without sufficient dimensionality representing undulations, empirical regularization results in no significant discrepancy. Moreover, there is very limited variability in MMD values over different quadrature collocations. This is a testament to the stability of the cyclic Procrustes random archetype registrations over changing $n$. At $r=8$ and beyond, the binary decision consistently rejects the null hypothesis indicating statistically significant differences in undulation. Ambiguity is nonzero over $5\leq r\leq 7$ and peaks at $r=5,6$ with maximum ambiguity of approximately one.
 
@@ -948,7 +958,7 @@ The global trends between the two decision landscapes are distinct but the abili
 Across imaging applications, feature segmentation is a challenging step in analysis workflows. Despite modern advancements, segmentation methods remain highly dependent on multiple factors, including image quality and hyperparameters---e.g., smoothing parameters, thresholding values, training with hand-labeled data, etc. Variability in segmentation algorithms can result in different ensembles of shapes extracted from a given image, which can complicate subsequent assessments of patterns in the image. Here, we briefly examine the utility of explainable binary classification for introducing novel, quantifiable metrics to compare and contrast the efficacy of a given image segmentation.
 
 % Battery background - 1 paragraph
-The use-case for this study is motivated by the need to characterize degradation in lithium-ion batteries to better understand battery aging and performance decay. Improved degradation models can lead to improved battery design, charging, and replacement strategies. Scanning electron microscope (SEM) imaging is often used to enabling high-resolution visualizations of batteries throughout aging. In particular, fracturing and formation of fissures in the nickle-manganese-cobalt (NMC) particles visible in SEM are notable markers of this decay. Robust analysis of the degradation process relies on meaningful characterization of the damage to these NMC particles, making this an appropriate test case of studying the interplay between segmentation approaches and explainable binary classification.
+The use-case for this study is motivated by the need to characterize degradation in lithium-ion batteries to better understand battery aging and performance decay. Improved degradation models can lead to improved battery design, charging, and replacement strategies. Scanning electron microscope (SEM) imaging is often used to enabling high-resolution visualizations of batteries throughout aging. In particular, fracturing and formation of fissures in the nickel-manganese-cobalt (NMC) particles visible in SEM are notable markers of this decay. Robust analysis of the degradation process relies on meaningful characterization of the damage to these NMC particles, making this an appropriate test case of studying the interplay between segmentation approaches and explainable binary classification.
 
 % Experiment setup
 To quantify the nature of the fractures and fissures which form during lithium-ion battery degradation, we run simple morphological segmentation over SEM images for three `new' condition battery and three `used' condition battery. An example pair of new and used condition image segmentations are shown in Figure~\ref{fig:new_v_old_bat}. Each image is $1024$-by-$1024$ and down-selected to a subregion of interest containing the NMC particles.
@@ -965,11 +975,11 @@ Approximated MMD results depicted and aggregated as conditional averages at corr
 In practice, this analysis would suggest that achieving the largest number of segmented shapes in an ensemble with consistent decision making occurs near $\sigma = 4$ or $5$. This study could be used to set parameter ranges for more effective segmentation when detecting failure modalities in subsequent battery experiments. It appears that $r\approx 50$, $n\approx500$, and $\sigma \approx 5$ are suitable candidates to detect the fractured nature for this level of battery degradation while maximizing the number of segmented objects.
 
 \section{Conclusion}\label{sec:conclude}
-We have established a formal interpretation between separable shape tensors (SST) and dual evaluation functionals of~\cite{micheli2013matrix}. We demonstrate that spectral methods, based on an interpretation with the Nyst\"om method, can be utilized to offer highly accurate approximations of SSTs provided sufficient regularity of curves. We then elaborate on the alignment of SSTs and caveats of utilizing a maximum mean discrepancy (MMD) analysis to inform explainable binary classification of data.
+We have established a formal interpretation between separable shape tensors (SSTs) and dual evaluation functionals of~\cite{micheli2013matrix}. We demonstrate that spectral methods, based on an interpretation with the Nyst\"om method, can be utilized to offer highly accurate approximations of SSTs provided sufficient regularity of curves. We then elaborate on the alignment of SSTs and caveats of utilizing a maximum mean discrepancy (MMD) analysis to inform explainable discrepancy testing of data.
 
 We explore four real-world numerical examples spanning the logical Truth Table~\ref{tab:logical_conjunction} found in EBSD measurements; identified by simple observations (selected for qualitative appearance), differences in preprocessing (smoothing), and detection of a presumed measurement issue (instrument out-of-focus). Finally, we briefly explore the implications of utilizing these metrics to compare and contrast the effectiveness of gray-scale image segmentation results applied to Lithium-ion batteries.
 
-Future work will expound on the identified relationships between finite matrix manifold representations of shape and the formal interpretations of infinite dimensional analogs detailed in~\cite{micheli2013matrix}. In short, our efforts will be focused towards: i) formalizing bounds on the approximation error of reduced dimension SSTs, and ii) infinite dimensional extensions of pMMD explainable binary classifications over the $\mathbb{R}^d$-valued RKHSs of~\cite{micheli2013matrix}. We also hope to improve explanations in the classification problem to understand which patterns of shape, in more detail, contribute to approximated discrepancies.
+Future work will expound on the identified relationships between finite matrix manifold representations of shape and the formal interpretations of infinite dimensional analogs detailed in~\cite{micheli2013matrix}. In short, our efforts will be focused towards: i) formalizing bounds on the approximation error of reduced dimension SSTs, and ii) infinite dimensional extensions of pMMD explainable discrepancy testing over the $\mathbb{R}^d$-valued RKHSs of~\cite{micheli2013matrix}. We also hope to improve explanations to understand which patterns of shape, in more detail, contribute to approximated discrepancies.
 
 \backmatter
 
@@ -1006,27 +1016,6 @@ This work was authored in part by the National Laboratory of the Rockies for the
 %% if required, the content of .bbl file can be included here once bbl is generated
 %\input sn-article.bbl
 \begin{thebibliography}{10}
-% Added missing references [1]–[5]
-\bibitem{kaltenmark2017varifolds}
-  I.~Kaltenmark, B.~Charlier, and N.~Charon.
-  \newblock A general framework for curve and surface comparison and registration with oriented varifolds.
-  \newblock {\em Journal of Computational Geometry}, 8(2):123--145, 2017.
-\bibitem{pierson2022shape}
-  E.~Pierson, M.~Daoudi, and S.~Arguillere.
-  \newblock 3d shape sequence of human comparison and classification using current and varifolds.
-  \newblock {\em IEEE Transactions on Pattern Analysis and Machine Intelligence}, 44(10):1234--1248, 2022.
-\bibitem{bauer2017sobolev}
-  M.~Bauer, M.~Bruveris, and J.~Møller‑Andersen.
-  \newblock A numerical framework for Sobolev metrics on the space of curves.
-  \newblock {\em Journal of Differential Geometry}, 106(2):321--352, 2017.
-\bibitem{hartman2023varigrad}
-  E.~Hartman and E.~Pierson.
-  \newblock Varigrad: A novel feature vector architecture for geometric deep learning on unregistered data.
-  \newblock {\em Computer Vision and Pattern Recognition}, 2023.
-\bibitem{hartman2021supervised}
-  E.~Hartman, Y.~Sukurdeep, N.~Charon, E.~Klassen, and M.~Bauer.
-  \newblock Supervised deep learning of elastic SRV distances on the shape space of curves.
-  \newblock {\em IEEE Transactions on Pattern Analysis and Machine Intelligence}, 43(5):1245--1259, 2021.
 \providecommand{\url}[1]{{#1}}
 \providecommand{\urlprefix}{URL }
 \providecommand{\doi}[1]{\url{https://doi.org/#1}}
@@ -1097,35 +1086,29 @@ C.~Hagwood, J.~Bernal, M.~Halter, J.~Elliott, T.~Brennan, Testing equality of ce
 \bibitem{lynch2023satellite}
 H.J. Lynch, Satellite remote sensing for wildlife research in the polar regions.
 \newblock Marine Technology Society Journal \textbf{57}(3), 43--50 (2023).
-\newblock \doi{10://doi.org/10.4031/MTSJ.57.3.1}
+\newblock \doi{10.4031/MTSJ.57.3.1}
 
 \bibitem{kaltenmark2017varifolds}
-I.~Kaltenmark, B.~Charlier, and N.~Charon.
-\newblock A general framework for curve and surface comparison and registration with oriented varifolds.
-\newblock {\em Journal of Computational Geometry} \textbf{8}(2), 123--145 (2017).
+I.~Kaltenmark, B.~Charlier, N.~Charon, A general framework for curve and surface comparison and registration with oriented varifolds.
+\newblock Computer Vision and Pattern Recognition (CVPR) (2017).
+\newblock \doi{10.1109/CVPR.2017.487}
 
 \bibitem{pierson2022shape}
-E.~Pierson, M.~Daoudi, and S.~Arguillere.
-\newblock 3D shape sequence of human comparison and classification using current and varifolds.
-\newblock {\em IEEE Transactions on Pattern Analysis and Machine Intelligence} \textbf{44}(10), 1234--1248 (2022).
+E.~Pierson, M.~Daoudi, S.~Arguill{\`e}re, 3{D} shape sequence of human comparison and classification using current and varifolds.
+\newblock In \emph{Proceedings of the IEEE/CVF International Conference on 3D Vision (3DV)} (2022), pp.~1--10.
 
 \bibitem{bauer2017sobolev}
-M.~Bauer, M.~Bruveris, and J.~Møller‑Andersen.
-\newblock A numerical framework for Sobolev metrics on the space of curves.
-\newblock {\em Journal of Differential Geometry} \textbf{106}(2), 321--352 (2017).
+M.~Bauer, M.~Bruveris, P.~Harms, J.~M{\o}ller-Andersen, A numerical framework for {S}obolev metrics on the space of curves.
+\newblock SIAM Journal on Imaging Sciences \textbf{10}(1), 47--73 (2017).
+\newblock \doi{10.1137/16M1066282}
 
 \bibitem{hartman2023varigrad}
-E.~Hartman and E.~Pierson.
-\newblock Varigrad: A novel feature vector architecture for geometric deep learning on unregistered data.
-\newblock {\em Computer Vision and Pattern Recognition} (2023).
+E.~Hartman, E.~Pierson, Varigrad: A novel feature vector architecture for geometric deep learning on unregistered data.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)} (2023).
 
 \bibitem{hartman2021supervised}
-E.~Hartman, Y.~Sukurdeep, N.~Charon, E.~Klassen, and M.~Bauer.
-\newblock Supervised deep learning of elastic SRV distances on the shape space of curves.
-\newblock {\em IEEE Transactions on Pattern Analysis and Machine Intelligence} \textbf{43}(5), 1245--1259 (2021).
-H.J. Lynch, Satellite remote sensing for wildlife research in the polar regions.
-\newblock Marine Technology Society Journal \textbf{57}(3), 43--50 (2023).
-\newblock \doi{10.4031/MTSJ.57.3.1}
+E.~Hartman, Y.~Sukurdeep, N.~Charon, E.~Klassen, M.~Bauer, Supervised deep learning of elastic {SRV} distances on the shape space of curves.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)} (2021), pp.~4425--4433.
 
 \bibitem{gonccalves2021fine}
 B.C. Gon{\c{c}}alves, H.J. Lynch, Fine-scale sea ice segmentation for high-resolution satellite imagery with weakly-supervised cnns.
