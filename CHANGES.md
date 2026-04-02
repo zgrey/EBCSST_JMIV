@@ -37,7 +37,6 @@ Detailed log of all edits by revision item. Updated each pass.
 ### Reference errors
 - Missing `Figure~` prefix before `\ref{fig:eg_other_images}` (Sec. 1.1)
 - `\eqref{fig:nystrom_eg}` → `\ref{fig:nystrom_eg}` (Sec. 3.1, `\eqref` is for equations only)
-- Malformed DOI for Lynch 2023 (see Item 1 above)
 
 ---
 
