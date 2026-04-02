@@ -184,6 +184,7 @@ It is important to note that shape is only one significant piece of the quite li
 We emphasize that our framework is formulated as \emph{hypothesis testing} which implies a classification rather than clustering. While the learned feature space naturally admits distance-based clustering, hypothesis testing offers a principled binary conclusion---reject or fail to reject---with a controlled significance level, directly answering whether two ensembles are statistically discrepant. That said, clustering over our feature space is a complementary and equally valid approach for exploratory analysis of shape ensembles. \textcolor{red}{PLACEHOLDER: SHOULD WE ADD A NICE EXAMPLE CLUSTERING WITH MORPHOLOGICAL SEGMENTATION OF SUN DATA? PERHAPS A SHORT BLURB ON CLUSTERING COULD BE USEFUL.}
 
 \subsection{Technical Outline}
+\textcolor{red}{PLACEHOLDER: BETTER EMPHASIS ON CONTRIBUTIONS SPECIFIC TO THIS WORK VERSUS PREVIOUS G2AERO WORK}
 In subsequent introductory sections, we review related work and motivate a class of shapes for consideration which is sufficient in representing segmented curves from images.
 
 In Section~\ref{sec:FIE}, we formalize interpretations transforming continuous boundary curves as preshapes into separately encode principled features of \textit{generalized scale} and \textit{undulation}. Specifically, in Thm.~\ref{theorem:eigfuncs}, we offer a novel interpretation that separable shape tensors (SSTs) are approximations of dual representations over a vector-valued reproducing kernel Hilbert space (RKHS). 
@@ -218,6 +219,7 @@ In general, bold fonts distinguish vector-valued objects from capitalized fonts 
 Elsewhere, we define new notation explicitly and use ``$\coloneqq$'' to indicate that the identification is by definition.
 
 \subsection{Separable Shape Tensors} \label{subsec:SST}
+\textcolor{red}{PLACEHOLDER: MAKE THIS ENTIRE SECTION MORE CONCISE}
 We begin by reviewing related work~\cite{grey2023separable, bryner20142d, srivastava2016functional} for defining finite representations of curve data as \textit{configuration spaces}. Following the development of SST~\cite{grey2023separable}, initially applied to aerodynamic shape representations~\cite{doronina2022grassmannian}, we let $X = (\boldsymbol{x}_1,\dots,\boldsymbol{x}_n)^{\top}$ be the collection of $n$ unique \emph{landmarks} informed by some vector-valued mapping, $\boldsymbol{c}:\mathcal{I} \subset \mathbb{R} \rightarrow \mathbb{R}^d$, such that
 \begin{equation}\label{eq:data}
     \boldsymbol{x}_i = \boldsymbol{c}(s_i), \quad i=1,\dots,n.
@@ -263,7 +265,7 @@ An important caveat of this finite representation is that shapes are not preclud
 
 %-------------------------------------------------------------------------
 \subsection{Preshapes as Boundary Curves}~\label{subsec:preshapes}
-As before, preshapes are defined as open or closed curves $\boldsymbol{c}:\mathcal{I} \rightarrow \mathbb{R}^d$ assumed to be immersions and/or embeddings~\cite{micheli2013matrix,bauer2014overview,srivastava2010shape,mumford2006riemannian,younes2008metric,hartman2023elastic}---e.g., for $d=2$, $\boldsymbol{c}$ in our application is a planar embedding with $\mathcal{I}$ as the unit circle or equivalent compact, connected $1$-manifold. Applications are benefited by representations of curves over regularized spaces which control noisy measurement oscillations, e.g., those with increasing Lipschitz constant of curves $\mathcal{C}_d(\lambda_r) \subseteq \mathcal{C}_d(\lambda_{r+1})$ such that $0<\lambda_r \leq \lambda_{r+1}<\infty$ and
+As before, preshapes are defined as open or closed curves $\boldsymbol{c}:\mathcal{I} \rightarrow \mathbb{R}^d$ assumed to be immersions and/or embeddings~\cite{micheli2013matrix,bauer2014overview,srivastava2010shape,mumford2006riemannian,younes2008metric,hartman2023elastic}---e.g., for $d=2$, $\boldsymbol{c}$ in our application is a planar embedding with $\mathcal{I}$ as the unit circle or equivalent compact, connected $1$-manifold. Applications are benefited by representations of curves over regularized spaces which control noisy measurement oscillations, e.g., those with increasing Lipschitz constant of curves $\mathcal{C}_d(\lambda_r) \subseteq \mathcal{C}_d(\lambda_{r+1})$ such that $0<\lambda_r \leq \lambda_{r+1}<\infty$ where
         \begin{equation}\label{eq:reg_Hilbert_space}
              \mathcal{C}_d(\lambda_r) \coloneqq \lbrace \boldsymbol{c} \,:\, \Vert \boldsymbol{c}(u) - \boldsymbol{c}(s)\Vert \leq \lambda_r\vert u - s\vert\rbrace,
         \end{equation}

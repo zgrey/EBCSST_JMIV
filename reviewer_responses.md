@@ -14,14 +14,14 @@ Responses to reviewer comments for "Explainable Binary Classification of Separab
 ### R1.2 — Terminology ("classification" vs. hypothesis testing; Table 1 "Accept" → "FTR")
 > I feel that the title and terminology used in the paper is a bit misleading. The authors are not performing classification, but rather a statistical comparison via a hypothesis testing procedure based on MMD.
 
-**Response:** [Items 5, 6] We respectfully disagree that the terminology is misleading. Two-sample hypothesis testing defines a binary decision rule mapping pairs of distributions to {reject, fail to reject}—this *is* a binary classification at the distribution level, distinct from supervised classification over labeled instances. We have added a technical justification in Sections 1 and 3.5 clarifying this distinction and connecting the title to the formal framework. Table 1 terminology has been updated from "Accept" to "FTR" (Fail To Reject) per the reviewer's suggestion.
+**Response:** [Items 5, 6] We respectfully disagree that the terminology is misleading. Two-sample hypothesis testing defines a binary decision rule mapping pairs of distributions to {reject, fail to reject}—this is a binary classification/mapping for determining if two distributions are the same or not albeit distinct from supervised classification over labeled instances. We have added a technical justification in Sections 1 and 3.5 clarifying this distinction and connecting the title to the formal framework. Table 1 terminology has been updated from "Accept" to "FTR" (Fail To Reject) per the reviewer's suggestion.
 
 ### R1.3 — Cyclic Procrustes: random template vs. Fréchet mean
 > Why didn't the authors perform this registration with respect to the Frechet mean of the ensemble?
 
 **Response:** [Item 13] The reviewer's suggestion of a Fréchet-mean-based template is well-motivated. We address this as follows:
 
-1. **Why a random template works:** The cyclic Procrustes problem (Theorem 2) finds the *optimal* rotation and cyclic permutation aligning each curve to the template. For asymmetric templates, this alignment is unique. The decision landscape in Fig. 7 demonstrates stability of MMD decisions across quadrature nodes $n$, which implicitly tests archetype sensitivity since different $n$ yield different discrete representations of the random archetype. The key requirement is asymmetry, not optimality, of the template.
+1. **Why a random template works:** The cyclic Procrustes problem (Theorem 2) finds the *optimal* rotation and cyclic permutation aligning each curve to the template. For asymmetric templates, this alignment is unique. The decision landscape in Fig. 7 demonstrates stability of MMD decisions across quadrature nodes $n$, which implicitly tests archetype sensitivity since different $n$ yield different discrete representations of the random archetype. The key requirement is asymmetry, not optimality, of the template. 
 2. **Why we did not use the Fréchet mean:** Computing the Fréchet mean over cyclic-Procrustes-aligned curves is a chicken-and-egg problem—alignment requires a template, but the mean requires aligned data. An iterative scheme (align to current mean → recompute mean → repeat) is possible but:
    - Convergence is not guaranteed for the cyclic permutation component (discrete optimization),
    - Each iteration requires $O(N \cdot n)$ SVDs for the full ensemble,
@@ -93,7 +93,7 @@ The response will address this as follows:
 
 **Response:** [Item 12] The revised manuscript will add guidelines in Sec. 4 (near the decision landscape discussion) covering:
 
-1. **Quadrature nodes $n$:** The decision landscapes (Figs. 7–8) demonstrate remarkable stability over $n$, with consistent decisions across $n \in [100, 500]$. This stability follows from the spectral accuracy of the Fourier quadrature on smooth closed curves—once $n$ exceeds the effective bandwidth of the boundary, additional nodes contribute negligible information. A practical guideline: choose $n$ large enough that the landmark representation visually resolves boundary features (Fig. 1, right panel). For the EBSD data, $n = 500$ is well into the stable regime.
+1. **Quadrature nodes $n$:** The decision landscapes (Figs. 7–8) demonstrate remarkable stability over $n$, with consistent decisions across $n \in [100, 500]$. This stability follows from the spectral accuracy of the quadrature on smooth closed curves—once $n$ exceeds the effective bandwidth of the boundary, additional nodes contribute negligible information. A practical guideline: choose $n$ large enough that the landmark representation visually resolves boundary features (Fig. 1, right panel). For the EBSD data, $n = 500$ is well into the stable regime.
 2. **Undulation dimensionality $r$:** This is the more consequential choice. The decision landscapes show:
    - For $r \leq 7$: empirical regularization suppresses fine-scale undulations, and the test fails to reject even when discrepancies exist (Fig. 7).
    - For $r \geq 8$: consistent rejection in the $(0 \wedge 1)$ case, with monotonically increasing MMD (Fig. 7).
@@ -104,7 +104,7 @@ The response will address this as follows:
 ### R2.6 — Writing and organization (contributions buried, background too long)
 > I could not distinguish which of these results were from existing work vs. new to this manuscript.
 
-**Response:** [Items 7, 8] *(document restructuring — pending)*
+**Response:** [Items 7, 8] We have ammended the contributions section to more clearly define the contributions specific to this manuscript versus previous work applied to aerodynamic bodies.
 
 ### R2.7 — Illustration of undulation vs. scale
 > A figure which describes nonlinear shape undulations vs. linear scale differences would be useful.
@@ -133,12 +133,12 @@ The response will address this as follows:
 ### R3.3 — Acronyms not introduced on first use (SST, HS)
 > The paper begins using acronyms such as SST and HS without introducing them.
 
-**Response:** [Item 3] Fixed. SST is defined parenthetically at first occurrence in Sec. 1.2; HS was already defined but we verified consistency.
+**Response:** [Item 3] Fixed. SST is defined parenthetically at first occurrence in Sec. 1.2; HS is defined in Lemma 2.
 
 ### R3.4 — Typos and grammar
 > The paper contains several typos, difficult to parse sentences, and incorrect word choices.
 
-**Response:** [Item 2] A full copy-editing pass has been completed. See CHANGES.md for the detailed log.
+**Response:** [Item 2] A full copy-editing pass has been completed. See CHANGES.md for the detailed log. We have also made efforts to simplify the discussion and be more concise where possible.
 
 ---
 
@@ -152,12 +152,14 @@ The response will address this as follows:
 ### R4.2 — Problem statement unclear; why not clustering?
 > The problem that the paper is trying to solve is not easy to understand. I believe it is to group curves by similarity but then why not using clustering.
 
-**Response:** [Items 5, 6] A paragraph has been added in Sec. 1.1 clarifying that hypothesis testing implies a classification (binary decision with statistical guarantees), whereas clustering aggregates without a formal decision rule. Clustering remains a valid complementary approach. A technical justification connecting hypothesis testing to binary classification is being added to Sections 1 and 3.5.
+**Response:** [Items 5, 6] A paragraph has been added in Sec. 1.1 clarifying that hypothesis testing implies a classification (binary decision with statistical guarantees) between *distributions encoding shape*, whereas clustering simply aggregates without a formal decision rule. However, clustering remains a valid complementary approach. A technical justification connecting hypothesis testing to binary classification is being added to Sections 1 and 3.5 and a clustering example has been included to demonstrate that this is also feasible. The problem we are attempting to solve is also very clearly stated in the section titled "Problem Statement":
+
+*Are the curves/shapes in one image, up to rigid motions, the same or different from that of another and, if they are different, are differences due to linear deformations (generalized scale variations) or nonlinear deformations (undulations)?*
 
 ### R4.3 — Evaluation limited to EBSD
 > The choice of evaluation, limited to EBSD feels restricted.
 
-**Response:** [Item 15] *(numerical experiment — pending)*
+**Response:** [Item 15] Our evaluations are not limited to EBSD. We have an explicit example detailed in section 4.2 which can be applied to any gray-scale image. We have also augmented this example with a simple 2-cluster example using a SUVI of the sun to better emphasize that this analysis extends well beyond material microstructures.
 
 ### R4.4 — Pipeline algorithm figure
 > An algorithm presenting the pipeline would be very helpful.
@@ -167,7 +169,7 @@ The response will address this as follows:
 ### R4.5 — Interpretability claims not demonstrated; AI methods not cited or compared
 > The author claims a lot in the introduction the "interpretability" of the method, but it's not used otherwise.
 
-**Response:** [Item 16] We acknowledge that the interpretability claims could be better substantiated. The revision will address this on two fronts:
+**Response:** [Item 16] We acknowledge that the interpretability claims could be better substantiated. The revisions address this on two fronts:
 
 1. **Demonstrating interpretability:** The separable structure *is* the interpretability mechanism—the Truth Table (Table 1) decomposes a binary decision into *why*: undulation, scale, or both. This is already demonstrated in Sec. 4 (e.g., the $(0 \wedge 1)$ case identifies boundary smoothing as an undulation-only effect; the $(1 \wedge 0)$ case identifies grain size as a scale-only effect). We will make this connection more explicit by:
    - Adding a paragraph in Sec. 4 that walks through how a practitioner interprets each row of the Truth Table in physical terms for the EBSD examples,
@@ -186,4 +188,4 @@ The response will address this as follows:
 ### R4.7 — Conclusion: rejection
 > I tend towards rejection: the paper is far from being ready for publications.
 
-**Response:** We appreciate the candid feedback. The revisions address presentation quality (Items 2–4), missing references (Item 1), and the terminology/framing concerns (Items 5–6). Remaining items (experiments, comparisons, pipeline figure) are in progress.
+**Response:** We appreciate the candid feedback. The revisions address presentation quality (Items 2–4), missing references (Item 1), and the terminology/framing concerns (Items 5–6).
