@@ -38,6 +38,9 @@ Detailed log of all edits by revision item. Updated each pass.
 - Missing `Figure~` prefix before `\ref{fig:eg_other_images}` (Sec. 1.1)
 - `\eqref{fig:nystrom_eg}` → `\ref{fig:nystrom_eg}` (Sec. 3.1, `\eqref` is for equations only)
 
+### Word choice
+- "elude" → "allude" (Sec. 2 near Eq. 7 and Sec. 2.3, two occurrences — corrected per R3)
+
 ---
 
 ## Item 3 — Introduce all acronyms on first use (R3)
