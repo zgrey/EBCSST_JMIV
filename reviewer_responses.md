@@ -2,6 +2,8 @@
 
 Responses to reviewer comments for "Explainable Binary Classification of Separable Shape Ensembles." Items reference the REVISIONS.md to-do list.
 
+Note that large additions/modifcations are color-coded blue while small changes are documented in CHANGES.md
+
 ---
 
 ## Reviewer 1
@@ -104,7 +106,7 @@ The response will address this as follows:
 ### R2.6 — Writing and organization (contributions buried, background too long)
 > I could not distinguish which of these results were from existing work vs. new to this manuscript.
 
-**Response:** [Items 7, 8] We have ammended the contributions section to more clearly define the contributions specific to this manuscript versus previous work applied to aerodynamic bodies.
+**Response:** [Items 7, 8] We have ammended the contributions section to more clearly define the contributions specific to this manuscript versus previous work applied to aerodynamic bodies. We also acknowledge that many modern papers are written with concise descriptions and massive supplementary materials. However, we think this practice breaks with respected classical presentations which weave the formalisms into the narrative. Our opinion is that these formalisms should be critiqued, in detail, as part of the narrative and included in the main body of a contribution to a mathematical journal to promote more transparency ad reproducibility---far too much is lost or ignored in supplementary materials. This is a failure of some researchers who "hide the details" in overly complicated supplementary materials as opposed to our attempt at being simultaneously precise and concise.
 
 ### R2.7 — Illustration of undulation vs. scale
 > A figure which describes nonlinear shape undulations vs. linear scale differences would be useful.
