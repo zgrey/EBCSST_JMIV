@@ -26,7 +26,7 @@ Items sorted by estimated effort (low to high). Types: **D** = document edits, *
 
    **Status**: Complete. Intro-level framing in Sec. 1.1 (blue text) and formal justification in Sec. 3.5 (blue text) mirroring the same notation.
 
-7. ZG [x] **[W] Discuss separability assumption; propose a diagnostic for violations** (R2)
+7. ZG [x] **[D/W] Discuss separability assumption; propose a diagnostic for violations** (R2)
    Separability does not imply independence. MMD can test independence (see Gretton et al.). Add clarification that separability is not independence.
 
 8. [x] **[D/W] Demonstrate interpretability and compare with AI/varifold methods** (R4)
@@ -34,10 +34,10 @@ Items sorted by estimated effort (low to high). Types: **D** = document edits, *
 
    **Plan**: Citations added. Section 2.2 discusses an extensive example. No exhaustive comparison since methods use distinct representations.
 
-9. [x] **[W] Justify random Procrustes template over Fréchet mean** (R1, R4)
+9. [x] **[D/W] Justify random Procrustes template over Fréchet mean** (R1, R4)
    Justify adequacy, sensitivity analysis, and computational trade-offs.
 
-   **Plan**: Can't replace Procrustes template with Fréchet mean (Fréchet mean comes after registration). Clarify via Item 13 diagrams. Justify uniqueness via Figs. 8–9 and 5 (stability argument).
+   **Plan**: Can't replace Procrustes template with Fréchet mean (Fréchet mean comes after registration). Justify uniqueness via Figs. 8–9 and 5 (stability argument).
 
 ## Medium effort
 

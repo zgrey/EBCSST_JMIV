@@ -1,0 +1,90 @@
+% Pipeline diagram for EBC-SST paper (Item 13)
+% Requires: \usepackage{tikz}
+%           \usetikzlibrary{positioning, arrows.meta, calc}
+%
+% Usage: copy the tikzpicture block into a figure environment in sn-article-revised.tex
+%
+% =====================================================================
+% NOTATION GUIDE — edit the strings in \def commands below to change
+% any label without touching the diagram layout.
+% =====================================================================
+
+% -- Top row nodes (continuous / infinite-dimensional) --
+\def\nodeTopA{$\mathcal{H}_d \cap \mathcal{C}_d(\lambda)$}     % curves in RKHS
+\def\nodeTopB{$\mathcal{H}^*_d \times S^d_{++}$}               % dual reps x scale
+%\def\nodeTopC{$? \times S^d_{++}$}                              % unknown quotient analog
+%\def\nodeTopD{$?$}                                              % unknown learned analog
+
+% -- Bottom row nodes (discrete / finite-dimensional) --
+\def\nodeBotA{$\mathbb{R}^{n \times d}_*$}                     % landmark matrices
+\def\nodeBotB{$St(d,n) \times S^d_{++}$}                       % Stiefel x SPD
+\def\nodeBotC{$Gr(d,n) \times S^d_{++}$}                       % Grassmannian x SPD
+\def\nodeBotD{$\mathcal{G}_r \times \mathcal{P}$}              % learned submanifold
+
+% -- Horizontal arrow labels --
+\def\labelFIE{\textrm{FIE}}           % Fredholm integral equation
+\def\labelPiOne{$SVD$}              % SRQD + polar decomposition
+\def\labelPiTwo{$\pi$}              % quotient projection St -> Gr
+\def\labelTPCA{\textrm{tPCA}}         % tangent PCA
+
+% -- Vertical / diagonal arrow labels --
+\def\labelWPD{\textrm{SRQD}}           % weighted polar decomposition
+
+% =====================================================================
+
+\newlength{\rowsep}\setlength{\rowsep}{1.5cm}   % vertical gap between rows
+\newlength{\colsep}\setlength{\colsep}{3.8cm}   % horizontal gap between columns
+
+\begin{tikzpicture}[
+    % --- node style ---
+    every node/.style={font=\normalsize},
+    obj/.style={inner sep=4pt},            % space around node text
+    % --- arrow styles ---
+    arr/.style={-{Stealth[length=5pt]}, thick},
+    darr/.style={-{Stealth[length=5pt]}, thick, dashed},
+    % --- label styles ---
+    lbl/.style={font=\small, fill=white, inner sep=1.5pt},
+]
+
+% =====================================================================
+% NODES — arranged on a 2 x 4 grid
+% =====================================================================
+
+% Top row  (y = 0)
+\node[obj] (T1) at (0,0)            {\nodeTopA};
+\node[obj] (T2) at (\colsep,0)      {\nodeTopB};
+%\node[obj] (T3) at (2\colsep,0)     {\nodeTopC};
+%\node[obj] (T4) at (3\colsep,0)     {\nodeTopD};
+
+% Bottom row  (y = -\rowsep)
+\node[obj] (B1) at (0,-\rowsep)         {\nodeBotA};
+\node[obj] (B2) at (\colsep,-\rowsep)   {\nodeBotB};
+\node[obj] (B3) at (2\colsep,-\rowsep)  {\nodeBotC};
+\node[obj] (B4) at (3\colsep,-\rowsep)  {\nodeBotD};
+
+% =====================================================================
+% HORIZONTAL ARROWS
+% =====================================================================
+
+% Top row
+\draw[arr]  (T1) -- node[lbl, above] {\labelFIE}  (T2);
+% ? arrows omitted per author request — uncomment and label as needed:
+\draw[darr]  (T2) -- node[lbl, above] {}  (B3);
+% \draw[arr]  (T3) -- node[lbl, above] {$?$}  (T4);
+
+% Bottom row
+\draw[arr]  (B1) -- node[lbl, below] {\labelPiOne}   (B2);
+\draw[arr]  (B2) -- node[lbl, below] {\labelPiTwo}   (B3);
+\draw[arr]  (B3) -- node[lbl, below] {\labelTPCA}    (B4);
+
+% =====================================================================
+% VERTICAL / DIAGONAL ARROWS  (continuous <-> discrete)
+% =====================================================================
+
+% Column 1: discretization (dashed — approximation)
+\draw[darr] (T1) -- (B1);
+
+% Column 2: weighted polar decomposition (solid)
+\draw[darr]  (T2) -- node[lbl, right] {\labelWPD}  (B2);
+
+\end{tikzpicture}
