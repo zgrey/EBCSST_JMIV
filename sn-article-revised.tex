@@ -139,7 +139,7 @@ Precise measurement and quantification of shape is ubiquitous in imaging science
 
 Sometimes scientists and engineers want to answer a simple, binary question: \emph{is this the same as that}? (yes or no) This immediately necessitates some explanation: \emph{if they're different, why?} We refer to solutions of this general class of problems as \emph{explainable binary classifications}---hypothesis testing that not only renders a binary decision (reject or fail to reject) but, if reject, also explains \emph{why} the discrepancy exists.
 
-Target applications span diverse imaging modalities, including electron microscopy, X-ray computed tomography, satellite and optical imagery, cell microscopy/histopathology, solar UV imaging, Lagrangian averaged vorticity deviations of turbulent flows, and AI-generated imagery. For example, electron backscatter diffraction (EBSD)~\cite{schwartz2009electron} provides high-resolution segmentation of material microstructures~\cite{SAVILLE2021102118,stoudt2020location}. Processing these via denoising~\cite{atindama2023restoration} and segmentation~\cite{bachmann2010texture,FAN2021116810} yields large ensembles of planar curves. Figure~\ref{fig:eg_grains} illustrates a segmented EBSD image of deformed ice generated using MTEX~\cite{Hielscher:cg5083,Fan2020,FAN2021116810}, alongside an individual "grain boundary" curve extracted from the ensemble.
+Target applications span diverse imaging modalities, including electron microscopy, X-ray computed tomography, satellite and optical imagery, cell microscopy/histopathology, solar UV imaging, Lagrangian averaged vorticity deviations of turbulent flows, and AI-generated imagery. For example, electron backscatter diffraction (EBSD)~\cite{schwartz2009electron} provides high-resolution segmentation of material microstructures~\cite{SAVILLE2021102118,stoudt2020location}. Processing these via denoising~\cite{atindama2023restoration} and segmentation~\cite{bachmann2010texture,FAN2021116810} yields large ensembles of planar curves. Figure~\ref{fig:eg_grains} illustrates a segmented EBSD image of deformed ice generated using MTEX~\cite{Hielscher:cg5083,Fan2020,FAN2021116810}, alongside an individual `grain boundary' extracted from the ensemble.
 
 Beyond EBSD, our interpretations are extensible to \textit{any imaging combined with subsequent segmentation informing a large ensemble of planar curves}. Additional examples of alternative image modalities are shown in Figure~\ref{fig:eg_other_images}.
 
@@ -173,15 +173,15 @@ Beyond EBSD, our interpretations are extensible to \textit{any imaging combined 
 
 \noindent We present an initial approach to answer the proposed question as a binary response augmented by \textit{explanation through separability} and formal extensions to existing work~\cite{grey2023separable,micheli2013matrix}. Unlike standard artificial intelligence (AI) models—which rely on subjective hand-labeled training and often utilize opaque `learned features' within an ambiguous `latent space,' our framework prioritizes quantifiable explanations. This avoids the common pitfalls of AI-generated responses, which, while often articulate, are prone to fabrication or hallucination---although, the same could be argued of organic intelligence.
 
-\textcolor{blue}{To formally answer the proposed question in an unsupervised manner, we define a binary mapping $d: (\mathcal{E}_1, \mathcal{E}_2) \mapsto \lbrace 0, 1\rbrace$, where $\mathcal{E}_1$ and $\mathcal{E}_2$ represent sets of feature-encoding random matrices or tensors---i.e., two \textit{ensembles}. Using two-sample hypothesis testing, $0$ represents the rejection of a null hypothesis (indicating a difference), while $1$ represents a failure to reject (FTR). This boolean effectively determines if the random features of the images are statistically equivalent.}
+\textcolor{blue}{To formally answer the proposed question in an unsupervised manner, we define a binary mapping $H: (\mathcal{E}, \widehat{\mathcal{E}}) \mapsto \lbrace 0, 1\rbrace$, where $\mathcal{E}$ and $\widehat{\mathcal{E}}$ represent sets of feature-encoding random matrices or tensors---i.e., two \textit{ensembles}. Using two-sample hypothesis testing, $0$ represents the rejection of a null hypothesis (indicating a difference), while $1$ represents a failure to reject (FTR). This boolean determines if the random features of the images are statistically equivalent.}
 
-\textcolor{blue}{In this context, explanation involves offering distinct binary conclusions over decomposed features. We aggregate these logically: $d(\mathcal{E}_1, \mathcal{E}_2) \coloneqq d(\mathcal{G}_1,\mathcal{G}_1) \, \wedge \, d(\mathcal{P}_1,\mathcal{P}_2)$, where $\mathcal{G}_i$ and $\mathcal{P}_i$ are separate features of ensemble $\mathcal{E}_i$. Consequently, the results of these separate features provide logical explanations for aggregate decisions. While the statistical nature of these decisions introduces potential error, the framework remains inherently logical by definition.}
+\textcolor{blue}{Our paradigm of explanation involves offering distinct binary conclusions over decomposed features. We aggregate these logically: $H(\mathcal{E}, \widehat{\mathcal{E}}) \coloneqq H(\mathcal{G}_r, \widehat{\mathcal{G}}_r) \,\wedge\, H(\mathcal{P}, \widehat{\mathcal{P}})$, where $\mathcal{G}_r$ and $\mathcal{P}$ are separate feature representations of ensemble $\mathcal{E}$, likewise for $\widehat{\mathcal{E}}$. Consequently, the results of these separate features provide logical explanations for aggregate decisions. While the statistical nature of these decisions introduces potential error, the framework remains inherently logical by definition.}
 
-\textcolor{blue}{For our problem, information is implicitly clustered by virtue of the images being compared---e.g., $\mathcal{E}_i \mapsto i$. Thus binary decisions can be generalized to classification tasks such that $\mathcal{E}_1$ is built from one class of images (dogs) and $\mathcal{E}_2$ is built from another (cats). However, clustering features of shape within and between individual images may be very informative beyond simple binary decisions. We examples to emphasize how clustering over our proposed features within a single image may be helpful for generalizing decision making.}
+\textcolor{blue}{For our problem, information is implicitly clustered by virtue of the images being compared---e.g., $\mathcal{E}_i \mapsto i$. Thus binary decisions can be generalized to classification tasks such that $\mathcal{E}_1$ is built from one class of images (dogs) and $\mathcal{E}_2$ is built from another (cats). Moreover, a classification model would naturally accept a single image as input and return a corresponding label. In our case, a binary decision machine is also capable of the context-driven classification by keeping one argument fixed and the other variable or considering all pairwise comparisons of `trusted' (context-driven) ensembles and `discovered' (unknown) ensembles.}
 
-`Difference' in our geometric context is stochastic and focused on invariance to rigid motions of segmented curves. Randomness arises from aleatoric uncertainty in the imaged objects---e.g., Figure~\ref{fig:eg_grains}---and epistemic uncertainty in segmentation hyperparameters. Because noisy measurements and uncertain segmentation require stochastic decision-making, a naive deterministic approach, such as comparing pointwise pixel differences, is uninformative. No two samples of a random process are identical thus concluding they differ based on single-pixel variations is a useless formalism.
+`Difference' in our geometric context is stochastic and focused on invariance to rigid motions of segmented curves. Randomness arises from aleatoric uncertainty in the imaged objects---e.g., Figure~\ref{fig:eg_grains}---and epistemic uncertainty in segmentation hyperparameters. Because noisy measurements and uncertain segmentation require stochastic decision-making, a naive deterministic approach, such as comparing pointwise pixel differences, is uninformative. No two samples of a random process are identical thus concluding they differ based on single-pixel variations is a useless formalism absent perfect pixel registrations.
 
-Scientists often utilize expertise and visual inspection to suggest how simple characteristics---e.g., principal lengths, area, perimeter, size, sphericity, and other intuitive features---are similar and different between patterns in pairs of images~\cite{stoudt2020location, ASTM_E562, ASTM_E930, ASTM_E112}. While such quantities can provide a cursory description of the ensemble characteristics, these handpicked features of shape do not constitute comprehensive representations of shape; descriptions of differences can collapse in unexpected ways. For example, it is straightforward to find examples of two shapes with identical hand-picked shape characteristics but other distinguishing features. Despite this, certain commercial standards~\cite{kazakov2019astm, ASTM_E562, ASTM_E930, ASTM_E112} for materials quality have been authored to detect hand-picked features. We expect our shape \textit{representations}, capturing all meaningful changes, will offer dramatic improvements in future materials standards but extend well beyond materials science applications.
+Scientists often utilize expertise and visual inspection to suggest how simple characteristics---e.g., principal lengths, area, perimeter, size, sphericity, and other intuitive features---are similar and different between patterns in pairs of images~\cite{stoudt2020location, ASTM_E562, ASTM_E930, ASTM_E112}. While such quantities can provide a cursory description of the ensemble characteristics, these handpicked features of shape do not constitute comprehensive representations of shape; descriptions of differences can collapse in unexpected ways. For example, it is straightforward to find examples of two shapes with identical hand-picked shape characteristics but other distinguishing features. Despite this, certain commercial standards~\cite{kazakov2019astm, ASTM_E562, ASTM_E930, ASTM_E112} for materials quality have been authored to detect hand-picked features. We expect our shape \textit{representations} will offer dramatic improvements in future materials standards but extend well beyond materials science applications.
 
 In this work, quantifying random differences is based on (maximum mean) \emph{discrepancy}~\cite{gretton2012kernel}. More precisely, we ask: are the \textit{separately} approximated distributions of \emph{representative} shape features over the ensemble in one image statistically significant from the ensemble in another? To answer this question procedurally, we propose:
 \textcolor{blue}{\begin{enumerate}[label=\roman*)]
@@ -192,7 +192,7 @@ In this work, quantifying random differences is based on (maximum mean) \emph{di
 }
 This final step constitutes our chosen two-sample test~\cite{gretton2012kernel}. In practice, this corresponds to \emph{statistically comparing thousands or more shapes between two ensembles informed by two images}.
 
-Shape is only one significant piece of the quite literal puzzles in Figures~\ref{fig:eg_grains}-\ref{fig:eg_other_images}. However, we ignore the role of textures intrinsic to the tiling---i.e., the spatial arrangement of the shapes. Instead, we treat the ensemble of shapes as independent realizations from some generating distribution which, at present, \textit{ignores their translations}. Related efforts are focused towards unifying both the topology of the spatial tiling and features of shapes in image.
+Shape is only one important piece of the quite literal puzzles in Figures~\ref{fig:eg_grains}-\ref{fig:eg_other_images}. However, we ignore the role of textures intrinsic to the tiling---i.e., the spatial arrangement of the shapes. Instead, we treat the ensemble of shapes as independent realizations from some generating distribution which, at present, \textit{ignores their translations}. Related efforts are focused towards unifying both the topology of the spatial tiling and features of shapes in image.
 
 \subsection{Technical Outline}
 \textcolor{red}{PLACEHOLDER [ITEM 10, R2]: CONTINUED EMPHASIS ON CONCISION. CLEARLY DELINEATE WHICH RESULTS ARE FROM PRIOR WORK (G2AERO, GREY 2023) VERSUS NEW TO THIS MANUSCRIPT. R2 FOUND THIS DISTINCTION HARD TO IDENTIFY.}
@@ -216,13 +216,14 @@ We emphasize the following contributions of our explainable shape classification
  
  In contrast with AI methods~\cite{hartman2023varigrad, hartman2021supervised}, i) we do not require challenging minimization over vast swaths of hand-labeled training data (i.e., efficient implementation), ii) our feature/latent space is provably an approximation of dual representations of shape (i.e., mathematically interpretable), and iii) our classification is provably logical (i.e., trustworthy explanations).
 
-\textcolor{blue}{Varifold-based approaches~\cite{kaltenmark2017,pierson2022} bypass registration by comparing curves as geometric measures, and Sobolev metrics on the space of curves~\cite{bauer2017sobolev} provide principled distances with tunable regularity. However, these methods produce a single scalar distance without decomposing \emph{why} two shapes differ. In contrast, our separable framework isolates undulation from generalized scale, yielding logical explanations (Truth Table~\ref{tab:logical_conjunction}) rather than a monolithic discrepancy score.}
+\textcolor{blue}{Varifold-based approaches~\cite{kaltenmark2017varifolds,pierson2022shape} bypass registration by comparing curves as geometric measures, and Sobolev metrics on the space of curves~\cite{bauer2017sobolev} provide principled distances with tunable regularity. However, these methods produce a single scalar distance without decomposing \emph{why} two shapes differ. In contrast, our separable framework isolates undulation from generalized scale, yielding logical explanations (Truth Table~\ref{tab:logical_conjunction}) rather than a monolithic discrepancy score.}
 
 Our numerical experiments emphasize four scenarios where these tools deliver specific benefits: i) Figure~\ref{fig:compare_grains_111} demonstrates that the method is not suspected to be overly sensitive to statistical rejection, ii) Figure~\ref{fig:compare_grains_100} demonstrates that the method emulates conclusions consistent with human observations, iii) Figure~\ref{fig:compare_grains_010} demonstrates that the method detects differences below human-scale visual observations and, iv) Figure~\ref{fig:compare_grains_000} demonstrates that the method is capable of detecting a presumed faulty measurement.
 
-Our primary contribution is a formal interpretation that discrete transformations are collocations of dual representations presented in~\cite{micheli2013matrix}. In other words, we relate novel interpretations of the SST configuration space over finite-dimensional matrix manifolds to a functional analysis over an infinite-dimensional RKHS. This interpretation facilitates a flexible choice of kernel which can be used to control the regularity of a Hilbert space of curves~\cite{micheli2013matrix} as hypothesized in any application. This motivates novel explanations and extensions between landmark configurations and the $\mathbb{R}^d$-valued RKHSs in~\cite{micheli2013matrix} representing infinite-dimensional features of curves. This is an innovation to classical configuration spaces~\cite{kendall2009shape} which have no demonstrated connection to an infinite-dimensional space of curves.
+Our primary contribution, distinct from previous work~\cite{grey2023separable}, is a formal interpretation that discrete transformations are collocations of dual representations presented in~\cite{micheli2013matrix}. In other words, we relate novel interpretations of the SST configuration space over finite-dimensional matrix manifolds to a functional analysis over an infinite-dimensional RKHS. This interpretation facilitates a flexible choice of kernel which can be used to control the regularity of a Hilbert space of curves~\cite{micheli2013matrix} as hypothesized in any application. This motivates novel explanations and extensions between landmark configurations and the $\mathbb{R}^d$-valued RKHSs in~\cite{micheli2013matrix} representing infinite-dimensional features of curves. This is an innovation to classical configuration spaces~\cite{kendall2009shape} which have no demonstrated connection to an infinite-dimensional space of curves.
 
 \subsection{Notation}
+\textcolor{red}{PLACEHOLDER: ADD ADDITIONAL NOTATION DISCUSSION. ESPECIALLY USE OF SQUARE BRACKETS.}
 In general, bold fonts distinguish vector-valued objects from capitalized fonts which represent matrix-valued objects. We reuse common conventions for the follow spaces of matrices:
 \begin{itemize}
     \item $GL(d,\mathbb{R})$ is the space of $d$-by-$d$ full rank matrices with real entries while $GL_+(d,\mathbb{R})$ is the subgroup of $GL(d,\mathbb{R})$ with positive determinant.
@@ -232,7 +233,7 @@ In general, bold fonts distinguish vector-valued objects from capitalized fonts 
 \end{itemize}
 Elsewhere, we define new notation explicitly and use ``$\coloneqq$'' to indicate that the identification is by definition.
 
-\subsection{Separable Shape Tensors} \label{subsec:SST}
+\subsection{Review} \label{subsec:SST}
 \textcolor{red}{PLACEHOLDER [ITEM 13, R1/R3/R4]: SIMPLIFY NOTATION AND IMPROVE READABILITY IN SECTIONS 2--3. REDUCE HEAVY NOTATION WHERE POSSIBLE. ADD ILLUSTRATIVE FIGURES: (A) LANDMARK REPRESENTATION AND REGISTRATION DIAGRAM, (B) MANIFOLD FEATURE SPACES VISUALIZATION, (C) SCHEMATIC CONTRASTING NONLINEAR UNDULATION VS. LINEAR SCALE/ROTATION/SHEAR (EXPLICITLY REQUESTED BY R2).}
 We begin by reviewing related work~\cite{grey2023separable, bryner20142d, srivastava2016functional} for defining finite representations of curve data as \textit{configuration spaces}. Following the development of SST~\cite{grey2023separable}, initially applied to aerodynamic shape representations~\cite{doronina2022grassmannian}, we let $X = (\boldsymbol{x}_1,\dots,\boldsymbol{x}_n)^{\top}$ be the collection of $n$ unique \emph{landmarks} informed by some vector-valued mapping, $\boldsymbol{c}:\mathcal{I} \subset \mathbb{R} \rightarrow \mathbb{R}^d$, such that
 \begin{equation}\label{eq:data}
@@ -274,8 +275,6 @@ Given the SVD \eqref{eq:landmark_stnd} and sought equivalence classes, the pairs
     X(\boldsymbol{t},\boldsymbol{\ell}) = \widetilde{X}(\boldsymbol{t})P(\boldsymbol{\ell}).
 \end{equation}
 Parameters $\boldsymbol{t} \in \mathbb{R}^r$ are informed over a reduced dimension submanifold, $1\leq r < d(n-d)$, according to a tangent space principal components analysis (tangent PCA)~\cite{fletcher2004principal}. Additionally, $\boldsymbol{\ell}\in \mathbb{R}^3$ informed by a separate tangent PCA, govern generalized \emph{scale variations} independent of rotations and reflections. The resulting representation~\eqref{eq:SST} parametrizes separate differences in anisotropic scale variations, $P(\boldsymbol{\ell})$, from those of undulations, $[\widetilde{X}](\boldsymbol{t})$, utilizing a corresponding representative matrix, $\widetilde{X}(\boldsymbol{t})$, for computations~\cite{edelman1998geometry, grey2023separable}. In our examples for this work, the parameter learning is informed by the aggregate ensemble of thousands of curves from both images being compared.
-
-\textcolor{blue}{We note that the polar decomposition $T_n = \widetilde{X}P$ is algebraically exact---every full-rank $T_n$ admits a unique factorization---so separability is not an approximation. However, \emph{statistical independence} of the resulting normal coordinates $(\boldsymbol{t}, \boldsymbol{\ell})$ is a stronger claim. In practice, separability is reasonable when shape variation is dominated by either scale (e.g., grain growth) or undulation (e.g., boundary roughness from processing), as our EBSD experiments illustrate. When physical processes simultaneously affect both---e.g., recrystallization---cross-correlation may arise. A diagnostic is straightforward: compute the sample canonical correlation between $\{\boldsymbol{t}_q\}$ and $\{\boldsymbol{\ell}_q\}$ in the tangent spaces and test significance via Bartlett's test~\cite{gretton2012kernel}. If dependence is detected, the product metric in~\eqref{eq:pMMD} remains valid but the separate rejection decisions may not fully explain joint variation; one could instead test the joint distribution directly rather than relying on the De Morgan decomposition.}
 
 An important caveat of this finite representation is that shapes are not precluded from generating self-intersections---i.e., discrete shapes are generally identified with immersions. Moreover, the existing analysis is predicated on hand-picked discretizations of interpolating curves, called \emph{fixed reparametrizations}~\cite{grey2023separable}, and lacks a formal interpretation of the entries of $\widetilde{X}$---other than achieving desirable aerodynamic parametrizations and subsequent meshing. This begs the question of how to relate the finite representation of~\eqref{eq:SST} to an (infinite dimensional) analysis of continuous curves to offer improved discretizations and continuous extensions as immersions.
 
@@ -424,9 +423,9 @@ Utilizing the RKHS definition of~\cite{micheli2013matrix}, the following result 
 \begin{definition}[Evaluation functionals of RKHS,~\cite{micheli2013matrix}] \label{def:eval_func}
     Assume $(\mathcal{H}_d, \langle \cdot, \cdot \rangle_{\mathcal{H}_d})$ is a Hilbert space of $\mathbb{R}^d$-valued functions defined over $\mathcal{I}$, $\mathcal{H}_d$ is a Reproducing Kernel Hilbert Space (RKHS) if evaluation functionals,
     $$
-    f_s^{\alpha}:\mathcal{H}_d \rightarrow \mathbb{R}\,:\,\boldsymbol{\tau} \mapsto \boldsymbol{\alpha} \cdot \boldsymbol{\tau}(s),
+    v:\mathcal{H}_d \rightarrow \mathbb{R}\,:\,\boldsymbol{\tau} \mapsto \boldsymbol{\alpha} \cdot \boldsymbol{\tau}(s),
     $$
-    are linear and continuous over $\mathcal{H}_d$ and in $\boldsymbol{\alpha}\in \mathbb{R}^d$ for all $s \in \mathcal{I}$, i.e., $f^{\alpha}_{s}\in \mathcal{H}^*_d$ is a dual representation of the curve.
+    are linear and continuous over $\mathcal{H}_d$ and in $\boldsymbol{\alpha}\in \mathbb{R}^d$ for all $s \in \mathcal{I}$, i.e., $v\in \mathcal{H}^*_d$ is a dual representation of the curve.
 \end{definition}
 
 \begin{theorem} \label{theorem:eigfuncs}
@@ -551,7 +550,7 @@ Based on these conclusions, orthogonal (standardized) parametric forms satisfyin
 %\textcolor{purple}{(ZG) TODO: (up for grabs) build these Mercer series with some $\mathbb{R}^d$-valued kernels and relate the decay in coefficients to that of the spectral content from a Fourier series to provide interpreations as they related to the nested spaces sought in~\eqref{eq:reg_Hilbert_space}. We only have an empirical explanation to this end (discussed in the text introducing Fig~\ref{fig:low_dim_grain}).}
 
 \section{PRRTI Numerics}\label{sec:numerics}
-Note that our results are predicated on access to a reliable and robust segmentation. Without this preprocessing, we cannot compute an ensemble of segmented curves but modern techniques may be a useful supplement. Moreover, additional methods are required to align and register landmark data, e.g.~\cite{dogan2015fast, al2013continuous, rangarajan1997softassign, srivastava2016functional}, which are vital in these contexts. At a minimum, our method assumes ample image processing to produce a set of ordered landmarks for interpolation or ensembles of integrable curves as input. 
+Note that our results are predicated on access to segmentation methods. Without this preprocessing, we cannot compute an ensemble of segmented curves but modern techniques may be a useful supplement. Moreover, additional methods are required to align and register landmark data, e.g.~\cite{dogan2015fast, al2013continuous, rangarajan1997softassign, srivastava2016functional}, which are vital in these contexts. At a minimum, our method assumes ample image processing to produce a set of ordered landmarks for interpolation or ensembles of integrable curves as input. 
 
 In section~\ref{subsec:func_approx}, we describe the numerical methods for approximating PRRTI functionals inspired by a Nystr\"om's method for curves. We then briefly introduce \textit{cyclic Procrustes} for registering segmented landmarks to align data against a fixed archetype in section~\ref{subsec:cycl_Pro} to account for arbitrarily phase-shifted results over closed curves. Finally, in section~\ref{subsec:mfld_learn}, we utilize approximated functionals informed by the full ensemble of segmented curves from images to define a product submanifold learning detailed in~\cite{grey2023separable}.
 
@@ -672,13 +671,56 @@ specifically such that $A \in O(d)$. In short, orthonormal $\boldsymbol \alpha_j
 
 Moreover, to obtain $\widetilde{V}$ with orthonormal columns for numerical implementations~\cite{grey2023separable}, we can equivalently compute the thin weighted-SVD, or \textit{square-root quadrature decomposition}, (SRQD)
 \begin{equation} \label{eq:SRQD}
-    T_n^{\top}W^{1/2}\,\,\overset{SVD}{=}\, A\Sigma_d\widetilde{V}^{\top},
+    T_n^{\top}\sqrt{W}\,\,\overset{SVD}{=}\, A\Sigma_d\widetilde{V}^{\top},
 \end{equation}
-for all curves in the ensemble utilizing rapid rank-$d$ decomposition schemes. 
+for all curves in the ensemble utilizing rapid rank-$d$ decomposition schemes. A visual add is given in Figure~\ref{fig:SRQD}.
+\begin{figure*}
+    \centering
+    \begin{tikzpicture}[
+        % Create a style to keep the code clean
+        block/.style={
+            draw, 
+            minimum width=#1, 
+            minimum height=15mm, 
+            text height=2ex, % Adjusts the space above the baseline
+            text depth=1.25ex, % Adjusts the space below the baseline
+            anchor=north west
+                }
+            ]
+        % Node X (The reference point)
+        \node[block=25mm, label=left:$d$, label=above:$n$, label=below:$T^{\top}_n$] (X) 
+            {$\cdot\,\Biggl\vert\,\cdot\, \boldsymbol{\tau}(s_i)\cdot\,\Biggl\vert\,\cdot$};
+        
+        % Node W: We override the height to 20mm here.
+        \node[draw, minimum width=25mm, minimum height=25mm, label=above:$n$, label=below:$\sqrt{W}$, anchor=north west] (W) 
+            at ([xshift=2mm]X.north east) {};
+        \draw[-] (W.north west) -- (W.south east);
+        
+        % Node U
+        \node[block=15mm, label=left:$d$, label=$d$, label=below:$A$] (U) 
+            at ([xshift=8mm]W.north east) {$\begin{matrix} *\quad & *\\ *\quad & * \end{matrix}$};
+        
+        % Node Sigma
+        \node[block=15mm, label=$d$, label=below:$\Sigma_d$] (Sigma) 
+            at ([xshift=2mm]U.north east) {};
+        \draw[-] (Sigma.north west) -- (Sigma.south east);
+        
+        % Node V
+        \node[block=25mm, label=$n$, label=below:$\widetilde{V}^{\top}$] (V) 
+            at ([xshift=2mm]Sigma.north east) {$\cdot\,\Biggl\vert\,\cdot\, \widetilde{\boldsymbol{v}}(s_i)\,\cdot\Biggl\vert\,\cdot$};
+        
+        % Equals sign
+        \path (W.east) -- node {$=\quad$} (U.west);
+    
+    \end{tikzpicture}
+
+    \caption{\textcolor{red}{AUGMENT WITH ILLUSTRATIVE IMAGE OF THE TRANSFORMED OBJECTS} The SRQD of a translated (centered) curve where $W$ is a diagonal of quadrature weights $w_i$, $\boldsymbol{\tau}(s_i)$ are centered landmarks evaluated at quadrature nodes, and $\widetilde{\boldsymbol{v}}(s_i)$ are the $d$-tuples of evaluation functionals at quadrature nodes.}
+    \label{fig:SRQD}
+\end{figure*}
 
 The resulting right singular vectors $\widetilde{V}$ are the weighted eigenvectors, $\widetilde{V} = W^{1/2}V$, of~\eqref{eq:weighted_evecs} in the Nystr\"om method. Thus, \textit{fast rank-$d$ SRQDs can efficiently map thousands of preshapes to discrete PRRTI-features}. Equivalently, with $A$ orthogonal, this fixed-order numerical integration constitutes $\lbrace T_n \rbrace \mapsto \lbrace (\widetilde{X}, P)\rbrace$ as a \textit{weighted polar decomposition}, 
 \begin{align} \label{eq:derived_polar_decomp}
-    W^{1/2}T_n &= \widetilde{V} \Sigma_dA^{\top}\\ \nonumber
+    \sqrt{W}T_n &= \widetilde{V} \Sigma_dA^{\top}\\ \nonumber
     & = \widetilde{V}(A^{\top}A)\Sigma_dA^{\top}\\ \nonumber
     &=\widetilde{X}P, \nonumber
 \end{align}
@@ -754,35 +796,40 @@ When we lack extrinsic alignment conventions to phase shift collocations, we pro
     \text{such that} & R = \pi_{\mathcal{U}}(\mathcal{L}(p)).
     \end{matrix}
     $$
-    However, distinct from~\cite{golub1973differentiation}, the bijection, $$\pi_{\mathcal{U}}(\cdot) \coloneqq (\cdot)(V_p\Omega_p^{-1}V_p^{\top}),$$ is defined by the SVD, $\mathcal{L}(p) \,\overset{SVD}{=} U_p\Omega_pV_p^{\top}$, such that $\Omega_p = \text{diag}(\omega_1(p),\omega_2(p),\dots,\omega_d(p))$ with $\omega_1(p) \geq \omega_2(p)\geq \dots \geq \omega_d(p)>0$.
-
-    Finally, we argue that the extraneous parametric constraint $\pi_{\mathcal{U}}(\mathcal{L}(p))$ for any $p$ is best. By definition, $\pi_{\mathcal{U}}(\mathcal{L}(p))$ is best if and only if $\langle \pi_{\mathcal{U}}(\mathcal{L}(p)),\mathcal{L}(p)\rangle_F > \langle R ,\mathcal{L}(p)\rangle_F$ for all $R \neq \pi_{\mathcal{U}}(\mathcal{L}(p)) \in O(d)$ and $p \in \mathcal{N}$. Equivalently, it is sufficient to show $\langle R - \pi_{\mathcal{U}}(\mathcal{L}(p)), \mathcal{L}(p) \rangle_F<0$ for all $R \neq \pi_{\mathcal{U}}(\mathcal{L}(p)) \in O(d)$. Utilizing the definition of $\pi_{\mathcal{U}}$,
+    However, distinct from~\cite{golub1973differentiation}, the bijection, $$\pi_{\mathcal{U}}(\cdot) \coloneqq (\cdot)(V_p\Omega_p^{-1}V_p^{\top}),$$ is defined by the SVD, $\mathcal{L}(p) \,\overset{SVD}{=} U_p\Omega_pV_p^{\top}$, such that $\Omega_p = \text{diag}(\omega_1(p),\omega_2(p),\dots,\omega_d(p))$ with $\omega_1(p) \geq \omega_2(p)\geq \dots \geq \omega_d(p)>0$ and $U_p,V_p \in O(d)$. Utilizing the definition of $\pi_{\mathcal{U}}$, notice
     \begin{align*}
-        \langle \pi_{\mathcal{U}}(\mathcal{L}(p)), \mathcal{L}(p)\rangle_F &= \langle \mathcal{L}(p)(V_p\Omega_p^{-1}V_p^{\top}), \mathcal{L}(p) \rangle_F\\
+        \langle \pi_{\mathcal{U}}(\mathcal{L}(p)), \mathcal{L}(p)\rangle_F &= \langle \mathcal{L}(p) (V_p\Omega_p^{-1}V_p^{\top}), \mathcal{L}(p) \rangle_F\\
         & = \langle U_p\Omega_pV_p^{\top}(V_p\Omega_p^{-1}V_p^{\top}), \mathcal{L}(p) \rangle_F\\
         & = \langle U_pV_p^{\top}, U_p\Omega_pV_p^{\top} \rangle_F\\
         & = \text{tr}(V_p\Omega_pV_p^{\top})\\
-        &= \Vert \mathcal{L}(p) \Vert_1
+        &= \Vert \mathcal{L}(p) \Vert_1 \quad \tag{$\star$}
     \end{align*}
-    and, thus,
+    and 
+    \[
+        \pi_{\mathcal{U}}(\mathcal{L}(p)) = U_pV_p^{\top}.    \tag{$\star\star$}
+    \]
+    Next, we argue the (extraneous) parametric constraint, $R = \pi_{\mathcal{U}}(\mathcal{L}(p))$ for any $p$, is best. By definition, $\pi_{\mathcal{U}}(\mathcal{L}(p))$ is best if and only if $\langle \pi_{\mathcal{U}}(\mathcal{L}(p)),\mathcal{L}(p)\rangle_F > \langle R ,\mathcal{L}(p)\rangle_F$ for all $R \neq \pi_{\mathcal{U}}(\mathcal{L}(p)) \in O(d)$ and $p \in \mathcal{N}$. Equivalently, it is sufficient to show 
+    $$\langle R - \pi_{\mathcal{U}}(\mathcal{L}(p)), \mathcal{L}(p) \rangle_F<0
+    $$ 
+    for all $R \neq \pi_{\mathcal{U}}(\mathcal{L}(p)) \in O(d)$. Given $(\star)$,
     \begin{align*}
         \langle R - \pi_{\mathcal{U}}(\mathcal{L}(p)),\mathcal{L}(p)\rangle_F &= \langle R,\mathcal{L}(p)\rangle_F - \langle \pi_{\mathcal{U}}(\mathcal{L}(p)), \mathcal{L}(p)\rangle_F \\
         &= \langle R,\mathcal{L}(p)\rangle_F - \Vert \mathcal{L}(p) \Vert_1.
     \end{align*}
-    By the original argument of orthogonal Procrustes solution~\cite{gibson1962least, schonemann1966generalized, lawrence2019purely}, 
+    Then, by the original argument of orthogonal Procrustes solution~\cite{gibson1962least, schonemann1966generalized, lawrence2019purely}, 
     \begin{align*}
         \langle R,\mathcal{L}(p)\rangle_F &= \text{tr}(R^{\top}U_p\Omega_pV_p^{\top}) \\
         &= \text{tr}(V_p^{\top}R^{\top}U_p\Omega_p) \\
         &= \langle Q_p, \Omega_p\rangle_F
     \end{align*}
-    for some $Q_p =  U_p^{\top}RV_p \in O(d)$ which satisfies $\langle Q_p, \Omega_p\rangle_F \leq \langle \mathbb{I}_d, \Omega_p\rangle_F = \Vert \mathcal{L}(p) \Vert_1$ with equality when $Q_p = \mathbb{I}_d$. However, $Q_p = \mathbb{I}_d$ if and only if $R = U_pV_p^{\top} = \pi_{\mathcal{U}}(\mathcal{L}(p))$, thus $\langle R,\mathcal{L}(p)\rangle_F - \Vert \mathcal{L}(p) \Vert_1 < 0$ for all $R \neq \pi_{\mathcal{U}}(\mathcal{L}(p)) \in O(d)$.
+    for some $Q_p =  U_p^{\top}RV_p \in O(d)$ which satisfies $\langle Q_p, \Omega_p\rangle_F \leq \langle \mathbb{I}_d, \Omega_p\rangle_F = \Vert \mathcal{L}(p) \Vert_1$ with equality when $Q_p = \mathbb{I}_d$. However, $Q_p = \mathbb{I}_d$ if and only if $R = U_pV_p^{\top}$ which implies, by $(\star\star)$, $R = \pi_{\mathcal{U}}(\mathcal{L}(p))$. Thus, $\langle R,\mathcal{L}(p)\rangle_F - \Vert \mathcal{L}(p) \Vert_1 < 0$ for all $R \neq \pi_{\mathcal{U}}(\mathcal{L}(p)) \in O(d)$.
 \end{proof}
 
-With brute force solutions to Theorem~\ref{thm:cycl_Procrustes}, we match segmented curves with a modified type of Procrustean metric~\cite{srivastava2016functional} and, more importantly, align data against an fixed `archetype', $Y$ collocated at consistent quadrature nodes. To promote unique solutions to Theorem~\ref{thm:cycl_Procrustes} at a fixed $n$, we desire asymmetric archetypes or archetypes with known symmetries\footnote{Notice a `featureless' circle results in a constant objective function.} to search a subset of permutations. However, for many material micrographs, it is sufficient to take a random draw from the full ensemble of grains to identify a suitable asymmetric archetype for global registration. Additionally, we normalize both discrete preshapes $X$ and $Y$ to have unit length and dilate the archetype to match the uniform scale of the second input preshape.
+With solutions to Theorem~\ref{thm:cycl_Procrustes}, we match segmented curves with a modified type of Procrustean metric~\cite{srivastava2016functional} and, more importantly, align data against an fixed `archetype', $Y$ collocated at consistent quadrature nodes. To promote unique solutions to Theorem~\ref{thm:cycl_Procrustes} at a fixed $n$, we desire asymmetric archetypes or archetypes with known symmetries\footnote{Notice a `featureless' circle results in a constant objective function.} to search a subset of permutations. However, for many noisy segmentations, it is sufficient to take a random draw from the full ensemble of curves to identify a suitable asymmetric archetype for global registration. Additionally, we normalize both discrete preshapes $X$ and $Y$ to have unit length and dilate the archetype to match the uniform scale of the second input preshape to promote numerical stability.
 
 These solutions offer a convention for aligning an ensemble of discrete curves and implicitly defining initial landmark(s) for an ordering over the rows of $X$. Note that a lack of symmetries in shapes dictate the uniqueness of these solutions. Related work~\cite{dogan2015fast} elaborate on a continuous treatment of the alignment problem; offering an interpretation with significant speed up utilizing fast Fourier transforms. An example registering a shape to within machine precision subject to arbitrary rotation and cyclic permutation of itself is illustrated in Fig.~\ref{fig:cyc_Procrustes}.
 
-\textcolor{blue}{A natural alternative is to align against the Fr\'echet mean of the ensemble rather than a random archetype. However, this is a chicken-and-egg problem: alignment requires a template, but the mean requires aligned data. An iterative scheme (align $\to$ recompute mean $\to$ repeat) is possible but lacks convergence guarantees for the discrete cyclic permutation component, and each iteration requires re-solving $N$ SVDs across $n$ quadrature nodes---rapidly becoming expensive for large ensembles. In contrast, Theorem~\ref{thm:cycl_Procrustes} guarantees that cyclic Procrustes finds the \emph{optimal} alignment to any given template; thus the key requirement is asymmetry of the archetype, not its optimality. The decision landscape stability over $n$ in Fig.~\ref{fig:010_decision} provides empirical evidence: since different $n$ yield different discrete representations of the same random archetype, the consistent decisions across $n$ implicitly test archetype sensitivity.}
+\textcolor{blue}{A natural intuition is to align against a `central shape,' like the Fr\'echet mean, rather than a random archetype. However, unless an asymmetric archetype is provided, aligning to the Fre\'echet mean is a chicken-and-egg problem: alignment requires a template, but the mean requires aligned data. An iterative scheme (align $\to$ recompute mean $\to$ repeat) is possible but lacks convergence guarantees for the discrete cyclic permutation component. In contrast, Theorem~\ref{thm:cycl_Procrustes} guarantees that cyclic Procrustes finds \emph{an optimal} alignment to any given template; thus the key requirement is asymmetry of the archetype, not its optimality in the sense of being a Fr\'echet mean. Subsequent numerical experiments, specifically Fig.~\ref{fig:010_decision} and Fig.~\ref{fig:010_decision-normalized}, demonstrate the stability of the random archetype registration over changing $n$ and, somewhat remarkably, stability despite random row-wise permutations.}
 
 %-------------------------------------------------------------------------
 
@@ -790,7 +837,7 @@ These solutions offer a convention for aligning an ensemble of discrete curves a
 \begin{figure*}
     \centering
     \input{pipeline_diagram}
-    \caption{The diagram depicts the various spaces and essential transformations to map from translated curves to normal coordinates over a section of the product submanifold. Here, $\pi$ represents a projection over the fiber bundle onto the equivalence classes of the Grassmannian. Dashed arrows indicate mappings into discrete representatives.}
+    \caption{The diagram depicts various named spaces and essential transformations to map from translated curves to normal coordinates over a section of the product submanifold. Here, $\pi$ represents a normal projection on the first factor onto the equivalence classes of the Grassmannian. Dashed arrows indicate mappings into discrete representatives.}
     \label{fig:placeholder}
 \end{figure*}
 With a set of accurate, discrete, cyclic aligned, preshape PRRTI-features $\lbrace \widetilde{X} \rbrace$ and corresponding scales $\lbrace P\rbrace$ aggregated from a pair of images or database, we briefly review an approach to learning an underlying (latent) space of features from thousands or tens of thousands of curves.
@@ -857,9 +904,9 @@ The goal of maximum mean discrepancy (MMD)~\cite{fortet1953convergence,gretton20
 
 This formal problem statement is the quantitative analog of the proposed explainable binary classification: \textit{test if distributions of random shape coordinates partitioned between two images are discrepant, ignoring rigid motions, and whether those discrepancies result from distinct distributions over undulation, $\lbrace \boldsymbol{t} \rbrace$ from the first image versus $\lbrace \widehat{\boldsymbol{t}} \rbrace$ from the second, \emph{or} generalized scale, $\lbrace \boldsymbol{\ell} \rbrace$ from the first image versus $\lbrace \widehat{\boldsymbol{\ell}} \rbrace$ from the second.}
 
-\textcolor{blue}{Recalling Sec.~\ref{sec:intro}, the pMMD hypothesis test instantiates the binary mapping $d: (\mathcal{E}_1, \mathcal{E}_2) \mapsto \lbrace 0, 1\rbrace$ introduced therein. Concretely, for each pair of ensembles, the map $(\boldsymbol{\rho}, \widehat{\boldsymbol{\rho}}) \mapsto \lbrace\text{Reject},\text{FTR}\rbrace$ is a binary decision rule over pairs of distributions. With separable features, the aggregate decision decomposes as $d(\mathcal{E}_1, \mathcal{E}_2) \coloneqq d(\mathcal{G}_1,\mathcal{G}_2) \,\wedge\, d(\mathcal{P}_1,\mathcal{P}_2)$, so that Truth Table~\ref{tab:logical_conjunction} identifies \emph{whether} discrepancies arise from undulation, scale, or both---constituting the explainability of the classification. We emphasize that this is an unsupervised, distribution-level binary classification via hypothesis testing, distinct from supervised classification over labeled instances.}
-
 Instead of testing for equivalence, we look for statistically significant differences. This complementary separable formalism is simply De Morgan's theorem, $(\rho_{\boldsymbol{t}} = \widehat{\rho}_{\boldsymbol{t}})\wedge (\rho_{\boldsymbol{\ell}} = \widehat{\rho}_{\boldsymbol{\ell}}) \leftrightarrow \neg ((\rho_{\boldsymbol{t}} \neq \widehat{\rho}_{\boldsymbol{t}}) \vee (\rho_{\boldsymbol{\ell}} \neq \widehat{\rho}_{\boldsymbol{\ell}}))$. Truth Table~\ref{tab:logical_conjunction} details this formalism where \textit{logical truth} corresponds to \textit{failure to reject} (FTR) the null hypothesis of equivalence, $(\rho_{(\cdot)} = \widehat{\rho}_{(\cdot)})$, when comparing against approximated thresholds as discussed in~\cite{gretton2012kernel}.
+
+\textcolor{blue}{Recalling the motivation of Section~\ref{sec:intro}, hypothesis testing instantiates a binary mapping $H: (\mathcal{E}, \widehat{\mathcal{E}}) \mapsto \lbrace 0, 1\rbrace$ over ambiguous feature ensembles. Concretely, for each pair of normal coordinate joint distributions, the map $(\boldsymbol{\rho}, \widehat{\boldsymbol{\rho}}) \mapsto \lbrace\text{Reject},\text{FTR}\rbrace$ is a binary decision rule over pairs of distributions---i.e., $\mathcal{E} \coloneqq \boldsymbol{\rho}$, $\widehat{\mathcal{E}} \coloneqq \widehat{\boldsymbol{\rho}}$, and $H$ is the result of the MMD hypothesis test. With separable features, the aggregate decision decomposes as $H(\boldsymbol{\rho}, \widehat{\boldsymbol{\rho} }) \coloneqq H(\rho_{\boldsymbol{t}}, \widehat{\rho}_{\boldsymbol{t}}) \,\wedge\, H(\rho_{\boldsymbol{\ell}} , \widehat{\rho}_{\boldsymbol{\ell}})$, so that Truth Table~\ref{tab:logical_conjunction} logically identifies discrepancies from undulation, scale, or both---constituting the notion of explainability. We emphasize that this is an unsupervised, distribution-level binary classification via hypothesis testing, distinct but extensible to supervised classification over labeled instances.}
 
 \textcolor{red}{PLACEHOLDER [ITEM 11, R1/R2/R4]: MULTIPLE-TESTING CORRECTION FOR JOINT PRODUCT-MMD. WHEN EACH MARGINAL TEST IS CONDUCTED AT LEVEL $\alpha$, THE JOINT TYPE I ERROR RATE UNDER THE INTERSECTION NULL IS BOUNDED BY $2\alpha$ (UNION BOUND). APPLY BONFERRONI CORRECTION: CONDUCT EACH MARGINAL TEST AT LEVEL $\alpha/2$. FOR OUR EXPERIMENTS AT $\alpha = 0.01$, EACH MARGINAL TEST USES $\alpha/2 = 0.005$. VERIFY THAT THIS DOES NOT CHANGE ANY REPORTED DECISIONS (ALL REJECTIONS HAVE $p \ll 0.005$; ALL FTR CASES HAVE $p \gg 0.01$). RECONCILE WITH DE MORGAN: THE DE MORGAN EQUIVALENCE IS A LOGICAL IDENTITY RELATING JOINT AND MARGINAL HYPOTHESES; BONFERRONI IS A STATISTICAL ADJUSTMENT TO CONTROL ERROR RATE. BOTH ARE COMPATIBLE: DE MORGAN TELLS US WHICH TESTS TO RUN; BONFERRONI TELLS US AT WHAT LEVEL.}
 
@@ -884,6 +931,10 @@ Out of convenience, we simply extend this framework with the \textit{product met
     \end{matrix}\right)\biggl\Vert_p.
 \end{multline}
 This extension trivially satisfies the logical implications depicted in the Truth Table~\ref{tab:logical_conjunction} by composition with the corresponding norm of thresholds. Moreover, the use of the product metric is a somewhat natural choice by virtue of the product submanifold construction for the space of separable shape tensors. However, definition of $\text{pMMD}$ is merely a formalism to demonstrate the existence of a logical conjunction over the separate feature tests comparing the images. In practice, we simply compute the hypothesis tests separately and draw the aggregated conclusion as a consequence of this formal construction.
+
+\textcolor{blue}{Statistical independence of the resulting normal coordinates $(\boldsymbol{t}, \boldsymbol{\ell})$ is a distinct claim from separability which does not assume nor imply independence. Distinct normal coordinates, $\boldsymbol{t}$ and $\boldsymbol{\ell}$, describe distinct shape features. When physical processes simultaneously affect both---e.g., recrystallization correlations driving grain growth and boundary roughness---joint variability may offer supplemental explanations.}
+
+\textcolor{blue}{Although not explored herein, a diagnostic is straightforward: test if the distinct joint distributions from either or both images factor as products of the marginals as in~\cite{gretton2012kernel}---i.e., test with $\text{MMD}[\mathcal{F},\boldsymbol{\rho},\rho_{\boldsymbol{t}}\rho_{\boldsymbol{\ell}}\,]$ over either ensembles or an aggregate ensemble. This is also known as the Hilbert-Schmidt information criterion. If the joint does not factor as a product of the marginals, the product metric in~\eqref{eq:pMMD} remains valid---features may be separately discrepant and, thus, explainable discrepancy exists)---but the separate rejection decisions ignore interesting joint variation. In that case, compare the joint distributions directly to augment the separate discrepancies implied by the De Morgan decomposition and, thus, further augment explanations. In other words, joint variation may be promoting similarity or discrepancy over separate tests but the separate features remain separate by definition and thus imply an aggregate conclusion regardless of independence.}
 
 \textcolor{red}{PLACEHOLDER [ITEM 11, R1/R2/R4]: DETAIL THE MMD HYPOTHESIS-TEST PROCEDURE. SPECIFY: (1) TEST STATISTIC: UNBIASED ESTIMATOR OF $\text{MMD}^2$ FROM LEMMA 6 OF GRETTON ET AL. (2012), COMPUTED SEPARATELY FOR UNDULATION AND SCALE COORDINATES. (2) KERNEL CHOICE: GAUSSIAN RBF $k(\mathbf{x}, \mathbf{y}) = \exp(-\|\mathbf{x} - \mathbf{y}\|^2 / 2\sigma^2)$ WITH MEDIAN PAIRWISE DISTANCE HEURISTIC (ALREADY STATED IN SEC. 4 BUT FORMALIZE HERE). (3) PERMUTATION PROCEDURE: $B = 1000$ PERMUTATIONS. UNDER THE NULL, ENSEMBLE LABELS ARE EXCHANGEABLE. FOR EACH PERMUTATION: RANDOMLY REASSIGN THE $N + \widehat{N}$ COORDINATE VECTORS TO TWO GROUPS, RECOMPUTE $\widehat{\text{MMD}}^2$. (4) CYCLIC PROCRUSTES WITHIN PERMUTATIONS: REGISTRATION IS PERFORMED ONCE AGAINST THE ARCHETYPE USING THE POOLED ENSEMBLE BEFORE THE PERMUTATION LOOP. PERMUTATIONS SHUFFLE PRE-REGISTERED COORDINATES, NOT RAW CURVES. VALID BECAUSE THE ARCHETYPE IS LABEL-AGNOSTIC. (5) P-VALUE FORMULA: $p = (1 + \sum_{b=1}^{B} \mathbf{1}[\widehat{\text{MMD}}^2_b \geq \widehat{\text{MMD}}^2_{\text{obs}}]) / (1 + B)$. REJECT AT SIGNIFICANCE LEVEL $\alpha$ IF $p \leq \alpha$.}
 
@@ -925,7 +976,7 @@ Notably, in the third case $(0 \wedge 1)$ depicted and described in Figure~\ref{
 
 Despite these nearly visually indistinguishable discrepancies in undulation, we reject the null hypothesis with a significance level of 1\% and conclude that smoothing changes the distribution of shapes. This is a powerful example emphasizing the granularity of decision making in our proposed framework which can detect changes in the preprocessing of the image/data over remarkably small scales of undulation.
 
-\textcolor{blue}{To summarize interpretability, each row of Truth Table~\ref{tab:logical_conjunction} maps to a distinct physical conclusion for the EBSD experiments: $(1 \wedge 1)$ indicates no statistically significant discrepancy in either undulation or scale (Figure~\ref{fig:compare_grains_111}); $(1 \wedge 0)$ isolates a scale-only effect consistent with visible grain-size differences (Figure~\ref{fig:compare_grains_100}); $(0 \wedge 1)$ isolates an undulation-only effect attributable to boundary smoothing below visual resolution (Figure~\ref{fig:compare_grains_010}); and $(0 \wedge 0)$ detects discrepancies in both, flagging the presumed faulty measurement (Figure~\ref{fig:compare_grains_000}). The separable decomposition in Figure~\ref{fig:low_dim_grain} further visualizes these distinctions: varying $\boldsymbol{t}$ alone modulates boundary roughness while varying $\boldsymbol{\ell}$ alone modulates anisotropic size and aspect ratio.}
+\textcolor{blue}{To summarize interpretability, each row of Truth Table~\ref{tab:logical_conjunction} maps to a distinct physical conclusion for the EBSD experiments: $(1 \wedge 1)$ indicates no statistically significant discrepancy in either undulation or scale (Figure~\ref{fig:compare_grains_111}); $(1 \wedge 0)$ isolates a scale-only effect consistent with visible grain-size differences (Figure~\ref{fig:compare_grains_100}); $(0 \wedge 1)$ isolates an undulation-only effect attributable to boundary smoothing, even below visual resolution (Figure~\ref{fig:compare_grains_010}); and $(0 \wedge 0)$ detects discrepancies in both, flagging the presumed faulty measurement (Figure~\ref{fig:compare_grains_000}). The separable decomposition in Figure~\ref{fig:low_dim_grain} further visualizes these distinctions: varying $\boldsymbol{t}$ alone modulates boundary roughness while varying $\boldsymbol{\ell}$ alone modulates anisotropic size and aspect ratio.}
 
 \subsection{Decision Landscapes}
 
@@ -1408,6 +1459,83 @@ R.~Fortet, E.~Mourier, \emph{Convergence de la r{\'e}partition empirique vers la
 
 
 \begin{appendices}
+
+\section{Review of Separable Shape Tensors}\label{secA0}
+Related work~\cite{grey2023separable, bryner20142d, srivastava2016functional} define finite representations of curve data as \textit{configuration spaces}. Following the development of SST~\cite{grey2023separable}, initially applied to aerodynamic shape representations~\cite{doronina2022grassmannian}, we let $X = (\boldsymbol{x}_1,\dots,\boldsymbol{x}_n)^{\top}$ be the collection of $n$ unique \emph{landmarks} informed by some vector-valued mapping, $\boldsymbol{c}:\mathcal{I} \subset \mathbb{R} \rightarrow \mathbb{R}^d$, such that
+\begin{equation}\label{eq:data}
+    \boldsymbol{x}_i = \boldsymbol{c}(s_i), \quad i=1,\dots,n.
+\end{equation}
+
+Note that $X$ is assumed to be an element of the non-compact Stiefel manifold $\mathbb{R}^{n \times d}_*$~\cite{absil2008optimization}. That is, we assume $X \in \mathbb{R}^{n \times d}_*$ to exclude the degenerate cases of points or lines in $\mathbb{R}^d$ as objects representing curves~\cite{grey2023separable}---necessitating that $X$ is full-rank. In other words, \textit{we assume the component functions $\boldsymbol{c} = (c_1,\dots,c_d)$ of the curve are linearly independent}. 
+
+In practice, we are often only given sequences of landmarks $(\boldsymbol{x}_i)$ and have no knowledge of the `true' underlying $\boldsymbol{c}$ nor the parameter $s$ beyond assuming the identification above. However, this characterization of the data implies landmarks are ordered according to some orientation of the unknown curve thus constituting a sequence, $(\boldsymbol{x}_i)$, encoded over the row index of $X$. Thus, it is reasonable to build a variety of interpolations and approximations---e.g., piecewise spline interpolations over chordal parametrization---which can be shown to converge to the unknown $\boldsymbol{c}$ with an increasing number of given landmarks~\cite{grey2023separable, floater2005arc}.
+
+The method of SST was originally introduced as a separable form of planar curves into features of \emph{undulation} and \emph{scale} as linear deformations for aerodynamic design. Similarly, theoretical treatments of `discrete shapes' as full-rank matrices~\cite{bryner20142d} or complex vectors~\cite{kendall2009shape} offer geometric interpretations of the thin singular value decomposition (SVD),
+\begin{equation} \label{eq:landmark_stnd}
+    (X - B(X))^{\top} \,\,\overset{SVD}{=}\,\, U\Sigma V^{\top},
+\end{equation}
+with $B(X) = (1/n)\boldsymbol{1}_{n,n}X$, an unbiased centering operation where $\boldsymbol{1}_{n,n}\in \mathbb{R}^{n\times n}$ is a matrix of ones. 
+
+Given the SVD of $X- B(X)$ representing a discrete shape, we can elaborate on related decompositions into complementary factors of (discrete) undulation and invertible $d$-by-$d$ linear deformations---i.e., in a complementary sense, an `undulation' is the set of all shape representations which cannot be achieved by linear transforms as right group actions on $X - B(X)$. That is, temporarily ignoring non-deforming translations, for $\boldsymbol{c}(s) = M^{\top}\widetilde{\boldsymbol{c}}(s)$,
+\begin{align} \label{eq:linear_deforms}
+    X^{\top} &= (\boldsymbol{c}(s_1),\dots,\boldsymbol{c}(s_n))\\ \nonumber
+    &= M^{\top}(\widetilde{\boldsymbol{c}}(s_1),\dots,\widetilde{\boldsymbol{c}}(s_n)) \\ \nonumber
+    &= (\widetilde{X}M)^{\top} \nonumber
+\end{align}
+where the right action of $M \in GL(d,\mathbb{R})$ on $\widetilde{X} = (\widetilde{\boldsymbol{c}}(s_1),\dots,\widetilde{\boldsymbol{c}}(s_n))^{\top}\in \mathbb{R}^{n \times d}_*$ is akin to linear deformations of the preshape. Given (centered) $X$, we seek a decomposition $X = \widetilde{X}M$ to describe how $X$ \textit{undulates} as $[\widetilde{X}]$, an equivalence class modulo right group action over $GL(d,\mathbb{R})$, versus how it linearly deforms over subsets of $M \in GL(d,\mathbb{R})$. Therefore, we define discrete shape \textit{undulation} as $[\widetilde{X}] \in Gr(d,n)$ such that $Gr(d,n) \cong \mathbb{R}^{n \times d}_*/GL(d,\mathbb{R})$ as presented in~\cite{absil2008optimization}. 
+
+Two geometric interpretations of the SVD~\eqref{eq:landmark_stnd} are called \emph{landmark standardizations}~\cite{bryner20142d, grey2023separable, srivastava2016functional} to compute \textit{representative undulations} $\widetilde{X}$ (up to rotations and reflections):
+
+\begin{itemize}
+    \item The affine standardization~\cite{bryner20142d} $X = \widetilde{X}M$ such that 
+    $\widetilde{X} \coloneqq V$ and $ M \coloneqq \Sigma U^{\top} \in GL_+(d,\mathbb{R})$.
+    \item The polar standardization~\cite{grey2023separable} $X = \widetilde{X}P$ such that
+    $\widetilde{X} \coloneqq VU^{\top}$ and $P \coloneqq U\Sigma U^{\top}\in S^d_{++}$.
+\end{itemize}
+The latter polar standardization offers an interesting decomposition for a variety of problems which benefit from describing undulation and scale variations independent of rotations and reflections. In other words, following the development of~\cite{fletcher2003statistics}, $S^d_{++}$ is identified with the set of equivalence classes given by $GL_+(d,\mathbb{R})/SO(d)$. Thus $[\widetilde{X}]$ encodes nonlinear undulating features of shape over the quotient topology $\mathbb{R}^{n \times d}_*/GL(d,\mathbb{R})$ while $P$ encodes generalized (anisotropic) \emph{scales} independent of rotations and reflections over the quotient topology $GL_+(d,\mathbb{R})/SO(d)$.
+
+Landmark standardization is thought to have a strong connection to the work of Kendall et al.~\cite{kendall2009shape} albeit with distinct notions of scale. In our case, \emph{the definition of scale is generalized} to all of $S^d_{++}$ as opposed to simple dilation of curves as a scalar multiplication to modulate overall size~\cite{srivastava2010shape, kendall2009shape, srivastava2016functional}. 
+
+Given the SVD \eqref{eq:landmark_stnd} and sought equivalence classes, the pairs $\lbrace([\widetilde{X}], P)\rbrace \in Gr(d,n) \times S^d_{++}$ inform a \emph{data-driven} submanifold of the proposed product matrix-manifold to parametrize separable representations of shape tensors,
+\begin{equation}\label{eq:SST}
+    X(\boldsymbol{t},\boldsymbol{\ell}) = \widetilde{X}(\boldsymbol{t})P(\boldsymbol{\ell}).
+\end{equation}
+Parameters $\boldsymbol{t} \in \mathbb{R}^r$ are informed over a reduced dimension submanifold, $1\leq r < d(n-d)$, according to a tangent space principal components analysis (tangent PCA)~\cite{fletcher2004principal}. Additionally, $\boldsymbol{\ell}\in \mathbb{R}^3$ informed by a separate tangent PCA, govern generalized \emph{scale variations} independent of rotations and reflections. The resulting representation~\eqref{eq:SST} parametrizes separate differences in anisotropic scale variations, $P(\boldsymbol{\ell})$, from those of undulations, $[\widetilde{X}](\boldsymbol{t})$, utilizing a corresponding representative matrix, $\widetilde{X}(\boldsymbol{t})$, for computations~\cite{edelman1998geometry, grey2023separable}. In our examples for this work, the parameter learning is informed by the aggregate ensemble of thousands of curves from both images being compared.
+
+An important caveat of this finite representation is that shapes are not precluded from generating self-intersections---i.e., discrete shapes are generally identified with immersions. Moreover, the existing analysis is predicated on hand-picked discretizations of interpolating curves, called \emph{fixed reparametrizations}~\cite{grey2023separable}, and lacks a formal interpretation of the entries of $\widetilde{X}$---other than achieving desirable aerodynamic parametrizations and subsequent meshing. This begs the question of how to relate the finite representation of~\eqref{eq:SST} to an (infinite dimensional) analysis of continuous curves to offer improved discretizations and continuous extensions as immersions.
+
+\subsection{Arc-length reparametrization}
+Conflating the assumed differentiability almost everywhere over a bounded domain $\mathcal{I}$ to weakly differentiable (absolutely) continuous curves is a convenience for reviewing arc-length reparametrizations as arc-length measures. The core developments in this work only require integrable curves over a bounded domain with the arc-length measure, which is sufficient to assume they are at least Lipschitz continuous per~\eqref{eq:reg_Hilbert_space} but does not necessitate that curves be more regular---similar to arguments in~\cite{srivastava2010shape,bruveris2016optimal}.
+
+More precisely, the arc-length function,
+\begin{equation}
+    \xi^{-1}(t) = \int_{0}^t \Vert \dot{\boldsymbol{c}}(s) \Vert d\mu(s),
+\end{equation}
+can be expressed according to uniform measure $d\mu(s) = \rho(s)ds$, 
+\begin{equation}
+    \rho(s) = \begin{cases}
+                    1, \,\, s \in \mathcal{I}\\
+                    0, \,\, s \notin \mathcal{I},
+              \end{cases}
+\end{equation} 
+where, arbitrarily assuming unit length curves, $\mathcal{I} \coloneqq [0,1]$. Via variable substitution, $u = \gamma(s)$ given any nonnegative $\gamma:\mathcal{I} \rightarrow\mathcal{I}$ such that $\gamma(0) = 0$ and $\dot{\gamma} > 0$ implies $ds = \dot{\gamma}^{-1}(s)du$. Thus, by assigning $t' \coloneqq \gamma(t)$,
+\begin{align}
+    (\xi^{-1}\circ \gamma)(t) &= \int_0^{\gamma(t)}\Vert \dot{(\boldsymbol{c}\circ \gamma)}(s)\Vert ds \\ \nonumber
+    &= \int_0^{t'} \Vert \dot{\boldsymbol{c}}(u) \Vert \vert \dot{\gamma}(s) \vert \dot{\gamma}^{-1}(s)du \\ \nonumber
+    &= \int_0^{t'}\Vert \dot{\boldsymbol{c}}(u) \Vert du\\ \nonumber
+    &= \xi^{-1}(t')\nonumber.
+\end{align}
+Therefore, $\xi^{-1}$ is \textit{invariant to reparametrization}---the range of $\xi^{-1}$ is unmodified by the composition with $\gamma$---by arbitrarily renaming $t'$ as $t$. 
+
+Notably, we may reinterpret changes in the scale of velocity, $\vert \dot{\gamma}(s) \vert$, (speed) as an integral measure, $d\mu(s) \coloneqq \vert \dot{\gamma}(s) \vert ds$. Thus, the scale of the speed we traverse the curve can instead be identified with an integral (pushforward) measure along the curve, i.e., for $\tilde{\boldsymbol{c}} = \boldsymbol{c}\circ \gamma$ we have
+\begin{align}
+    \tilde{\xi}^{-1}(t) &= \int_0^t \Vert \dot{\tilde{\boldsymbol{c}}}(s) \Vert ds \\ \nonumber
+    & = \int_0^{t} \Vert \dot{\boldsymbol{c}}(s) \Vert\vert \dot{\gamma}(s) \vert ds \\ \nonumber
+    & = \int_0^{t} \Vert \dot{\boldsymbol{c}}(s) \Vert d\mu(s). \nonumber
+\end{align}
+Here, $\gamma$ is any diffeomorphism constituting a \textit{reparametrization}. As a simple identification, we take $d\mu(s) \coloneqq \rho(s)ds/\Vert \dot{\boldsymbol{c}}(s)\Vert$ for $\rho(s)$ uniform so that $\xi^{-1}(t) = t$. Thus $d\mu(s)$ becomes a natural choice of \textit{fixed} integral measure which utilizes a \textit{uniformly weighted} (weak) arc-length reparametrization as our integral measure. Moreover, by composition with differentiation and the norm, the \textit{arc-length measure is invariant to rigid actions} on $\boldsymbol{c}$. Other applications may be interested in an alternative weighting (density) $\rho$, which integrates to one, to collect points near hand-picked landmarks of interest~\cite{Doronina2023, grey2023separable}.
+
+Alternative treatments may also identify any diffeomorphism $\gamma$, up to scale, with the cumulative distribution function and corresponding nonnegative probability density, $\rho \propto \dot{\gamma}(s)$. Moreover, this identification could be extended to the Fourier dual (characteristic function) of $\gamma$. These identifications are reminiscent of the \textit{varifolds}~\cite{younes2008metric, charon2013varifold, kaltenmark2017varifolds, pierson2022shape} and applications of Sobolev metrics~\cite{bauer2017sobolev} and Fisher-Rao metrics in functional data analysis~\cite{tucker2013generative, srivastava2016functional} as a promising flexible treatment of reparametrizations.
 
 \section{EBSD Examples}\label{secA1}
 

@@ -4,6 +4,13 @@ Responses to reviewer comments for "Explainable Binary Classification of Separab
 
 Note that large additions/modifications are color-coded blue while small changes are documented in CHANGES.md
 
+## Response to all reviewers (mutual revisions)
+> (PLACEHOLDER FOR DISCUSSION ON CLASSIFICATION ADDED TO DOC) To formally answer the proposed question in an unsupervised manner, we define a binary mapping $H: (\mathcal{E}, \widehat{\mathcal{E}}) \mapsto \lbrace 0, 1\rbrace$, where $\mathcal{E}$ and $\widehat{\mathcal{E}}$ represent sets of feature-encoding random matrices or tensors---i.e., two \textit{ensembles}. Using two-sample hypothesis testing, $0$ represents the rejection of a null hypothesis (indicating a difference), while $1$ represents a failure to reject (FTR). This boolean effectively determines if the random features of the images are statistically equivalent.
+
+Our paradigm of explanation involves offering distinct binary conclusions over decomposed features. We aggregate these logically: $H(\mathcal{E}, \widehat{\mathcal{E}}) \coloneqq H(\mathcal{G}_r, \widehat{\mathcal{G}}_r) \,\wedge\, H(\mathcal{P}, \widehat{\mathcal{P}})$, where $\mathcal{G}$ and $\mathcal{P}$ are separate features of ensemble $\mathcal{E}$, likewise for $\widehat{\mathcal{E}}$. Consequently, the results of these separate features provide logical explanations for aggregate decisions. While the statistical nature of these decisions introduces potential error, the framework remains inherently logical by definition.
+
+For our problem, information is implicitly clustered by virtue of the images being compared---e.g., $\mathcal{E}_i \mapsto i$. Thus binary decisions can be generalized to classification tasks such that $\mathcal{E}_1$ is built from one class of images (dogs) and $\mathcal{E}_2$ is built from another (cats). Moreover, a classification model would naturally accept a single image as input and return a corresponding label. In our case, a binary decision machine is also capable of the context-driven classification by keeping one argument fixed and the other variable or considering all pairwise comparisons of `trusted' (context-driven) ensembles and `discovered' (unknown) ensembles. Additionally, clustering features of shape within and between individual images or augmenting existing classification methods may be informative beyond simple binary decisions. We offer brief numerical examples to emphasize how clustering over our proposed feature space, even within a single image, may be helpful for generalizing decision making.
+
 ---
 
 ## Reviewer 1

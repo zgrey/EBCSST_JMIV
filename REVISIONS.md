@@ -44,11 +44,15 @@ Items sorted by estimated effort (low to high). Types: **D** = document edits, *
 10. AG [ ] **[D] Restructure manuscript: foreground contributions, improve concision** (R2)
     Clearly delineate which results are from prior work (G2Aero, Grey 2023) versus new to this manuscript in Sec. 1.3. Incorporate concision edits throughout. Argue against large-scale restructuring unless explicitly requested by the editor.
 
-11. ZG [ ] **[D] Detail MMD hypothesis-test procedure and multiple-testing correction** (R1, R2, R4)
+    **Plan**: Rework section 1.5 to be concise lit review + intro SST. Move remainder to appendix. Move all of section 1.6.1 to appendix.
+
+12. ZG [ ] **[D] Detail MMD hypothesis-test procedure and multiple-testing correction** (R1, R2, R4)
     Specify: number of permutations (1000, over ensemble not landmarks), kernel choice (Gaussian RBF, universality), permutation scheme, p-value formula, and role of pre-registration (cyclic Procrustes applied once beforehand). Discuss Type I error inflation for joint product-MMD; apply Bonferroni correction ($\alpha/2$). Reconcile with De Morgan equivalence.
 
-12. ZG [ ] **[D] Provide guidelines for selecting r and n** (R2)
+13. ZG [ ] **[D/W] Provide guidelines for selecting r and n** (R2)
     Offer criteria (cumulative variance threshold, MMD stability) for choosing retained dimensions $r$ and quadrature nodes $n$. Decision landscapes are the primary mechanism. Clarify existing discussion with Figs. 8–9 (smoothing study). Consider supplemental experiment.
+
+    **Plan**: Add discussion of decision landscapes to contributions section
 
 ## High effort
 
@@ -57,12 +61,12 @@ Items sorted by estimated effort (low to high). Types: **D** = document edits, *
 
     **Plan**: TikZ diagram designed. Will create visualizations of curves moving through the pipeline. Add pseudocode algorithm.
 
-14. [ ] **[W/N] Simulated-data study and computational cost** (R1, R2, R4)
+14. NF [ ] **[W/N] Simulated-data study and computational cost** (R1, R2, R4)
     Generate synthetic curve ensembles to evaluate Type I error and power. Report runtime per pipeline stage in a table.
 
     **Plan**: Determine if Type I/power is already addressed by the smoothing study (Figs. 8–9). Report runtimes for a standard laptop build.
 
-15. [ ] **[D/N] Non-EBSD evaluation and benchmark comparison** (R1, R4)
+15. ZG [ ] **[D/N] Non-EBSD evaluation and benchmark comparison** (R1, R4)
     Expand evaluation beyond EBSD. R4 specifically requests broader datasets.
 
     **Plan** (pending coauthor review):
