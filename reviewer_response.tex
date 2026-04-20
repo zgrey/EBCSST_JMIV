@@ -1,0 +1,322 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{lipsum} % to generate some filler text
+\usepackage{fullpage}
+\usepackage{mathrsfs}
+\usepackage{svg}
+\usepackage{xr}
+\usepackage{amsthm,cite,url,graphicx,booktabs,lipsum,color,bm,caption,subcaption,soul}
+\usepackage{pifont,tikz,paralist,multirow,amssymb}
+\usepackage{xifthen}
+\usepackage{enumerate}
+\usepackage{titlesec}
+\newcounter{reviewer}
+\setcounter{reviewer}{0}
+\newcounter{point}[reviewer]
+\setcounter{point}{0}
+
+\usepackage{hyperref}
+
+% This refines the format of how the reviewer/point reference will appear.
+%\renewcommand{\thepoint}{C\,\thereviewer.\arabic{point}}
+
+\renewcommand{\thepoint}{Comment\,\thereviewer.\arabic{point}}
+
+% command declarations for reviewer points and our responses
+
+\newenvironment{point1}
+   {\refstepcounter{point} \bigskip \noindent {\textbf{Associate Editor Comment~}} ---\ }
+   {\par }
+
+\newcommand{\reviewersection}{\stepcounter{reviewer} \bigskip \hrule
+                  \section*{Reviewer \thereviewer}}
+
+% \newenvironment{point}
+
+%    {\refstepcounter{point} \bigskip \noindent {\textbf{Reviewer~\thepoint} } ---\ }
+%    {\par }
+
+\newenvironment{point}
+   {\refstepcounter{point} \bigskip \noindent {\textbf{Reviewer~\thepoint} } ---\ }
+   {\par }
+
+
+\newcommand{\shortpoint}[1]{\refstepcounter{point}   \bigskip \noindent 
+	{\textbf{Reviewer~Point~\thepoint} } ---~#1  }
+
+\newenvironment{reply}
+   {\medskip \noindent \color{blue} \begin{sf}\textbf{Reply}:\  }
+   {\medskip \par \end{sf}}
+
+\newcommand{\shortreply}[2][]{\medskip \noindent \begin{sf}\textbf{Reply}:\  #2
+	\ifthenelse{\equal{#1}{}}{}{ \hfill \footnotesize (#1)}%
+	\medskip \end{sf}}
+
+\makeatletter
+\newcommand*{\addFileDependency}[1]{% argument=file name and extension
+  \typeout{(#1)}
+  \@addtofilelist{#1}
+  \IfFileExists{#1}{}{\typeout{No file #1.}}
+}
+\makeatother
+
+\newcommand*{\myexternaldocument}[1]{%
+    \externaldocument{#1}%
+    \addFileDependency{#1.tex}%
+    \addFileDependency{#1.aux}%
+}
+
+\def\thesubsubsection{\arabic{subsubsection}}
+\titleformat{\subsubsection}[runin]
+{\normalfont\bfseries}
+{\indent\thesubsubsection)}{0.5em}{}
+
+
+\begin{document}
+\section*{Responses to reviewer comments on \textit{Explainable Binary Classification of Separable Shape Ensembles}}
+\vspace{10pt}
+
+The authors would like to thank the editor and reviewers for their constructive feedback and suggestions that have greatly helped to improve the quality of this manuscript. %We have carefully revised the manuscript by addressing all the comments of reviewers. Additionally, we have paraphrased certain sections of the manuscript without altering the original meaning and interpretation to address copyright considerations relating to our conference paper~\cite{Set} that was published at the same time as this review. This conference paper has also been introduced in section:~\textquotedblleft Article contributions" and we additionally have made a note of the unique contributions in this article that expands upon that previous work. The ~\textquotedblleft Conclusions" section has been revised to include additional details based on the comments from the reviewers. For reviewers' convenience, we have used latexdiff to mark up all insertions, deletions, and modifications in the revised manuscript.
+
+Please see below our responses to reviewer's comments highlighted in \textcolor{blue}{blue}.
+
+% Let's start point-by-point with Reviewer 1
+
+\section*{Response to the reviewers}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\reviewersection
+
+The authors propose a method for statistical comparison of shape samples based on segmented images. The main idea is to approximate a segmented curve via a (mathematical) landmark configuration and then decompose variation into an object that captures undulations (nonlinearity) and another object that captures generalized scales. The former is an element of the Grassmann manifold while the latter is an element of the space of symmetric, positive-definite matrices. A cyclic Procrustes algorithm is introduced to account for arbitrary rotations of and starting points on the landmark configurations. After the decomposition, the authors perform principal component analysis (PCA) in appropriate tangent spaces to reduce dimension and represent the objects via Euclidean features (PCs). Finally, statistical comparison of the shape ensembles is enabled via a maximum mean discrepancy (MMD)-based hypothesis test. The framework is applied to compare electron backscatter diffraction images of materials samples.
+
+I read this paper with interest and feel that it presents a valuable addition to the statistical shape analysis literature. However, there are some issues as I outline next that should be addressed in a revision.
+%%%%%%%%%%%%%%%%
+
+\begin{point}
+Sections 2 and 3. While generally the presentation of concepts was clear and easy to understand, there are portions of these two sections that were cumbersome to read due to heavy notation and lack of illustrations. I encourage the authors to revise these two sections by (i) simplifying notation in certain places, and (ii) providing illustrations of some of the main results.
+\end{point}
+\begin{reply}
+Reply
+\end{reply}
+
+\begin{point}
+Terminology. I feel that the title and terminology used in the paper is a bit misleading. The authors are not performing classification, but rather a statistical comparison via a hypothesis testing procedure based on MMD. Further, in Table 1 and Section 3.5, I would change the terminology used for the decision made after hypothesis testing from “Accept” to “Fail to Reject Null”.
+\end{point}
+\begin{reply}
+Reply
+\end{reply}
+
+\begin{point}
+Cyclic Procrustes. The authors use a cyclic Procrustes algorithm to pre-register the landmark configurations with respect to rotation and the seed (starting point of the configuration). For this, all shapes within an image are aligned to a randomly selected template configuration. In my opinion, a randomly selected template is not a very good choice to perform this registration. The result can be quite sensitive to this choice, especially if an outlying shape is selected as a template. Why didn’t the authors perform this registration with respect to the Frechet mean of the ensemble? While I understand that this would increase computational cost, it would result in more stable registration results.
+\end{point}
+\begin{reply}
+Reply
+\end{reply}
+
+\begin{point}
+Details of MMD-based Hypothesis Test. How was the p-value computed? It is my understanding that the MMD-based hypothesis test is a permutation test, because the distribution of the test statistic is not given in closed form and must be estimated empirically. There is a lack of details of how the permutation test was implemented: (i) how many permutations were used? (ii) how was the cyclic Procrustes procedure incorporated into the hypothesis test? In particular, question (ii) raises an important issue. Since a permutation of the shapes changes the ensembles, cyclic Procrustes should be carried out each time. I did not see a description of this in the manuscript.
+\end{point}
+\begin{reply}
+Reply
+\end{reply}
+
+\begin{point}
+Simulations. To validate the overall framework, could the authors carry-out a study based on simulated curves/landmark configurations? This would further help assess the hypothesis testing procedure, e.g., type I error and power.
+\end{point}
+\begin{reply}
+Reply
+\end{reply}
+
+\begin{point}
+The authors should provide an idea of the computational cost associated with the entire procedure.
+\end{point}
+\begin{reply}
+Reply
+\end{reply}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\reviewersection
+
+This work presents a formal mathematical framework for representing discretized curve shape data by linear scale variations and nonlinear undulations using separable shape tensors, which is used to motivate the statistical comparison of shape ensembles between pairs of images based on maximum mean discrepancy (MMD).  I think this is a promising contribution, as rigorous comparisons of large shape collections is an important research area, and this appears to be a good fit for this journal with the mathematical rigor. I also particularly liked the numerical experiments in Section 4, which studied practical comparisons specifically in the context of image processing choices. However, I would suggest some modifications, described below.
+%%%%%%%%%%%%%%%%
+
+\begin{point} 
+Is it reasonable to assume separability of undulation and scale in real data examples?  Can they be correlated, and if so, how could this be diagnosed?  This seems to have strong ramifications with regards to later discussion of obtaining separate coordinates for each using tangent PCA, and the MMD-based hypothesis tests.
+\end{point}
+\begin{reply} 
+Reply
+\end{reply}
+
+\begin{point} 
+I’m not sure if “explainable binary classification” is the right terminology here.  The authors present MMD to compare shape ensembles from pairs of images to assess if there are discrepancies (via hypothesis tests).  One could certainly use the normal coordinates applied from separate tangent PCA steps in Section 3.4 to build a classification model which takes an image and outputs a binary class label, but the task of interest is not in classification itself, but rather assessing if shape distributions between images are the same or not, and attributing any differences to scale or undulation variation. I would recommend a different title (e.g., “Explainable Discrepancy Tests of Separable Shape Ensembles”).
+\end{point}
+\begin{reply} 
+Reply
+\end{reply}
+
+\begin{point}
+While there is plenty of mathematical rigor, there is little statistical detail, particularly in Section 3. For example, it appears that the authors use a non-parametric two-sample hypothesis test with MMD as the fundamental quantity; but these details are not provided. Given that this is the focus of Section 3 and the experiments in Section 4, these details should be provided to help improve reader understanding.
+\end{point}
+\begin{reply} 
+Reply
+\end{reply}
+
+\begin{point}
+In Section 3.5, the authors discuss a singular test involving a product MMD metric, stating its equivalence to performing separate MMD-based tests involving undulation and generalized scales and using DeMorgan’s logic rules (Table 1). This doesn’t take into account multiple testing concerns: if the separate undulation MMD and generalized scale MMD tests both are constructed individually at level alpha, this does not mean the joint test has level alpha, and this can lead to more type I errors for the joint hypothesis, unless adjustments are made (e.g., Bonferroni corrections, etc.) to control the type I error for the joint test.  These details should be discussed further.
+\end{point}
+\begin{reply} 
+Reply
+\end{reply}
+
+\begin{point}
+More discussion on selecting r, n, particularly within Section 4 (where these were fixed) would help.  Should these be chosen relatively large, or to achieve some threshold of cumulative variance explained?  This could have an impact on tests, since it is possible that discrepancies in shape ensembles between image pairs only show up at later dimensions (which contribute little to the overall cumulative variance).
+\end{point}
+\begin{reply} 
+Reply
+\end{reply}
+
+\begin{point}
+The writing was a bit hard to follow: I found the organization a little bit confusing, in that I could not distinguish which of these results were from existing work vs. new to this manuscript, and the language felt a bit cumbersome. Some suggestions:
+\begin{itemize}
+    \item A figure which describes nonlinear shape undulations vs. linear scale differences would be useful.
+    \item The relative amounts of detail for different section doesn’t seem to reflect the contributions and focus of the work.  For example, the paper’s title suggests a focus on MMD and hypothesis testing/explaining discrepancies, but none of this is really discussed until page 17.  I would suggest moving some of the details in Section 2-3 to a supplementary section, if possible.
+\end{itemize}
+\end{point}
+\begin{reply} 
+Reply
+\end{reply}
+
+\begin{point}
+Typo on page 6 after Eq. (5): ``it sufficient'' $\rightarrow$ ``it is sufficient''
+\end{point}
+\begin{reply} 
+Reply
+\end{reply}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\reviewersection
+This paper presents a novel method for ensembles of curves leveraging so called separable shape tensors (SST) (introduced in \cite{grey2023sst}) arising from eigenspaces of composite integral operators. This approach offers rigid-invariant decompositions of curves into generalized scale variations and undulations. The use of SST representations of curves allows for binary classification of samples of curves utilizing a product maximum mean discrepancy with interpretable feature spaces allowing for explainable binary classification. This work presents a robust set of experiments highlighting the effectiveness and explainability of their model with focus on comparing distributions of curves
+segmented from images. 
+
+This paper has several significant strengths:
+\begin{itemize}
+    \item The numerical experiments support the paper nicely and support the paper’s approach to binary shape classification and offer clear evidence of of the explainability of the model.
+    \item The paper offers a lot of math background to the approach to explainable binary classification of curves. The proofs are presented with sufficient detail for the reader to follow. My primary feedback is that the presentation of the statements of these results can be hard to parse, but the proofs themselves are well presented.
+\end{itemize}
+Recommendation: Accept after revisions, focusing on improving the formal presentation of the statements of Theorems, Lemmas, and Definitions of key concepts.
+
+%%%%%%%%%%%%%%%%
+\begin{point}
+The statements of lemmas and theorems in Section 2 are presented with varying levels of
+formality. Specifically:
+\begin{itemize}
+    \item[a.] Lemma 1, Lemma 3, and Theorem 1 could be presented more formally. i.e. for Lemma 1 ``Let $c \in \mathcal{C}_d$, then ...''
+    \item[b.] Lemma 2 reads more formally, but the wording of ``$\mathcal{K} \tau [c]$ such that $\mathcal{K} \tau [c] = \dots$ is awkward and the operator could just be introduced as $\mathcal{K} \tau [c] \coloneqq \dots$.
+\end{itemize}
+\end{point}
+\begin{reply}
+Reply
+\end{reply}
+
+\begin{point}
+Along with this, I found Section 2 and Section 3 felt difficult to follow due to the use of acronyms. Especially when they are used in the context of mathematical statements. For instance, PRRTI and CLO have rigorous mathematical definitions and would benefit from being presented in a definition environment. This would make it easier for a reader unfamiliar with these terms to quickly reference the meaning of these terms rather than needing to look for the first in-text uses of these terms. In particular,
+\begin{itemize}
+    \item[a.] I suggest using a definition environment for the CLO or dropping the acronym entirely and using the symbol for the composite linear operator throughout. It is a bit confusing having an acronym and math symbol being used interchangeably throughout the paper.
+    \item[b.] For the PRRTI, I would suggest ``Definition N (PRRTI condition). We say an operator is permutation, rotation, rescale, and translation invariant (PRRTI) if for any $c \in \mathcal{C}_d$, $R \in O(d)$, ...''
+\end{itemize}
+\end{point}
+\begin{reply}
+Reply
+\end{reply}
+
+\begin{point}
+The paper begins using acronyms such as SST for separable shape tensor and HS for Hilbert-Schmidt without introducing the acronym on the initial use. This makes the paper difficult to follow at times.
+\end{point}
+\begin{reply}
+Reply
+\end{reply}
+
+\begin{point}
+The paper contains several typos, difficult to parse sentences, and incorrect word choices i.e.
+”elude” vs. ”allude”. The paper would benefit from a pass for grammar.
+\end{point}
+\begin{reply}
+Reply
+\end{reply}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\reviewersection
+The paper proposes a pipeline for classification of curves, applied to curves ensemble extracted from EBSD (electron microscopy imaging). The pipeline is, to my understanding as follow: 
+\begin{itemize}
+    \item Embed curves as landmarks in Rnxd
+    \item Use the Stiefel manifold formalism to compute mean/PCA curves
+    \item Use the distance (MMD discrepancy test) to mean curve as the decision proxy
+\end{itemize}
+Strengths: I do think that the area of shape representation using mathematical tools is valuable and therefore I think what the paper proposes would benefit to the community.
+
+%%%%%%%%%%%%%%%%
+\begin{point}
+I feel that the paper tends to overcomplicate concepts and mix them in a unpractical way. I had a very hard time reading it while the concepts presented stay relatively simple for the aware reader. Some parts feel completely useless or disordered. For example, on page 4, the presentation of the curve representation takes a long paragraph but could be described in a simple sentence. The notation paragraph contains barely any notation used (the curve space $\mathcal{C}_d$ is never defined). A whole paragraph on landmark normalization with a lot of discussion is presented, while the choice seems arbitrary. Also, authors never provide visualisations of what they are doing which require the reader to draw himself some of the concepts to understand them. Overall, I feel that the presentation is the main weakness of the paper which has 20 pages that could be easily reduce to 10 pages of text with illustrations when needed.
+\end{point}
+\begin{reply}
+Reply
+\end{reply}
+
+\begin{point}
+The problem that the paper is trying to solve is not easy to understand. I believe it is to group curves by similarity but then why not using clustering based on the proposed approach.
+\end{point}
+\begin{reply}
+Reply
+\end{reply}
+
+\begin{point}
+The choice of evaluation, limited to EBSD feels restricted, while the paper is written in a very generic way. This makes it hard to read for EBSD practicioners as well as for Math Imaging people. An evaluation on similar datasets as in \cite{kaltenmark2017} would be great.
+\end{point}
+\begin{reply}
+Reply
+\end{reply}
+
+\begin{point}
+An algorithm presenting the pipeline would be very helpful.
+\end{point}
+\begin{reply}
+Reply
+\end{reply}
+
+\begin{point}
+The author claims a lot in the introduction the ``interpretability'' of the method, but it's not used otherwise. Learned shape features could produce the same results content. Moreover, none of the AI methods the paper target is (1) cited, (2) compared to.
+\end{point}
+\begin{reply}
+Reply
+\end{reply}
+
+\begin{point}
+Some references on the topic are ignored or wrong:
+\begin{itemize}
+    \item \cite{kaltenmark2017} ---  should probably in place of [38] (page 7 cited as varifolds)
+    \item \cite{pierson2022} --- Represents human shapes as landmarks in RHKS - close to some concepts presented here.
+    \item \cite{bauer2017} ---  A numerical framework for Sobolev metrics on the space of curves. Similar to [11] but on curves
+    \item \cite{hartman2023} --- A learned feature vector for curves
+    \item\cite{hartman2021} --- Similar learning work.
+\end{itemize}
+\end{point}
+\begin{reply}
+Reply
+\end{reply}
+
+\begin{thebibliography}{9}
+\bibitem{grey2023sst} Grey, Z. J., Doronina, O. A., \& Glaws, A. (2023). Separable shape tensors for aerodynamic design. Journal of Computational Design and Engineering, 10(1), 468-487.
+\bibitem{kaltenmark2017} Kaltenmark, I., Charlier, B., \& Charon, N. (2017). A general framework for curve and surface comparison and registration with oriented varifolds.
+\bibitem{pierson2022} Pierson, E., Daoudi, M., \& Arguillere, S. (2022, October). 3d shape sequence of human comparison and classification using current and varifolds. 
+\bibitem{bauer2017} Bauer, M., Bruveris, M., Harms, P., \& Møller-Andersen, J. (2017).
+\bibitem{hartman2023} Hartman, E., \& Pierson, E. (2023). Varigrad: A novel feature vector architecture for geometric deep learning on unregistered data. 
+\bibitem{hartman2021} Hartman, E., Sukurdeep, Y., Charon, N., Klassen, E., \& Bauer, M. (2021). Supervised deep learning of elastic SRV distances on the shape space of curves. 
+\end{thebibliography}
+
+\end{document}
+
+
+

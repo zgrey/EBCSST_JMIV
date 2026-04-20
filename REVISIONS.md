@@ -56,7 +56,7 @@ Items sorted by estimated effort (low to high). Types: **D** = document edits, *
 
 ## High effort
 
-13. ZG [ ] **[D] Simplify notation in Sections 2–3 and add illustrative figures** (R1, R3, R4)
+13. ZG [x] **[D] Simplify notation in Sections 2–3 and add illustrative figures** (R1, R3, R4)
     Reduce heavy notation. Add diagrams: (a) landmark representation and registration, (b) manifold feature spaces, (c) nonlinear undulation vs. linear scale schematic (R2). Add pipeline algorithm figure---flowchart or pseudocode (R4).
 
     **Plan**: TikZ diagram designed. Will create visualizations of curves moving through the pipeline. Add pseudocode algorithm.
@@ -66,10 +66,10 @@ Items sorted by estimated effort (low to high). Types: **D** = document edits, *
 
     **Plan**: Determine if Type I/power is already addressed by the smoothing study (Figs. 8–9). Report runtimes for a standard laptop build.
 
-15. ZG [ ] **[D/N] Non-EBSD evaluation and benchmark comparison** (R1, R4)
+15. ZG [ ] **[W] Non-EBSD evaluation and benchmark comparison** (R4)
     Expand evaluation beyond EBSD. R4 specifically requests broader datasets.
 
-    **Plan** (pending coauthor review):
+    **OPTIONAL Plan** (pending coauthor review):
     - SUVI sun image clustering: demonstrate clustering over proposed features within a single image
     - MNIST pairwise digit classification: demonstrate a supervised classification task
     - Discuss including existing battery results more prominently (Sec. 4.2) since these already extend beyond EBSD
