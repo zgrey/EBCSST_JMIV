@@ -198,7 +198,8 @@ Shape is only one important piece of the quite literal puzzles in Figures~\ref{f
 \textcolor{blue}{Our procedure---\emph{decompose} shapes via separable shape tensors, \emph{discretize} and learn feature distributions over matrix manifolds, and \emph{test} for statistically significant discrepancies via product MMD---delivers the following contributions, each pointed at the section that develops it. Results inherited from~\cite{grey2023separable} are labeled \textbf{[prior]}; new contributions are labeled \textbf{[new]}.}
 
 \textcolor{blue}{\begin{itemize}
-    \item \textbf{[prior]}~\cite{grey2023separable} The SST polar standardization~\eqref{eq:SST} and separable tangent PCA over $Gr(d,n)\times S^d_{++}$ (Section~\ref{subsec:SST}).
+    \item \textbf{[prior]}~\cite{grey2023separable} SST polar standardization~\eqref{eq:SST} over $Gr(d,n)\times S^d_{++}$ (Section~\ref{subsec:SST}; supplementary derivations in Appendix~\ref{secA0}).
+    \item \textbf{[prior]}~\cite{grey2023separable, fletcher2003statistics, fletcher2004principal, edelman1998geometry, bendokat2020grassmann} Separable tangent PCA algorithms for intrinsic means and principal geodesic directions on $Gr(d,n)$ and $S^d_{++}$ (reviewed in Section~\ref{subsec:mfld_learn}; algorithmic details in Appendix~\ref{secA0}).
     \item \textbf{[new, Section~\ref{sec:FIE}]} Interpretation of the composite linear operator (CLO) as a Hilbert-Schmidt integral operator on $\mathcal{C}_d\cap\mathcal{H}_d$, with PRRTI invariance and eigenfunctions given as scaled evaluation functionals of an $\mathbb{R}^d$-valued RKHS (Definitions~\ref{def:CLO}, \ref{def:PRRTI}; Lemmas~\ref{lemma:symm}, \ref{lemma:HS_int_opt}, \ref{lemma:CLO_invariance}; Theorem~\ref{theorem:eigfuncs}).
     \item \textbf{[new, Sections~\ref{subsec:Nystrom}--\ref{subsec:func_approx}]} Square-root quadrature decomposition (SRQD) as a Nystr\"om-weighted polar decomposition of landmark configurations (Figure~\ref{fig:SRQD}).
     \item \textbf{[new, Section~\ref{subsec:cycl_Pro}]} Cyclic Procrustes registration against a random asymmetric archetype (Theorem~\ref{thm:cycl_Procrustes}).
@@ -207,6 +208,8 @@ Shape is only one important piece of the quite literal puzzles in Figures~\ref{f
 \end{itemize}}
 
 \textcolor{blue}{Our \emph{primary} theoretical contribution is the second bullet: relating the SST configuration space over finite-dimensional matrix manifolds to a functional analysis over an infinite-dimensional RKHS. This extends the classical configuration-space work of Kendall et al.~\cite{kendall2009shape}---which has no demonstrated connection to an infinite-dimensional space of curves---and permits flexible kernel choice~\cite{micheli2013matrix} to control regularity of a Hilbert space of curves.}
+
+\textcolor{blue}{A primary \emph{practical} contribution is the framework's computational efficiency, which enables shape-comparison questions that prior approaches cannot practically address. Registration reduces to finite SVDs and cyclic permutations against a single asymmetric archetype (Theorem~\ref{thm:cycl_Procrustes}) rather than an optimization over the space of diffeomorphisms as in elastic and Sobolev-metric curve frameworks~\cite{srivastava2010shape, bauer2017sobolev, hartman2023varigrad}. Thousands of curves can therefore be decomposed and tested in seconds on a standard laptop. This speed is what makes the parameter studies of Section~\ref{sec:experiments} tractable: the decision-landscape diagnostic sweeping over $(r,n)$, the detection of sub-visual smoothing-induced discrepancies (Figure~\ref{fig:compare_grains_010}), and the lithium-ion battery SEM `goldilocks' analysis of how smoothing scales obscure or preserve distinguishing features. To our knowledge, comparisons at this scale and over such parameter sweeps have not been previously demonstrated for curve ensembles.}
 
 \textcolor{blue}{In contrast with AI-based shape analysis~\cite{hartman2023varigrad, hartman2021supervised}, our method requires no hand-labeled training data and produces a provably interpretable feature space grounded in dual representations of curves. Relative to varifold-based approaches~\cite{kaltenmark2017varifolds, pierson2022shape} and Sobolev metrics on curves~\cite{bauer2017sobolev}, which produce a single scalar distance, our separable framework isolates undulation from generalized anisotropic scale, yielding logical explanations via Truth Table~\ref{tab:logical_conjunction} rather than a monolithic discrepancy score.}
 
@@ -1426,81 +1429,57 @@ R.~Fortet, E.~Mourier, \emph{Convergence de la r{\'e}partition empirique vers la
 \begin{appendices}
 
 \section{SST Review}\label{secA0}
-Related work~\cite{grey2023separable, bryner20142d, srivastava2016functional} define finite representations of curve data as \textit{configuration spaces}. Following the development of SST~\cite{grey2023separable}, initially applied to aerodynamic shape representations~\cite{doronina2022grassmannian}, we let $X = (\boldsymbol{x}_1,\dots,\boldsymbol{x}_n)^{\top}$ be the collection of $n$ unique \emph{landmarks} informed by some vector-valued mapping, $\boldsymbol{c}:\mathcal{I} \subset \mathbb{R} \rightarrow \mathbb{R}^d$, such that
-\begin{equation}
-    \boldsymbol{x}_i = \boldsymbol{c}(s_i), \quad i=1,\dots,n.
-\end{equation}
+\textcolor{blue}{This appendix collects supplementary derivations and algorithmic context underlying the separable shape tensor representation~\eqref{eq:SST} of Section~\ref{subsec:SST} and the tangent PCA review of Section~\ref{subsec:mfld_learn}. We retain only developments from~\cite{grey2023separable} that are not already stated in the main body.}
 
-Note that $X$ is assumed to be an element of the non-compact Stiefel manifold $\mathbb{R}^{n \times d}_*$~\cite{absil2008optimization}. That is, we assume $X \in \mathbb{R}^{n \times d}_*$ to exclude the degenerate cases of points or lines in $\mathbb{R}^d$ as objects representing curves~\cite{grey2023separable}---necessitating that $X$ is full-rank. In other words, \textit{we assume the component functions $\boldsymbol{c} = (c_1,\dots,c_d)$ of the curve are linearly independent}. 
+\textcolor{blue}{\paragraph{Landmark configurations as elements of a non-compact Stiefel manifold.}}
+The matrix $X = (\boldsymbol{x}_1,\dots,\boldsymbol{x}_n)^{\top}$ built from landmarks~\eqref{eq:data} is assumed to be an element of the non-compact Stiefel manifold $\mathbb{R}^{n \times d}_*$~\cite{absil2008optimization}. That is, we assume $X \in \mathbb{R}^{n \times d}_*$ to exclude the degenerate cases of points or lines in $\mathbb{R}^d$ as objects representing curves~\cite{grey2023separable}---necessitating that $X$ is full-rank. In other words, \textit{we assume the component functions $\boldsymbol{c} = (c_1,\dots,c_d)$ of the curve are linearly independent}.
 
-In practice, we are often only given sequences of landmarks $(\boldsymbol{x}_i)$ and have no knowledge of the `true' underlying $\boldsymbol{c}$ nor the parameter $s$ beyond assuming the identification above. However, this characterization of the data implies landmarks are ordered according to some orientation of the unknown curve thus constituting a sequence, $(\boldsymbol{x}_i)$, encoded over the row index of $X$. Thus, it is reasonable to build a variety of interpolations and approximations---e.g., piecewise spline interpolations over chordal parametrization---which can be shown to converge to the unknown $\boldsymbol{c}$ with an increasing number of given landmarks~\cite{grey2023separable, floater2005arc}.
+In practice, we are often only given sequences of landmarks $(\boldsymbol{x}_i)$ and have no knowledge of the `true' underlying $\boldsymbol{c}$ nor the parameter $s$ beyond assuming the identification~\eqref{eq:data}. However, this characterization of the data implies landmarks are ordered according to some orientation of the unknown curve thus constituting a sequence, $(\boldsymbol{x}_i)$, encoded over the row index of $X$. Thus, it is reasonable to build a variety of interpolations and approximations---e.g., piecewise spline interpolations over chordal parametrization---which can be shown to converge to the unknown $\boldsymbol{c}$ with an increasing number of given landmarks~\cite{grey2023separable, floater2005arc}.
 
-The method of SST was originally introduced as a separable form of planar curves into features of \emph{undulation} and \emph{scale} as linear deformations for aerodynamic design. Similarly, theoretical treatments of `discrete shapes' as full-rank matrices~\cite{bryner20142d} or complex vectors~\cite{kendall2009shape} offer geometric interpretations of the thin singular value decomposition (SVD),
-\begin{equation}
-    (X - B(X))^{\top} \,\,\overset{SVD}{=}\,\, U\Sigma V^{\top},
-\end{equation}
-with $B(X) = (1/n)\boldsymbol{1}_{n,n}X$, an unbiased centering operation where $\boldsymbol{1}_{n,n}\in \mathbb{R}^{n\times n}$ is a matrix of ones.
-
-Given the SVD of $X- B(X)$ representing a discrete shape, we can elaborate on related decompositions into complementary factors of (discrete) undulation and invertible $d$-by-$d$ linear deformations---i.e., in a complementary sense, an `undulation' is the set of all shape representations which cannot be achieved by linear transforms as right group actions on $X - B(X)$. That is, temporarily ignoring non-deforming translations, for $\boldsymbol{c}(s) = M^{\top}\widetilde{\boldsymbol{c}}(s)$,
+\textcolor{blue}{\paragraph{Linear deformations and undulation as a quotient.}}
+Given the SVD~\eqref{eq:landmark_stnd}, we can elaborate on the decomposition into complementary factors of (discrete) undulation and invertible $d$-by-$d$ linear deformations---i.e., in a complementary sense, an `undulation' is the set of all shape representations which cannot be achieved by linear transforms as right group actions on $X - B(X)$, with $B(X) = (1/n)\boldsymbol{1}_{n,n}X$ the unbiased centering. Temporarily ignoring non-deforming translations, for $\boldsymbol{c}(s) = M^{\top}\widetilde{\boldsymbol{c}}(s)$,
 \begin{align}
     X^{\top} &= (\boldsymbol{c}(s_1),\dots,\boldsymbol{c}(s_n))\\ \nonumber
     &= M^{\top}(\widetilde{\boldsymbol{c}}(s_1),\dots,\widetilde{\boldsymbol{c}}(s_n)) \\ \nonumber
     &= (\widetilde{X}M)^{\top} \nonumber
 \end{align}
-where the right action of $M \in GL(d,\mathbb{R})$ on $\widetilde{X} = (\widetilde{\boldsymbol{c}}(s_1),\dots,\widetilde{\boldsymbol{c}}(s_n))^{\top}\in \mathbb{R}^{n \times d}_*$ is akin to linear deformations of the preshape. Given (centered) $X$, we seek a decomposition $X = \widetilde{X}M$ to describe how $X$ \textit{undulates} as $[\widetilde{X}]$, an equivalence class modulo right group action over $GL(d,\mathbb{R})$, versus how it linearly deforms over subsets of $M \in GL(d,\mathbb{R})$. Therefore, we define discrete shape \textit{undulation} as $[\widetilde{X}] \in Gr(d,n)$ such that $Gr(d,n) \cong \mathbb{R}^{n \times d}_*/GL(d,\mathbb{R})$ as presented in~\cite{absil2008optimization}.
+where the right action of $M \in GL(d,\mathbb{R})$ on $\widetilde{X} = (\widetilde{\boldsymbol{c}}(s_1),\dots,\widetilde{\boldsymbol{c}}(s_n))^{\top}\in \mathbb{R}^{n \times d}_*$ is akin to linear deformations of the preshape. Given (centered) $X$, we seek a decomposition $X = \widetilde{X}M$ to describe how $X$ \textit{undulates} as $[\widetilde{X}]$, an equivalence class modulo right group action over $GL(d,\mathbb{R})$, versus how it linearly deforms over subsets of $M \in GL(d,\mathbb{R})$. This motivates the identification of discrete shape \textit{undulation} as $[\widetilde{X}] \in Gr(d,n)$ with $Gr(d,n) \cong \mathbb{R}^{n \times d}_*/GL(d,\mathbb{R})$~\cite{absil2008optimization}.
 
+\textcolor{blue}{\paragraph{Two landmark standardizations (affine vs polar).}}
 Two geometric interpretations of the SVD~\eqref{eq:landmark_stnd} are called \emph{landmark standardizations}~\cite{bryner20142d, grey2023separable, srivastava2016functional} to compute \textit{representative undulations} $\widetilde{X}$ (up to rotations and reflections):
-
 \begin{itemize}
     \item The affine standardization~\cite{bryner20142d} $X = \widetilde{X}M$ such that
     $\widetilde{X} \coloneqq V$ and $ M \coloneqq \Sigma U^{\top} \in GL_+(d,\mathbb{R})$.
     \item The polar standardization~\cite{grey2023separable} $X = \widetilde{X}P$ such that
     $\widetilde{X} \coloneqq VU^{\top}$ and $P \coloneqq U\Sigma U^{\top}\in S^d_{++}$.
 \end{itemize}
-The latter polar standardization offers an interesting decomposition for a variety of problems which benefit from describing undulation and scale variations independent of rotations and reflections. In other words, following the development of~\cite{fletcher2003statistics}, $S^d_{++}$ is identified with the set of equivalence classes given by $GL_+(d,\mathbb{R})/SO(d)$. Thus $[\widetilde{X}]$ encodes nonlinear undulating features of shape over the quotient topology $\mathbb{R}^{n \times d}_*/GL(d,\mathbb{R})$ while $P$ encodes generalized (anisotropic) \emph{scales} independent of rotations and reflections over the quotient topology $GL_+(d,\mathbb{R})/SO(d)$.
+The polar choice is adopted throughout this paper because it separates undulation from scale variations independent of rotations and reflections: following~\cite{fletcher2003statistics}, $S^d_{++}$ is identified with $GL_+(d,\mathbb{R})/SO(d)$, so that $[\widetilde{X}]$ encodes nonlinear undulating features over $\mathbb{R}^{n \times d}_*/GL(d,\mathbb{R})$ while $P$ encodes generalized (anisotropic) \emph{scales} over $GL_+(d,\mathbb{R})/SO(d)$. This quotient reading is the geometric justification for the separable shape tensor~\eqref{eq:SST} introduced in the main body.
 
-Landmark standardization is thought to have a strong connection to the work of Kendall et al.~\cite{kendall2009shape} albeit with distinct notions of scale. In our case, \emph{the definition of scale is generalized} to all of $S^d_{++}$ as opposed to simple dilation of curves as a scalar multiplication to modulate overall size~\cite{srivastava2010shape, kendall2009shape, srivastava2016functional}.
-
-Given the SVD \eqref{eq:landmark_stnd} and sought equivalence classes, the pairs $\lbrace([\widetilde{X}], P)\rbrace \in Gr(d,n) \times S^d_{++}$ inform a \emph{data-driven} submanifold of the proposed product matrix-manifold to parametrize separable representations of shape tensors,
-\begin{equation}
-    X(\boldsymbol{t},\boldsymbol{\ell}) = \widetilde{X}(\boldsymbol{t})P(\boldsymbol{\ell}).
+\textcolor{blue}{\paragraph{Tangent PCA algorithmic details.}
+Section~\ref{subsec:mfld_learn} states the tangent PCA (tPCA) procedure over $\mathcal{G}_r \subseteq Gr(d,n)$ and $\mathcal{P}\subseteq S^d_{++}$ at a high level; we collect here the algorithmic components from~\cite{grey2023separable,fletcher2003statistics,fletcher2004principal,edelman1998geometry,bendokat2020grassmann} that inform the \emph{discretize}$\to$\emph{test} pipeline. Given a sample $\lbrace p_k\rbrace_{k=1}^N$ on a Riemannian manifold $M$ (either $Gr(d,n)$ or $S^d_{++}$), the intrinsic (Fr\'echet) mean $p_0$ is computed by the Karcher iteration~\cite{pennec1999probabilities}
+\begin{equation}\label{eq:Frechet_iter}
+    p \,\leftarrow\, \mathrm{Exp}_p\!\left(\tfrac{1}{N}\sum_{k=1}^N \mathrm{Log}_p(p_k)\right), \quad \text{until } \Big\|\tfrac{1}{N}\sum_{k=1}^N \mathrm{Log}_p(p_k)\Big\| < \epsilon,
 \end{equation}
-Parameters $\boldsymbol{t} \in \mathbb{R}^r$ are informed over a reduced dimension submanifold, $1\leq r < d(n-d)$, according to a tangent space principal components analysis (tangent PCA)~\cite{fletcher2004principal}. Additionally, $\boldsymbol{\ell}\in \mathbb{R}^3$ informed by a separate tangent PCA, govern generalized \emph{scale variations} independent of rotations and reflections. The resulting representation~\eqref{eq:SST} parametrizes separate differences in anisotropic scale variations, $P(\boldsymbol{\ell})$, from those of undulations, $[\widetilde{X}](\boldsymbol{t})$, utilizing a corresponding representative matrix, $\widetilde{X}(\boldsymbol{t})$, for computations~\cite{edelman1998geometry, grey2023separable}. In our examples for this work, the parameter learning is informed by the aggregate ensemble of thousands of curves from both images being compared.
-
-An important caveat of this finite representation is that shapes are not precluded from generating self-intersections---i.e., discrete shapes are generally identified with immersions. Moreover, the existing analysis is predicated on hand-picked discretizations of interpolating curves, called \emph{fixed reparametrizations}~\cite{grey2023separable}, and lacks a formal interpretation of the entries of $\widetilde{X}$---other than achieving desirable aerodynamic parametrizations and subsequent meshing. This begs the question of how to relate the finite representation of~\eqref{eq:SST} to an (infinite dimensional) analysis of continuous curves to offer improved discretizations and continuous extensions as immersions.
-
-\section{Arc-length}
-Conflating the assumed differentiability almost everywhere over a bounded domain $\mathcal{I}$ to weakly differentiable (absolutely) continuous curves is a convenience for reviewing arc-length reparametrizations as arc-length measures. The core developments in this work only require integrable curves over a bounded domain with the arc-length measure, which is sufficient to assume they are at least Lipschitz continuous per~\eqref{eq:reg_Hilbert_space} but does not necessitate that curves be more regular---similar to arguments in~\cite{srivastava2010shape,bruveris2016optimal}.
-
-More precisely, the arc-length function,
-\begin{equation}
-    \xi^{-1}(t) = \int_{0}^t \Vert \dot{\boldsymbol{c}}(s) \Vert d\mu(s),
+and the reduced principal directions in $T_{p_0}M$ are obtained from the thin SVD
+\begin{equation}\label{eq:PGA_SVD}
+    \boldsymbol{N} \coloneqq \tfrac{1}{\sqrt{N-1}}\big[\,\mathrm{vec}(\mathrm{Log}_{p_0}(p_1)),\,\dots,\,\mathrm{vec}(\mathrm{Log}_{p_0}(p_N))\,\big] \overset{SVD}{=} U\Sigma V^{\top},
 \end{equation}
-can be expressed according to uniform measure $d\mu(s) = \rho(s)ds$, 
-\begin{equation}
-    \rho(s) = \begin{cases}
-                    1, \,\, s \in \mathcal{I}\\
-                    0, \,\, s \notin \mathcal{I},
-              \end{cases}
-\end{equation} 
-where, arbitrarily assuming unit length curves, $\mathcal{I} \coloneqq [0,1]$. Via variable substitution, $u = \gamma(s)$ given any nonnegative $\gamma:\mathcal{I} \rightarrow\mathcal{I}$ such that $\gamma(0) = 0$ and $\dot{\gamma} > 0$ implies $ds = \dot{\gamma}^{-1}(s)du$. Thus, by assigning $t' \coloneqq \gamma(t)$,
-\begin{align}
-    (\xi^{-1}\circ \gamma)(t) &= \int_0^{\gamma(t)}\Vert \dot{(\boldsymbol{c}\circ \gamma)}(s)\Vert ds \\ \nonumber
-    &= \int_0^{t'} \Vert \dot{\boldsymbol{c}}(u) \Vert \vert \dot{\gamma}(s) \vert \dot{\gamma}^{-1}(s)du \\ \nonumber
-    &= \int_0^{t'}\Vert \dot{\boldsymbol{c}}(u) \Vert du\\ \nonumber
-    &= \xi^{-1}(t')\nonumber.
-\end{align}
-Therefore, $\xi^{-1}$ is \textit{invariant to reparametrization}---the range of $\xi^{-1}$ is unmodified by the composition with $\gamma$---by arbitrarily renaming $t'$ as $t$. 
+retaining the first $r$ left singular vectors $U_r$ as an orthonormal basis of $T_{p_0}\mathcal{G}_r$ (or, for $S^d_{++}$, the full three-dimensional span at $P_0$); the columns of $T = U_r^{\top}\boldsymbol{N} = \Sigma_r V_r^{\top}$ are the normal coordinates. The map $\mathrm{vec}:\mathbb{R}^{n\times d}\to\mathbb{R}^{nd}$ column-stacks a tangent matrix; since $\mathrm{tr}(A^{\top}B)=\mathrm{vec}(A)^{\top}\mathrm{vec}(B)$, the SVD~\eqref{eq:PGA_SVD} preserves the Frobenius inner product induced on the tangent space, and the reshape $\mathrm{vec}^{-1}$ recovers matrix-valued directions for composition with $\mathrm{Exp}_{p_0}$. Over $S^d_{++}$, $\mathrm{vec}$ stores only the $d(d+1)/2$ unique symmetric entries.}
 
-Notably, we may reinterpret changes in the scale of velocity, $\vert \dot{\gamma}(s) \vert$, (speed) as an integral measure, $d\mu(s) \coloneqq \vert \dot{\gamma}(s) \vert ds$. Thus, the scale of the speed we traverse the curve can instead be identified with an integral (pushforward) measure along the curve, i.e., for $\tilde{\boldsymbol{c}} = \boldsymbol{c}\circ \gamma$ we have
-\begin{align}
-    \tilde{\xi}^{-1}(t) &= \int_0^t \Vert \dot{\tilde{\boldsymbol{c}}}(s) \Vert ds \\ \nonumber
-    & = \int_0^{t} \Vert \dot{\boldsymbol{c}}(s) \Vert\vert \dot{\gamma}(s) \vert ds \\ \nonumber
-    & = \int_0^{t} \Vert \dot{\boldsymbol{c}}(s) \Vert d\mu(s). \nonumber
-\end{align}
-Here, $\gamma$ is any diffeomorphism constituting a \textit{reparametrization}. As a simple identification, we take $d\mu(s) \coloneqq \rho(s)ds/\Vert \dot{\boldsymbol{c}}(s)\Vert$ for $\rho(s)$ uniform so that $\xi^{-1}(t) = t$. Thus $d\mu(s)$ becomes a natural choice of \textit{fixed} integral measure which utilizes a \textit{uniformly weighted} (weak) arc-length reparametrization as our integral measure. Moreover, by composition with differentiation and the norm, the \textit{arc-length measure is invariant to rigid actions} on $\boldsymbol{c}$. Other applications may be interested in an alternative weighting (density) $\rho$, which integrates to one, to collect points near hand-picked landmarks of interest~\cite{Doronina2023, grey2023separable}.
+\textcolor{blue}{The intrinsic maps on $Gr(d,n)$ are given with Stiefel representatives~\cite{edelman1998geometry,bendokat2020grassmann}: for a direction $\Delta \in T_{[\widetilde{X}]}Gr(d,n)$ with thin SVD $\Delta = \widehat{U}\widehat{\Sigma}\widehat{V}^{\top}$, the Grassmann exponential is
+\begin{equation}\label{eq:Gr_Exp}
+    \mathrm{Exp}_{[\widetilde{X}]}(\Delta) = \big[\,\widetilde{X}\widehat{V}\cos(\widehat{\Sigma})\widehat{V}^{\top} + \widehat{U}\sin(\widehat{\Sigma})\widehat{V}^{\top}\,\big],
+\end{equation}
+and, for a second representative $\widetilde{Y}$ with projection $(I_n - \widetilde{X}\widetilde{X}^{\top})\widetilde{Y}(\widetilde{X}^{\top}\widetilde{Y})^{-1} = \bar U \bar\Sigma \bar V^{\top}$, the Grassmann logarithm is
+\begin{equation}\label{eq:Gr_Log}
+    \mathrm{Log}_{[\widetilde{X}]}([\widetilde{Y}]) = \bar U\,\arctan(\bar\Sigma)\,\bar V^{\top}.
+\end{equation}
+Each map requires a single thin SVD, so the complexity is $O(nd^2)$---\emph{linear in $n$ for fixed ambient dimension $d$}, a key enabler of the ensemble-scale computations reported in Section~\ref{sec:experiments}. On $S^d_{++}$ with the affine-invariant metric~\cite{fletcher2003statistics,pennec2020manifold}, the corresponding maps reduce to matrix exponentials and logarithms,
+\begin{equation}\label{eq:SPD_ExpLog}
+    \mathrm{Exp}_P(S) = P^{1/2}\exp\!\big(P^{-1/2}SP^{-1/2}\big)P^{1/2}, \qquad \mathrm{Log}_P(D) = P^{1/2}\log\!\big(P^{-1/2}DP^{-1/2}\big)P^{1/2}.
+\end{equation}}
 
-Alternative treatments may also identify any diffeomorphism $\gamma$, up to scale, with the cumulative distribution function and corresponding nonnegative probability density, $\rho \propto \dot{\gamma}(s)$. Moreover, this identification could be extended to the Fourier dual (characteristic function) of $\gamma$. These identifications are reminiscent of the \textit{varifolds}~\cite{younes2008metric, charon2013varifold, kaltenmark2017varifolds, pierson2022shape} and applications of Sobolev metrics~\cite{bauer2017sobolev} and Fisher-Rao metrics in functional data analysis~\cite{tucker2013generative, srivastava2016functional} as a promising flexible treatment of reparametrizations.
+\textcolor{blue}{One caveat of the Grassmann logarithm~\eqref{eq:Gr_Log} is that $\mathrm{Exp}_{[\widetilde{X}]}\!\circ\,\mathrm{Log}_{[\widetilde{X}]}(\widetilde{Y}) = \widehat{Y}$ with $[\widehat{Y}]=[\widetilde{Y}]$ but with a possible rotational mismatch between representatives; a modified logarithm in~\cite{bendokat2020grassmann} (Alg.~5.3) removes this mismatch at the cost of a second SVD. In this work the mismatch is irrelevant for computing normal coordinates but motivates the cyclic Procrustes registration of Section~\ref{subsec:cycl_Pro} when a fixed representative is needed across the ensemble. A product-manifold geodesic $(\mathrm{Exp}_{1,[\widetilde{V}_0]}(t\Delta),\mathrm{Exp}_{2,P_0}(tS))$ on $\mathcal{G}_r\times\mathcal{P}$ then parametrizes the separable shape tensor~\eqref{eq:SST} componentwise, consistent with the Riemannian-product construction~\cite{grey2023separable}.}
 
 \section{EBSD Examples}\label{secA1}
 
