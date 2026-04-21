@@ -1,15 +1,27 @@
 \begin{algorithm}[ht]
-\caption{\textcolor{blue}{Explainable binary classification of separable shape ensembles.}}
+\caption{\textcolor{blue}{Pseudo-code for Explainable binary classification of separable shape ensembles.}}
 \label{alg:pipeline}
 \begin{algorithmic}[1]
 \color{blue}
-\Require Curve ensembles $\lbrace \boldsymbol{c}_q \rbrace_{q=1}^{N}$ and $\lbrace \widehat{\boldsymbol{c}}_q \rbrace_{q=1}^{\widehat{N}}$; quadrature size $n$; undulation rank $r$; level $\alpha$; permutations $B$.
+\Require Curve ensembles $\lbrace \boldsymbol{c}_q \rbrace_{q=1}^{N}$ and $\lbrace \widehat{\boldsymbol{c}}_q \rbrace_{q=1}^{\widehat{N}}$; quadrature rule $\lbrace (w_i,s_i)\rbrace$ of cardinality $n$; undulation rank $r$; total number of bootstrap samples $B$, significance level $\alpha$.
 \Ensure Marginal and joint decisions $(H_{\boldsymbol{t}}, H_{\boldsymbol{\ell}}, H)$ keyed to Truth Table~\ref{tab:logical_conjunction}.
-\State Arc-length reparametrize each curve and collocate at $n$ quadrature nodes $\lbrace s_i \rbrace$ to form landmarks $\mathcal{T}[\boldsymbol{c}_q](\lbrace s_i \rbrace)$ (Sections~\ref{subsec:preshapes},~\ref{subsec:Nystrom}).
-\State Sample one asymmetric archetype from the pooled aggregate and cyclic-Procrustes-register every landmark matrix against it \emph{once} (Theorem~\ref{thm:cycl_Procrustes}).
-\State SRQD: polar-decompose each registered matrix as $(\widetilde{X}_q, P_q) \in Gr(d,n)\times S^d_{++}$ (Section~\ref{subsec:func_approx}, Figure~\ref{fig:SRQD}).
-\State Separate tangent PCA: approximate Karcher means $[\widetilde{V}_0]\in\mathcal{G}_r$ and $P_0\in\mathcal{P}$, then project each $(\widetilde{X}_q, P_q)$ to normal coordinates $(\boldsymbol{t}_q, \boldsymbol{\ell}_q) \in T_{[\widetilde{V}_0]}\mathcal{G}_r \times T_{P_0}\mathcal{P}$ (Section~\ref{subsec:mfld_learn}).
-\State For $b = 0,1,\ldots,B$ (with $b=0$ the observed partition), randomly re-split the pooled coordinates into groups of sizes $N$ and $\widehat{N}$ and compute $\widehat{\mathrm{MMD}}^2_b$ separately over $\lbrace \boldsymbol{t} \rbrace$ and $\lbrace \boldsymbol{\ell} \rbrace$ using the Gaussian RBF~\eqref{eq:MMD} with median-heuristic bandwidth.
-\State Form conservative permutation $p$-values; apply Bonferroni at level $\alpha/2$ per marginal to obtain $H_{\boldsymbol{t}}, H_{\boldsymbol{\ell}} \in \lbrace 0,1 \rbrace$; return $H = H_{\boldsymbol{t}} \wedge H_{\boldsymbol{\ell}}$.
+\State \textbf{fix reparametrization}: collocate at $n$ quadrature nodes $\lbrace s_i \rbrace$ to form landmarks, e.g.,
+$$
+\mathcal{T}[\boldsymbol{c}_q](\lbrace s_i \rbrace).
+$$ (Sections~\ref{subsec:preshapes},~\ref{subsec:Nystrom})
+\State \textbf{cyclic Procrustes}: sample random asymmetric archetype and register every landmark matrix against it \emph{once} (Theorem~\ref{thm:cycl_Procrustes}).
+\State \textbf{SRQD}: weighted polar decomposition of each registered matrix, e.g.,
+$$
+(\widetilde{X}_q, P_q) \in Gr(d,n)\times S^d_{++}.
+$$ 
+(Section~\ref{subsec:func_approx}, Figure~\ref{fig:SRQD})
+\State \textbf{tPCA}: approximate Frech\'et means $[\widetilde{V}_0]\in\mathcal{G}_r$ and $P_0\in\mathcal{P}$, then project each $(\widetilde{X}_q, P_q)$ into an orthogonal basis of normal coordinates, e.g.,
+$$
+(\boldsymbol{t}_q, \boldsymbol{\ell}_q) \in T_{[\widetilde{V}_0]}\mathcal{G}_r \times T_{P_0}\mathcal{P}.
+$$ 
+(Section~\ref{subsec:mfld_learn})
+\State \textbf{bootstrap}: randomly permute sample indices and recompute separate MMD values $B$ times over $\lbrace \boldsymbol{t} \rbrace$ and $\lbrace \boldsymbol{\ell} \rbrace$.
+\State \textbf{test}: approximate $p$-values and compare to Bonferroni at level $\alpha/2$. 
+\State \Return $$(H_{\boldsymbol{t}}, H_{\boldsymbol{\ell}}) \in \lbrace 0,1 \rbrace^2$$
 \end{algorithmic}
 \end{algorithm}
