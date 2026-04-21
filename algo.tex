@@ -1,18 +1,15 @@
 \begin{algorithm}[ht]
-\caption{\textcolor{blue}{Explainable Binary Classification of Separable Shape Ensembles.}}
+\caption{\textcolor{blue}{Explainable binary classification of separable shape ensembles.}}
 \label{alg:pipeline}
 \begin{algorithmic}[1]
 \color{blue}
-\Require Two ensembles of segmented closed curves $\{\boldsymbol{c}_q\}_{q=1}^{N}$ and $\{\widehat{\boldsymbol{c}}_q\}_{q=1}^{\widehat{N}}$; quadrature size $n$; undulation rank $r$; significance level $\alpha$; permutation count $B$.
-\Ensure Joint decision $H$ and marginal decisions $(H_{\boldsymbol{t}}, H_{\boldsymbol{\ell}})$ keyed to Truth Table~\ref{tab:logical_conjunction}.
-\State \textbf{Reparametrize} each curve by arc-length and form a spline interpolant (Section~\ref{subsec:preshapes}).
-\State \textbf{Discretize} each curve at $n$ quadrature nodes to obtain the landmark matrix $X_q \in \mathbb{R}^{n\times d}_*$ (Section~\ref{subsec:Nystrom}).
-\State \textbf{Cyclic Procrustes}: sample one random asymmetric archetype from the pooled aggregate; register every $X_q$ against it by the row-cyclic permutation and rotation minimizing Frobenius distance (Theorem~\ref{thm:cycl_Procrustes}).
-\State \textbf{SRQD}: factor each centered registered $X_q$ as $(\widetilde{X}_q, P_q)\in Gr(d,n)\times S^d_{++}$ via the Nystr\"om-weighted polar decomposition (Section~\ref{subsec:func_approx}, Figure~\ref{fig:SRQD}).
-\State \textbf{Tangent PCA}: compute Karcher means $(\widetilde{X}_\star, P_\star)$ and principal geodesic directions separately on $Gr(d,n)$ and $S^d_{++}$; project every $(\widetilde{X}_q, P_q)$ to normal coordinates $(\boldsymbol{t}_q,\boldsymbol{\ell}_q)\in\mathbb{R}^{r}\times\mathbb{R}^{d(d+1)/2}$ (Section~\ref{subsec:mfld_learn}, Appendix~\ref{secA0}).
-\State \textbf{Marginal MMD}: compute $\widehat{\mathrm{MMD}}^2$ on $\{\boldsymbol{t}_q\}$ vs $\{\widehat{\boldsymbol{t}}_q\}$ and on $\{\boldsymbol{\ell}_q\}$ vs $\{\widehat{\boldsymbol{\ell}}_q\}$ using the Gaussian RBF kernel with median-heuristic bandwidth (Section~\ref{subsec:MMD}).
-\State \textbf{Sample permutations}: for $b=1,\dots,B$, randomly reassign the pooled ensemble labels and recompute $\widehat{\mathrm{MMD}}^2_b$; form the conservative permutation $p$-value approximations.
-\State \textbf{Bonferroni conjunction}: reject the marginal null at level $\alpha/2$ whenever $\leq \alpha/2$, yielding $H_{\boldsymbol{t}}, H_{\boldsymbol{\ell}}\in\{0,1\}$; the joint decision is $H = H_{\boldsymbol{t}} \wedge H_{\boldsymbol{\ell}}$.
-\State \Return $H$ and $(H_{\boldsymbol{t}}, H_{\boldsymbol{\ell}})$, cross-referencing Truth Table~\ref{tab:logical_conjunction} for physical interpretation.
+\Require Curve ensembles $\lbrace \boldsymbol{c}_q \rbrace_{q=1}^{N}$ and $\lbrace \widehat{\boldsymbol{c}}_q \rbrace_{q=1}^{\widehat{N}}$; quadrature size $n$; undulation rank $r$; level $\alpha$; permutations $B$.
+\Ensure Marginal and joint decisions $(H_{\boldsymbol{t}}, H_{\boldsymbol{\ell}}, H)$ keyed to Truth Table~\ref{tab:logical_conjunction}.
+\State Arc-length reparametrize each curve and collocate at $n$ quadrature nodes $\lbrace s_i \rbrace$ to form landmarks $\mathcal{T}[\boldsymbol{c}_q](\lbrace s_i \rbrace)$ (Sections~\ref{subsec:preshapes},~\ref{subsec:Nystrom}).
+\State Sample one asymmetric archetype from the pooled aggregate and cyclic-Procrustes-register every landmark matrix against it \emph{once} (Theorem~\ref{thm:cycl_Procrustes}).
+\State SRQD: polar-decompose each registered matrix as $(\widetilde{X}_q, P_q) \in Gr(d,n)\times S^d_{++}$ (Section~\ref{subsec:func_approx}, Figure~\ref{fig:SRQD}).
+\State Separate tangent PCA: approximate Karcher means $[\widetilde{V}_0]\in\mathcal{G}_r$ and $P_0\in\mathcal{P}$, then project each $(\widetilde{X}_q, P_q)$ to normal coordinates $(\boldsymbol{t}_q, \boldsymbol{\ell}_q) \in T_{[\widetilde{V}_0]}\mathcal{G}_r \times T_{P_0}\mathcal{P}$ (Section~\ref{subsec:mfld_learn}).
+\State For $b = 0,1,\ldots,B$ (with $b=0$ the observed partition), randomly re-split the pooled coordinates into groups of sizes $N$ and $\widehat{N}$ and compute $\widehat{\mathrm{MMD}}^2_b$ separately over $\lbrace \boldsymbol{t} \rbrace$ and $\lbrace \boldsymbol{\ell} \rbrace$ using the Gaussian RBF~\eqref{eq:MMD} with median-heuristic bandwidth.
+\State Form conservative permutation $p$-values; apply Bonferroni at level $\alpha/2$ per marginal to obtain $H_{\boldsymbol{t}}, H_{\boldsymbol{\ell}} \in \lbrace 0,1 \rbrace$; return $H = H_{\boldsymbol{t}} \wedge H_{\boldsymbol{\ell}}$.
 \end{algorithmic}
 \end{algorithm}
