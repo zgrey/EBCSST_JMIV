@@ -19,14 +19,14 @@ Remaining gaps to close before resubmission. All 24 reviewer comments have a com
 [x] 5. **Notation paragraph (square brackets, reused shorthand).** (R1.1, R4.1) [D] — done
    Blue text at lines 227 and 229 clarifies quotient-topology notation $\mathcal{A}/\mathcal{B}$, square-bracket equivalence-class convention $[\cdot]$ (e.g.\ $\mathcal{K}_{\mathcal{T}}[\boldsymbol{c}]$), inner-product vs dot-product conventions, and the `vectors are tall' convention. The curve space $\mathcal{C}_d$ is explicitly defined at `eq:reg_Hilbert_space` in §`subsec:preshapes`. R4.1 reply updated to mention the notation expansion.
 
-[x] 6. **Undulation-vs-scale schematic figure.** (R1.1, R2.6, R4.1) [D]
-   Add a visualization: curves differing only in $\boldsymbol{t}$ (undulation on $\mathrm{Gr}(d,n)$). See updated fig. 3. Replies R1.1, R2.6, R4.1 all retain "in preparation" language.
+[x] 6. **Undulation-vs-scale schematic figure.** (R1.1, R2.6, R4.1) [D] — done
+   New Figure 3 (`fig:PL_SST` in §`subsec:geo_interp`) plots piecewise-linear polygons with identical generalized scales but increasing face count, alongside their orthonormal eigenfunctions, isolating undulation variation at fixed scale. Replies R1.1, R2.6, R4.1 updated to point at this figure.
 
 [x] 7. **Remove or upgrade the pipeline-pseudocode placeholder.** (R4.4) [D] — done (upgrade path taken)
    `fig:placeholder` in §`subsec:mfld_learn` (line 810) is now a rendered pipeline diagram via `\input{pipeline_diagram}`. Additionally, a concise `algorithm` block (Algorithm~\ref{alg:pipeline}, `algo.tex`) has been added at the end of §`subsec:MMD` stating the full pipeline as pseudocode in manuscript notation with step-level section cross-references. Reply R4.4 updated.
 
 [ ] 8. **Clustering within an image — decline or short demo.** (R4.2) [W, optional D]
-   PLACEHOLDER at line 1036 (optional) still present at end of §`sec:experiments` ``Segmentation Efficacy''. Reply R4.2 still forward-references a prepared clustering-within-an-image demo. Minimal-effort path: delete line 1036 placeholder and trim the forward-reference from reply R4.2.
+   Optional `\textcolor{red}{PLACEHOLDER ...}` line still present at end of §`sec:experiments` ``Segmentation Efficacy'' (currently line 1041 of `sn-article-revised.tex`). Reply R4.2 already declines a forward-reference (it says clustering "remains a valuable complementary analysis" without promising a demo), so the only remaining action is to delete the placeholder line.
 
 NF [ ] 9. **Type I / power simulated-curve study.** (R1.5, R2.3) [N]
    Synthetic ensembles with controlled $(\boldsymbol{t},\boldsymbol{\ell})$ differences; sweep effect size; report empirical Type I at the null and power on the alternative. One table plus one small figure panel in §`sec:experiments`. Current reply R1.5 cites decision-landscape stability as partial evidence; the table closes the gap.
@@ -41,9 +41,9 @@ ZG [ ] 10. **Per-stage runtime table.** (R1.6) [N]
 
 | Reviewer | Comments with gaps | Items |
 |----------|--------------------|-------|
-| R1 | R1.1, R1.5, R1.6 | 6, 9, 10 |
-| R2 | R2.6 | 6 |
+| R1 | R1.5, R1.6 | 9, 10 |
+| R2 | none — all R2 comments fully answered by existing edits and replies | — |
 | R3 | none — all R3 comments fully answered by existing edits and replies | — |
-| R4 | R4.1, R4.2 | 6, 8 |
+| R4 | R4.2 | 8 |
 
 Every reviewer comment is paired with either (a) a reply + completed edit, (b) a reply + a to-do item above, or (c) a reply only where no document edit is warranted.

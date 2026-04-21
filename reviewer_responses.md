@@ -10,9 +10,6 @@ Note: large manuscript additions are color-coded blue; small changes are logged 
 
 These statements were removed from the submission copy so that it strictly reflects completed changes. They remain tracked here for coauthor discussion and future revisions.
 
-- **Undulation-vs-scale schematic figure.** (REVISIONS item 6; R1.1, R2.6, R4.1)
-  A two-panel TikZ schematic — left: curves differing only in $\boldsymbol{t}$ (undulation on $\mathrm{Gr}(d,n)$); right: curves differing only in $\boldsymbol{\ell}$ (linear deformation on $S^d_{++}$) — to be placed in §`subsec:mfld_learn`. Placeholder already removed from the manuscript; figure itself still in preparation.
-
 - **Simulated-curve Type I / power study.** (REVISIONS item 9; R1.5)
   Synthetic ensembles with controlled $(\boldsymbol{t},\boldsymbol{\ell})$ differences; sweep effect size; report empirical Type I at the null and power on the alternative. One table plus one small figure panel in §`sec:experiments`. Current reply R1.5 in the `.tex` file cites decision-landscape ambiguity as empirical stability evidence; the simulated-curve table would formalize it.
 
@@ -32,7 +29,7 @@ These statements were removed from the submission copy so that it strictly refle
 ### R1.1 — Notation and illustrations (Sections 2–3)
 > cumbersome to read due to heavy notation and lack of illustrations
 
-**Status:** Partially done. Lemma/theorem reformatting, CLO/PRRTI definitions, SRQD and pipeline figures, and appendix relocation are complete. Undulation-vs-scale schematic still pending (see Pending work).
+**Status:** Done. Lemma/theorem reformatting, CLO/PRRTI definitions, appendix relocation, and three new illustrations (Figure 3 = piecewise-linear polygon undulation schematic in §`subsec:geo_interp`; Figure 4 = SRQD; Figure 8 = pipeline diagram) are all in place.
 
 ### R1.2 — Terminology ("classification" vs. hypothesis testing; Table 1 "Accept" → "FTR")
 **Status:** Done. Blue text in §`sec:intro` and §`subsec:MMD` formalizes the binary mapping $H$; Table 1 and adjacent text use "FTR."
@@ -69,10 +66,10 @@ These statements were removed from the submission copy so that it strictly refle
 **Status:** Done. Blue text at the start of the decision-landscape discussion in §`sec:experiments`: $n\in[100,500]$ by Nyström spectral convergence; $r$ selected via ambiguity metric~\eqref{eq:ambiguity} beyond the ambiguity peak.
 
 ### R2.6 — Writing and organization (contributions buried, background too long)
-**Status:** Partially done. `[prior]`/`[new]` contribution bullets, SST-background relocation to Appendix~A, and concision pass are complete. Undulation-vs-scale schematic still pending.
+**Status:** Done. `[prior art]`/`[new]` contribution bullets, SST-background relocation to Appendix~A, concision pass, and the new undulation-vs-scale schematic (Figure 3, §`subsec:geo_interp`) are all in place.
 
 ### R2.7 — Undulation-vs-scale illustration
-**Status:** Pending (REVISIONS item 6). See Pending work.
+**Status:** Done (REVISIONS item 6). New Figure 3 (`fig:PL_SST` in §`subsec:geo_interp`) shows piecewise-linear polygons with identical generalized scales but increasing face count, alongside their orthonormal eigenfunctions.
 
 ### R2.8 — Typo: "it sufficient"
 **Status:** Done. See `CHANGES.md`.
@@ -98,7 +95,7 @@ These statements were removed from the submission copy so that it strictly refle
 ## Reviewer 4
 
 ### R4.1 — Presentation quality (overcomplicated, missing visualizations)
-**Status:** Mostly done. Appendix relocation, SRQD and pipeline figures, CLO/PRRTI definitions, expanded Notation subsection, `\mathcal{C}_d` defined at `eq:reg_Hilbert_space`, and concision pass are complete. Undulation-vs-scale schematic still pending.
+**Status:** Done. Appendix relocation, three new figures (Figures 3, 4, 8 — undulation schematic, SRQD, pipeline), CLO/PRRTI definitions, expanded Notation subsection, `\mathcal{C}_d` defined at `eq:reg_Hilbert_space`, and concision pass are all complete.
 
 ### R4.2 — Problem statement unclear; why not clustering?
 **Status:** Done. Problem Statement subsection plus blue-text paragraphs formalizing hypothesis testing as a binary decision rule; R4.2 reply now notes the $(\boldsymbol{t},\boldsymbol{\ell})$ feature space supports clustering when that is the downstream objective (without forward-referencing a planned demo).
