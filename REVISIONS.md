@@ -19,8 +19,8 @@ Remaining gaps to close before resubmission. All 24 reviewer comments have a com
 [x] 5. **Notation paragraph (square brackets, reused shorthand).** (R1.1, R4.1) [D] — done
    Blue text at lines 227 and 229 clarifies quotient-topology notation $\mathcal{A}/\mathcal{B}$, square-bracket equivalence-class convention $[\cdot]$ (e.g.\ $\mathcal{K}_{\mathcal{T}}[\boldsymbol{c}]$), inner-product vs dot-product conventions, and the `vectors are tall' convention. The curve space $\mathcal{C}_d$ is explicitly defined at `eq:reg_Hilbert_space` in §`subsec:preshapes`. R4.1 reply updated to mention the notation expansion.
 
-[ ] 6. **Undulation-vs-scale schematic figure.** (R1.1, R2.6, R4.1) [D]
-   Add a two-panel TikZ schematic — left: curves differing only in $\boldsymbol{t}$ (undulation on $\mathrm{Gr}(d,n)$); right: curves differing only in $\boldsymbol{\ell}$ (linear deformation on $S^d_{++}$). Place in §`subsec:mfld_learn`. Placeholder at ~line 237 has already been removed; figure itself still in preparation. Replies R1.1, R2.6, R4.1 all retain "in preparation" language.
+[x] 6. **Undulation-vs-scale schematic figure.** (R1.1, R2.6, R4.1) [D]
+   Add a visualization: curves differing only in $\boldsymbol{t}$ (undulation on $\mathrm{Gr}(d,n)$). See updated fig. 3. Replies R1.1, R2.6, R4.1 all retain "in preparation" language.
 
 [x] 7. **Remove or upgrade the pipeline-pseudocode placeholder.** (R4.4) [D] — done (upgrade path taken)
    `fig:placeholder` in §`subsec:mfld_learn` (line 810) is now a rendered pipeline diagram via `\input{pipeline_diagram}`. Additionally, a concise `algorithm` block (Algorithm~\ref{alg:pipeline}, `algo.tex`) has been added at the end of §`subsec:MMD` stating the full pipeline as pseudocode in manuscript notation with step-level section cross-references. Reply R4.4 updated.
