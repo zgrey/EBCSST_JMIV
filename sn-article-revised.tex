@@ -209,7 +209,7 @@ Shape is only one important piece of the quite literal puzzles in Figures~\ref{f
 
 \textcolor{blue}{Our primary theoretical contribution is the second bullet: relating the separable shape tensor (SST) configuration space over finite-dimensional matrix manifolds to a functional analysis over an infinite-dimensional RKHS. This extends the classical configuration-space work of Kendall et al.~\cite{kendall2009shape}---which has no demonstrated connection to an infinite-dimensional space of curves---and permits flexible kernel choice~\cite{micheli2013matrix} to control regularity of a Hilbert space of curves.}
 
-\textcolor{blue}{A primary practical contribution is the framework's computational efficiency, which enables shape-comparison questions that prior approaches cannot practically address. Registration reduces to finite SVDs collocated at quadrature nodes and cyclic permutations against a single asymmetric archetype (Theorem~\ref{thm:cycl_Procrustes}) rather than an optimization over the space of diffeomorphisms as in elastic and Sobolev-metric curve frameworks~\cite{srivastava2010shape, bauer2017sobolev, hartman2023varigrad}. Thousands of curves can therefore be decomposed and tested in seconds on a standard laptop.}
+\textcolor{blue}{A primary practical contribution is the framework's computational efficiency, which enables shape-comparison questions that prior approaches cannot practically address. Registration reduces to finite SVDs collocated at quadrature nodes and cyclic permutations against a single asymmetric archetype (Theorem~\ref{thm:cycl_Procrustes}) rather than an optimization over the space of diffeomorphisms as in elastic and Sobolev-metric curve frameworks~\cite{srivastava2010shape, bauer2017sobolev, hartman2023varigrad}. Thousands of curves can therefore be decomposed and tested in seconds/minutes on a standard laptop.}
 
 \textcolor{blue}{This \textit{fixed reparametrization collocated at quadrature nodes} is what makes the parameter studies of Section~\ref{sec:experiments} tractable: diagnostic parameter sweeping over, the detection of sub-visual smoothing-induced discrepancies (Figure~\ref{fig:compare_grains_010}), and a `goldilocks' analysis of how smoothing scales obscure or preserve distinguishing features for any given segmentation. \textit{To our knowledge, comparisons over such scales and sweeps have not been previously demonstrated for curve ensembles due to the expense of comparing curves}.}
 
@@ -485,7 +485,7 @@ In short, the interpretation of Thm.~\ref{theorem:eigfuncs} motivates discretiza
     \centering
     \includegraphics[width=0.55\linewidth]{img/PL_SSTs-1.pdf}
     \hspace*{-1.65em}\includegraphics[width=0.95\linewidth]{img/PL_SSTs-2.pdf}
-    \caption{(top) Piecewise linear polygonal shapes with identical generalized scales and increasing number of faces from triangle to octagon. (bottom) Corresponding orthonormal eigenfunctions. Solid lines correspond to $j=1$ while dashed lines are $j=2$ and colors match the corresponding shape above. The eigenfunctions are distinct and, thus, each polygon is distinct but appear to naturally converge to the eigenfunctions of the circle (black curve/functions) with increasing face count.}
+    \caption{(top) Piecewise linear polygonal shapes with identical generalized scales and increasing number of faces from triangle to octagon. (bottom) Corresponding orthonormal eigenfunctions. Solid lines correspond to $j=1$ while dashed lines are $j=2$ and colors match the corresponding shape above. The eigenfunctions are distinct and, thus, each polygon is distinct but appear to naturally converge to the eigenfunctions of the circle (black curve/functions) with an increasing number of faces.}
     \label{fig:PL_SST}
 \end{figure}
 Let's explore some simple examples computing~\eqref{equ:eigproblem} by hand and demonstrate the nature of these PRRTI features. Parametrizing a circle with $d=2$, $\boldsymbol{c}(s) \coloneqq (\cos (2\pi s), \sin (2\pi s))^{\top}$ for $\mathcal{I} \coloneqq [0,1]$. In this case, the standardization achieved by computing $\widetilde{v}_j$ should simply scale the original component functions to have norm one. We obtain eigenvalues $\sigma^2_1 = \sigma^2_2 = 1/2$ indicating that component functions covary equally and normalized eigenfunctions $\widetilde{v}_1(s) = \pm\sqrt{2}\cos(2\pi s)$ and $\widetilde{v}_2(s) = \pm \sqrt{2}\sin(2\pi s)$ according to $\boldsymbol{\alpha}_j = \pm\boldsymbol{e}_j$. Clearly, $\Vert\widetilde{v}_j\Vert_{\mathcal{H}_d} = 1$ for $j=1,2$ and $\langle v_i, v_j \rangle_{\mathcal{H}^*_d} = \delta_{ij}$. 
@@ -512,7 +512,7 @@ Lastly, if we now arbitrarily rotate the ellipse,
         b\sin (2\pi s)
     \end{matrix}\right),
 \end{equation}
-we obtain phase shifted eigenfunctions, $\widetilde{v}_1(s) = \pm\sqrt{2}\cos(2\pi s + \theta)$ and $\widetilde{v}_2(s) = \pm \sqrt{2}\sin(2\pi s + \theta)$, but (up to shifted reparametrization) our conclusion persists---all three of these curves are equally undulating with the only distinction being linear scale variations according to $\sigma_1^2 = a^2/2$ and $\sigma_2^2 = b^2/2$. In contrast, examples of piecewise linear polygons with increasing face count as distinct undulations but identical scales is shown in Fig.~\ref{fig:PL_SST}.
+we obtain phase shifted eigenfunctions, $\widetilde{v}_1(s) = \pm\sqrt{2}\cos(2\pi s + \theta)$ and $\widetilde{v}_2(s) = \pm \sqrt{2}\sin(2\pi s + \theta)$, but (up to shifted reparametrization) our conclusion persists---all three of these curves are equally undulating with the only distinction being linear scale variations according to $\sigma_1^2 = a^2/2$ and $\sigma_2^2 = b^2/2$. In contrast, examples of piecewise linear polygons with increasing face counts admitting distinct undulations but identical anisotropic scales is shown in Fig.~\ref{fig:PL_SST}.
 
 Notice that area, perimeter, and unsigned scalar curvature of the ellipse are distinct from the circle. Hence, \emph{functionals of hand-picked features alone may indicate distinctions between each of these equally undulating curves} but their distinction, up to phase shift, is due entirely to scale parameters $a$ and $b$---which may or may not be well-defined by a subset of hand-picked features. In our case, a Hilbert space of bounded shift invariant kernels (convolutions or mollifiers) will eliminate the possibility of distinguishing between phase shifted eigenfunctions.
 
@@ -522,7 +522,7 @@ $
 $
 However, the eigenfunctions of the corresponding integral kernel offer a definition of undulation as dual evaluation functionals of the curve which are `factored' by linear scale variations informed by simple PCA. 
 
-Based on these conclusions, orthonormal (standardized) parametric forms satisfying $\Vert \cdot \Vert_{\mathcal{H}_d} = 1$ represented by dual evaluation functionals with (bounded) \emph{periodic shift invariant kernel} equivalently constitute \emph{expansions of undulation}. We may refer to such an expansion as a \emph{Mercer series of undulation} over the construction of a dual space of PRRTI-features to approximate eigenfunctions of shape, $\widetilde{\boldsymbol{v}} \coloneqq (\widetilde{v}_1,\dots,\widetilde{v}_d)^{\top}$, with any desired regularity.
+Based on these conclusions, orthonormal (standardized) parametric forms satisfying $\Vert \cdot \Vert_{\mathcal{H}_d} = 1$ represented by dual evaluation functionals with (bounded) \emph{periodic shift invariant kernel} equivalently constitute \emph{expansions of undulation}. We may refer to such an expansion as a \emph{Mercer series of undulation} over the construction of a dual space of PRRTI-features to approximate the tuple of shape eigenfunctions, $\widetilde{\boldsymbol{v}} \coloneqq (\widetilde{v}_1,\dots,\widetilde{v}_d)^{\top}$, with any desired regularity.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\textcolor{purple}{(ZG) TODO: (up for grabs) build these Mercer series with some $\mathbb{R}^d$-valued kernels and relate the decay in coefficients to that of the spectral content from a Fourier series to provide interpreations as they related to the nested spaces sought in~\eqref{eq:reg_Hilbert_space}. We only have an empirical explanation to this end (discussed in the text introducing Fig~\ref{fig:low_dim_grain}).}
@@ -591,6 +591,59 @@ where the symmetric matrix $W^{1/2}KW^{1/2}$ has the eigenvector $\widetilde{\bo
 a \textit{weighted} version of  $\boldsymbol{v}$. 
 
 \subsection{Functional Approximation}\label{subsec:func_approx}
+\begin{figure*}
+    \centering
+    \begin{tikzpicture}[
+        % Create a style to keep the code clean
+        block/.style={
+            draw, 
+            minimum width=#1, 
+            minimum height=15mm, 
+            text height=2ex, % Adjusts the space above the baseline
+            text depth=1.25ex, % Adjusts the space below the baseline
+            anchor=north west
+                }
+            ]
+        % Node X (The reference point)
+        \node[block=25mm, label=left:$d$, label=above:$n$, label=below:$T^{\top}_n$] (X) 
+            {$\cdot\,\Biggl\vert\,\cdot\, \boldsymbol{\tau}(s_i)\cdot\,\Biggl\vert\,\cdot$};
+        
+        % Node W: We override the height to 20mm here.
+        \node[draw, minimum width=25mm, minimum height=25mm, label=above:$n$, label=below:$\sqrt{W}$, anchor=north west] (W) 
+            at ([xshift=2mm]X.north east) {};
+        \draw[-] (W.north west) -- (W.south east);
+        
+        % Node U
+        \node[block=15mm, label=left:$d$, label=$d$, label=below:$A$] (U) 
+            at ([xshift=8mm]W.north east) {$\begin{matrix} *\quad & *\\ *\quad & * \end{matrix}$};
+        
+        % Node Sigma
+        \node[block=15mm, label=$d$, label=below:$\Sigma_d$] (Sigma) 
+            at ([xshift=2mm]U.north east) {};
+        \draw[-] (Sigma.north west) -- (Sigma.south east);
+        
+        % Node V
+        \node[block=25mm, label=$n$, label=below:$\widetilde{V}^{\top}$] (V) 
+            at ([xshift=2mm]Sigma.north east) {$\cdot\,\Biggl\vert\,\cdot\, \widetilde{\boldsymbol{v}}(s_i)\,\cdot\Biggl\vert\,\cdot$};
+        
+        % Equals sign
+        \path (W.east) -- node {$=\quad$} (U.west);
+    
+    \end{tikzpicture}
+
+    \caption{The SRQD of a translated (centered) curve where $W$ is a diagonal of quadrature weights $w_i$, $\boldsymbol{\tau}(s_i)$ are centered landmarks evaluated at quadrature nodes, and $\widetilde{\boldsymbol{v}}(s_i)$ are the $d$-tuples of evaluation functionals at quadrature nodes.}
+    \label{fig:SRQD}
+\end{figure*}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.85\linewidth]{img/Nystrom_Cassini-v2.pdf}
+    \\
+    \vspace*{1em}
+    \hspace*{-2.5em}
+    \includegraphics[width=0.85\linewidth]{img/Cassini_Conv.pdf}
+    \caption{(top) An increasing number of landmarks collocated at quadrature nodes over a Cassini oval. Dashed lines are a visual cue connecting nodes in a particular order corresponding to $8$, $16$, and $32$ landmarks each. Replicated nodes, $\lbrace \boldsymbol{\tau}(s_i)\rbrace_{n=8} \subset \lbrace \boldsymbol{\tau}(s_i)\rbrace_{n=16} \subset \lbrace \boldsymbol{\tau}(s_i)\rbrace_{n=32}$, over the increasing total number of nodes have darker shading. (bottom) Convergence plot over the same Cassini oval with increasing number of quadrature nodes, $n$. Error is the maximum $2$-norm difference in component functions over the curve parameter taken between approximated PRRTI-features and a reference solution with $8192$ nodes. A black dashed curve is shown with corresponding rate of $\sim 6.5$ to emphasize the spectral nature of convergence.}
+    \label{fig:nystrom_eg}
+\end{figure}
 Extending the discussion of Nystr\"om method for curves, we develop numerical approximations of \eqref{equ:eigfunc}-\eqref{equ:eigproblem} by simplifying to a $d\times d$ eigen-problem as opposed to the larger $n\times n$ problem in~\eqref{eq:weighted_evecs}. 
 
 From (12.15) in \cite{fasshauer2015kernel} and following the approach of section \ref{sec:e_solns} to obtain numerical approximations of \eqref{eq:the_Panda} and \eqref{equ:eigproblem}, we have the SVD basis from the Nystr\"om method written as
@@ -652,49 +705,6 @@ Moreover, to obtain $\widetilde{V}$ with orthonormal columns for numerical imple
     T_n^{\top}\sqrt{W}\,\,\overset{SVD}{=}\, A\Sigma_d\widetilde{V}^{\top},
 \end{equation}
 for all curves in the ensemble utilizing rapid rank-$d$ decomposition schemes. A visual add is given in Figure~\ref{fig:SRQD}.
-\begin{figure*}
-    \centering
-    \begin{tikzpicture}[
-        % Create a style to keep the code clean
-        block/.style={
-            draw, 
-            minimum width=#1, 
-            minimum height=15mm, 
-            text height=2ex, % Adjusts the space above the baseline
-            text depth=1.25ex, % Adjusts the space below the baseline
-            anchor=north west
-                }
-            ]
-        % Node X (The reference point)
-        \node[block=25mm, label=left:$d$, label=above:$n$, label=below:$T^{\top}_n$] (X) 
-            {$\cdot\,\Biggl\vert\,\cdot\, \boldsymbol{\tau}(s_i)\cdot\,\Biggl\vert\,\cdot$};
-        
-        % Node W: We override the height to 20mm here.
-        \node[draw, minimum width=25mm, minimum height=25mm, label=above:$n$, label=below:$\sqrt{W}$, anchor=north west] (W) 
-            at ([xshift=2mm]X.north east) {};
-        \draw[-] (W.north west) -- (W.south east);
-        
-        % Node U
-        \node[block=15mm, label=left:$d$, label=$d$, label=below:$A$] (U) 
-            at ([xshift=8mm]W.north east) {$\begin{matrix} *\quad & *\\ *\quad & * \end{matrix}$};
-        
-        % Node Sigma
-        \node[block=15mm, label=$d$, label=below:$\Sigma_d$] (Sigma) 
-            at ([xshift=2mm]U.north east) {};
-        \draw[-] (Sigma.north west) -- (Sigma.south east);
-        
-        % Node V
-        \node[block=25mm, label=$n$, label=below:$\widetilde{V}^{\top}$] (V) 
-            at ([xshift=2mm]Sigma.north east) {$\cdot\,\Biggl\vert\,\cdot\, \widetilde{\boldsymbol{v}}(s_i)\,\cdot\Biggl\vert\,\cdot$};
-        
-        % Equals sign
-        \path (W.east) -- node {$=\quad$} (U.west);
-    
-    \end{tikzpicture}
-
-    \caption{The SRQD of a translated (centered) curve where $W$ is a diagonal of quadrature weights $w_i$, $\boldsymbol{\tau}(s_i)$ are centered landmarks evaluated at quadrature nodes, and $\widetilde{\boldsymbol{v}}(s_i)$ are the $d$-tuples of evaluation functionals at quadrature nodes.}
-    \label{fig:SRQD}
-\end{figure*}
 
 The resulting right singular vectors $\widetilde{V}$ are the weighted eigenvectors, $\widetilde{V} = W^{1/2}V$, of~\eqref{eq:weighted_evecs} in the Nystr\"om method. Thus, \textit{fast rank-$d$ SRQDs can efficiently map thousands of preshapes to discrete PRRTI-features}. Equivalently, with $A$ orthogonal, this fixed-order numerical integration constitutes $\lbrace T_n \rbrace \mapsto \lbrace (\widetilde{X}, P)\rbrace$ as a \textit{weighted polar decomposition}, 
 \begin{align} \label{eq:derived_polar_decomp}
@@ -708,18 +718,6 @@ Thus, the SRQD acts as a mapping into separated pieces of generalized (anisotrop
 
 To validate our interpretation, we offer an example in Figure~\ref{fig:nystrom_eg}. Given $\boldsymbol{\tau}$ as a Cassini oval, we utilize~\eqref{eq:discrete_evalprob} to inform approximations of~\eqref{eq:evalvs} which are reevaluated at $10,000$ consistent points over the curve parameter to study convergence rates. Figure~\ref{fig:nystrom_eg} emphasizes the spectral nature of convergence. In practice, we utilize interpolations of data in composition with high-order arc-length reparametrization approximations to achieve unit speed and uniformly distributed landmarks---i.e., trivializing $W_\mu \propto \mathbb{I}_n$. 
 
-\begin{figure}
-    \centering
-    \includegraphics[width=0.85\linewidth]{img/Nystrom_Cassini-v2.pdf}
-    \\
-    \vspace*{1em}
-    \hspace*{-2.5em}
-    \includegraphics[width=0.85\linewidth]{img/Cassini_Conv.pdf}
-    \caption{(top) An increasing number of landmarks collocated at quadrature nodes over a Cassini oval. Dashed lines are a visual cue connecting nodes in a particular order corresponding to $8$, $16$, and $32$ landmarks each. Replicated nodes, $\lbrace \boldsymbol{\tau}(s_i)\rbrace_{n=8} \subset \lbrace \boldsymbol{\tau}(s_i)\rbrace_{n=16} \subset \lbrace \boldsymbol{\tau}(s_i)\rbrace_{n=32}$, over the increasing total number of nodes have darker shading. (bottom) Convergence plot over the same Cassini oval with increasing number of quadrature nodes, $n$. Error is the maximum $2$-norm difference in component functions over the curve parameter taken between approximated PRRTI-features and a reference solution with $8192$ nodes. A black dashed curve is shown with corresponding rate of $\sim 6.5$ to emphasize the spectral nature of convergence.}
-    \label{fig:nystrom_eg}
-\end{figure}
-
-%\input{sec/cyclPro}
 \subsection{Cyclic Procrustes} \label{subsec:cycl_Pro}
 \begin{figure*}
     \centering
@@ -740,7 +738,7 @@ To validate our interpretation, we offer an example in Figure~\ref{fig:nystrom_e
     \label{fig:archetype_match}
 \end{figure}
 
-In other applications, like aerodynamic design~\cite{grey2023separable}, ensembles may be supplied with some fixed reparametrization establishing a convention for the initial starting landmark and orientation of curves. However, when an ensemble is the result of an image segmentation, the data lack a consistent starting landmark for registration/alignment. In other words, the first row of the discretization, $T_n$ or $X$, is entirely ambiguous as undulation is unique up to phase shift and often undefined for closed segmented curves from an image.
+In other applications, like aerodynamic design~\cite{grey2023separable}, ensembles may be supplied with some fixed reparametrization establishing a convention for the initial starting landmark and orientation of curves. However, when an ensemble is the result of an image segmentation, the data lack a consistent starting landmark for registration/alignment. In other words, the first row of the discretization, $T_n$ or $X$, is ambiguous for closed segmented curves from an image. Additionally, as demonstrated in section~\ref{subsec:geo_interp}, undulation is unique \textit{up to phase shift}.
 
 When we lack extrinsic alignment conventions to phase shift collocations, we propose solutions to the following (discrete) alignment problem for registering preshape data \textit{a priori}:
 
@@ -800,14 +798,14 @@ When we lack extrinsic alignment conventions to phase shift collocations, we pro
         &= \text{tr}(V_p^{\top}R^{\top}U_p\Omega_p) \\
         &= \langle Q_p, \Omega_p\rangle_F
     \end{align*}
-    for some $Q_p =  U_p^{\top}RV_p \in O(d)$ which satisfies $\langle Q_p, \Omega_p\rangle_F \leq \langle \mathbb{I}_d, \Omega_p\rangle_F = \Vert \mathcal{L}(p) \Vert_1$ with equality when $Q_p = \mathbb{I}_d$. However, $Q_p = \mathbb{I}_d$ if and only if $R = U_pV_p^{\top}$ which implies, by $(\star\star)$, $R = \pi_{\mathcal{U}}(\mathcal{L}(p))$. Thus, $\langle R,\mathcal{L}(p)\rangle_F - \Vert \mathcal{L}(p) \Vert_1 < 0$ for all $R \neq \pi_{\mathcal{U}}(\mathcal{L}(p)) \in O(d)$.
+    for some $Q_p =  U_p^{\top}RV_p \in O(d)$ which satisfies $\langle Q_p, \Omega_p\rangle_F \leq \langle \mathbb{I}_d, \Omega_p\rangle_F = \Vert \mathcal{L}(p) \Vert_1$ with equality when $Q_p = \mathbb{I}_d$. However, $Q_p = \mathbb{I}_d$ if and only if $R = U_pV_p^{\top}$ and thus, by $(\star\star)$, $R = \pi_{\mathcal{U}}(\mathcal{L}(p))$. Hence, $\langle R,\mathcal{L}(p)\rangle_F - \Vert \mathcal{L}(p) \Vert_1 < 0$ for all $R \neq \pi_{\mathcal{U}}(\mathcal{L}(p)) \in O(d)$.
 \end{proof}
 
 With solutions to Theorem~\ref{thm:cycl_Procrustes}, we match segmented curves with a modified type of Procrustean metric~\cite{srivastava2016functional} and, more importantly, align data against an fixed `archetype', $Y$ collocated at consistent quadrature nodes. To promote unique solutions to Theorem~\ref{thm:cycl_Procrustes} at a fixed $n$, we desire asymmetric archetypes or archetypes with known symmetries\footnote{Notice a `featureless' circle results in a constant objective function.} to search a subset of permutations. However, for many noisy segmentations, it is sufficient to take a random draw from the full ensemble of curves to identify a suitable asymmetric archetype for global registration. Additionally, we normalize both discrete preshapes $X$ and $Y$ to have unit length and dilate the archetype to match the uniform scale of the second input preshape to promote numerical stability.
 
-These solutions offer a convention for aligning an ensemble of discrete curves and implicitly defining initial landmark(s) for an ordering over the rows of $X$. Note that a lack of symmetries in shapes dictate the uniqueness of these solutions. Related work~\cite{dogan2015fast} elaborate on a continuous treatment of the alignment problem; offering an interpretation with significant speed up utilizing fast Fourier transforms. An example registering a shape to within machine precision subject to arbitrary rotation and cyclic permutation of itself is illustrated in Fig.~\ref{fig:cyc_Procrustes}.
+These solutions offer a convention for aligning an ensemble of discrete curves and implicitly defining initial landmark(s) for an ordering over the rows of $X$---i.e., identifying a `best' discrete phase shift. Note that a lack of symmetries in shapes dictate the uniqueness of these solutions. Related work~\cite{dogan2015fast} elaborate on a continuous treatment of the alignment problem; offering an interpretation with significant speed up utilizing fast Fourier transforms. An example registering a shape to within machine precision subject to arbitrary rotation and cyclic permutation of itself is illustrated in Fig.~\ref{fig:cyc_Procrustes}.
 
-\textcolor{blue}{A natural intuition is to align against a `central shape,' like the Fr\'echet mean, rather than a random archetype. However, the Fr\'echet mean is coupled with the alignment: alignment requires a template, but the mean requires aligned data. An iterative scheme (align $\mapsto$ compute mean $\mapsto$ repeat) is possible but, currently, lacks convergence guarantees for the discrete cyclic permutation component. In contrast, Theorem~\ref{thm:cycl_Procrustes} guarantees that cyclic Procrustes finds \emph{an optimal} alignment to any given template; thus the key requirement is asymmetry of the archetype, not its optimality in the sense of being a Fr\'echet mean. Subsequent numerical experiments, specifically Fig.~\ref{fig:010_decision} and Fig.~\ref{fig:010_decision-normalized}, demonstrate the stability of the random archetype registration over changing $n$ and, somewhat remarkably, an observed stability from normal coordinate standardization despite random row-wise permutations.}
+\textcolor{blue}{A natural intuition is to align against a `central shape,' like the Fr\'echet mean, rather than a random archetype. However, the Fr\'echet mean is coupled with the alignment: alignment requires an archetype, but the mean requires aligned data. An iterative scheme (align $\mapsto$ compute mean $\mapsto$ repeat) is possible but, currently, lacks convergence guarantees for the discrete cyclic permutation component. In contrast, Theorem~\ref{thm:cycl_Procrustes} guarantees that cyclic Procrustes finds \emph{an optimal} alignment to any given template; thus the key requirement is asymmetry of the archetype, not its optimality in the sense of being a Fr\'echet mean. Subsequent numerical experiments, specifically Fig.~\ref{fig:010_decision} and Fig.~\ref{fig:010_decision-normalized}, demonstrate the stability of the random archetype registration over changing $n$ and, somewhat remarkably, an observed stability from simple coordinate normalization despite random row-wise cyclic permutations.}
 
 %-------------------------------------------------------------------------
 
@@ -886,7 +884,7 @@ Instead of testing for equivalence, we look for statistically significant differ
 
 \textcolor{blue}{Recalling the motivation of Section~\ref{sec:intro}, hypothesis testing instantiates a binary mapping $H: (\mathcal{E}, \widehat{\mathcal{E}}) \mapsto \lbrace 0, 1\rbrace$ over ambiguous feature ensembles. Concretely, for each pair of normal coordinate joint distributions, the map $(\boldsymbol{\rho}, \widehat{\boldsymbol{\rho}}) \mapsto \lbrace\text{Reject},\text{FTR}\rbrace$ is a binary decision rule over pairs of distributions---i.e., $\mathcal{E} \coloneqq \boldsymbol{\rho}$, $\widehat{\mathcal{E}} \coloneqq \widehat{\boldsymbol{\rho}}$, and $H$ is the result of the MMD hypothesis test. With separable features, the aggregate decision decomposes as $H(\boldsymbol{\rho}, \widehat{\boldsymbol{\rho} }) \coloneqq H(\rho_{\boldsymbol{t}}, \widehat{\rho}_{\boldsymbol{t}}) \,\wedge\, H(\rho_{\boldsymbol{\ell}} , \widehat{\rho}_{\boldsymbol{\ell}})$, so that Truth Table~\ref{tab:logical_conjunction} logically identifies discrepancies from undulation, scale, or both---constituting the notion of explainability. We emphasize that this is an unsupervised, distribution-level binary classification via hypothesis testing, distinct but extensible to supervised classification over labeled instances.}
 
-\textcolor{blue}{A multiple-testing correction for the joint product-MMD is warranted because the separable hypothesis test is the logical conjunction of two marginal MMD tests. If each marginal is conducted at level $\alpha$, a union-bound argument gives joint Type~I error bounded by $2\alpha$ under the intersection null. We therefore adopt a Bonferroni correction: each marginal MMD test is conducted at level $\alpha/2$, so the joint Type~I error is bounded by $\alpha$. For the experiments of Section~\ref{sec:experiments} at $\alpha = 0.02$, each marginal test uses $\alpha/2 = 0.01$; this correction does not change any of the reported decisions because all rejections satisfy $p$-value $\ll 0.005$ while all FTR cases satisfy $p$-value $\gg 0.01$. Note that the De~Morgan equivalence---$(\rho_{\boldsymbol{t}}=\widehat{\rho}_{\boldsymbol{t}}) \wedge (\rho_{\boldsymbol{\ell}}=\widehat{\rho}_{\boldsymbol{\ell}}) \leftrightarrow \neg((\rho_{\boldsymbol{t}}\neq\widehat{\rho}_{\boldsymbol{t}}) \vee (\rho_{\boldsymbol{\ell}}\neq\widehat{\rho}_{\boldsymbol{\ell}}))$---is a \emph{logical} identity relating joint and marginal hypotheses (which tests to run), while Bonferroni is a \emph{statistical} adjustment (at what level to run them); the two are compatible and complementary.}
+\textcolor{blue}{A multiple-testing correction for the joint product-MMD is warranted because the separable hypothesis test is the logical conjunction of two marginal MMD tests. If each marginal is conducted at level $\alpha$, a union-bound argument gives joint Type~I error bounded by $2\alpha$ under the intersection null. We therefore adopt a Bonferroni correction: each marginal MMD test is conducted at level $\alpha/2$, so the joint Type~I error is bounded by $\alpha$. For the experiments of Section~\ref{sec:experiments} at $\alpha = 0.02$, each marginal test uses $\alpha/2 = 0.01$; this correction does not change any of the reported decisions because all rejections satisfy $p$-value $\ll 0.005$ while all FTR cases satisfy $p$-value $\gg 0.01$. Note that the De~Morgan equivalence, $(\rho_{\boldsymbol{t}}=\widehat{\rho}_{\boldsymbol{t}}) \wedge (\rho_{\boldsymbol{\ell}}=\widehat{\rho}_{\boldsymbol{\ell}}) \leftrightarrow \neg((\rho_{\boldsymbol{t}}\neq\widehat{\rho}_{\boldsymbol{t}}) \vee (\rho_{\boldsymbol{\ell}}\neq\widehat{\rho}_{\boldsymbol{\ell}}))$, is a \emph{logical} identity relating joint and marginal hypotheses (which tests to run), while Bonferroni is a \emph{statistical} adjustment (at what level to run them); the two are compatible and complementary.}
 
 Here, as in~\cite{gretton2012kernel}, we utilize MMD defined over a unit ball in an appropriate RKHS, $\mathcal{F}$, 
 \begin{equation} \label{eq:MMD}
@@ -938,7 +936,7 @@ In summary, given ensembles of segmented curve features as data from a pair of i
 
 We begin with a summary investigating material micrographs with EBSD followed by a study involving a more general grayscale imaging modality. Descriptions and results of EBSD numerical experiments are illustrated and explained in Figures~\ref{fig:compare_grains_111}-\ref{fig:compare_grains_000}. The combined numerical experiments enable explainable binary classifications of ice data~\cite{Fan2020, FAN2021116810} and TRIP780 steel data measured at the National Institute of Standards and Technology (NIST) Material Measurement Laboratory (MML). In aggregate, all examples span Truth Table~\ref{tab:logical_conjunction}.
 
-The preprocessing of EBSD data to extract sorted vertices of segmented boundaries is accomplished with the open-source toolbox MTEX~\cite{Hielscher:cg5083}, version 5.10.2. In conjunction with~\cite{gretton2012kernel}, for all examples, a Gaussian kernel is utilized to approximate MMD and the corresponding scale parameter is inferred using the median Euclidean distance heuristic over a subset of normal coordinates. Coordinates are not normalized---i.e., scaled by approximate components of variation inferred from a subset of coordinates---for the results in Figures~\ref{fig:compare_grains_111}-\ref{fig:compare_grains_000} but the effect of normalization is studied in Figure~\ref{fig:010_decision-normalized}. All decisions in the following experiments are based on a significance level of 1\%.
+The preprocessing of EBSD data to extract sorted vertices of segmented boundaries is accomplished with the open-source toolbox MTEX~\cite{Hielscher:cg5083}, version 5.10.2. In conjunction with~\cite{gretton2012kernel}, for all examples, a Gaussian kernel is utilized to approximate MMD and the corresponding scale parameter is inferred using the median Euclidean distance heuristic over a subset of normal coordinates. Coordinates are not normalized---i.e., scaled by approximate components of variation inferred from a subset of coordinates---for the results in Figures~\ref{fig:compare_grains_111}-\ref{fig:compare_grains_000} but the effect of normalization is studied in Figure~\ref{fig:010_decision-normalized}. All decisions in the following experiments are based on a significance level $\alpha = 0.02$.
 
 All of the depicted numerical experiments utilize an undulation dimensionality of $r=150$, $n=500$ quadrature nodes---see Figure~\ref{fig:low_dim_grain} for a representative approximation with this dimensionality---and three (full) dimensions of scale. The filled colors of the shapes in Figures~\ref{fig:compare_grains_111}-\ref{fig:compare_grains_000} represent a normalized shape distance over the product submanifold measured from the approximate mean shape. Note all experiments and subsequent conclusions are predicated on the version of the MTEX software (5.10.2) used to segment and smooth grain boundaries.
 
@@ -999,6 +997,7 @@ The global trends between the two decision landscapes are distinct but the abili
     \caption{(top) Cross-section of a `new' condition lithium-ion battery with segmented black curves over scalar-valued image intensity. (bottom) Cross-section of a 'used' condition lithium-ion battery with segmented curves (black boundaries) over scalar-valued image intensity. The new condition battery exhibits less fracturing in the NMC particles compared to the battery which has been subjected to accelerated cycling in the lab. A smoothing length scale $\sigma = 5$ is used to extract the depicted curves.}
     \label{fig:new_v_old_bat}
 \end{figure*}
+
 \subsection{Segmentation Efficacy}
 Across imaging applications, feature segmentation is a challenging step in analysis workflows. Despite modern advancements, segmentation methods remain highly dependent on multiple factors, including image quality and hyperparameters---e.g., smoothing parameters, thresholding values, training with hand-labeled data, etc. Variability in segmentation algorithms can result in different ensembles of shapes extracted from a given image, which can complicate subsequent assessments of patterns in the image. Here, we briefly examine the utility of explainable binary classification for introducing novel, quantifiable metrics to compare and contrast the efficacy of a given image segmentation.
 
@@ -1039,6 +1038,27 @@ Approximated MMD results depicted and aggregated as conditional averages at corr
 
 In practice, this analysis would suggest that achieving the largest number of segmented shapes in an ensemble with consistent decision making occurs near $\sigma = 4$ or $5$. This study could be used to set parameter ranges for more effective segmentation when detecting failure modalities in subsequent battery experiments. It appears that $r\approx 50$, $n\approx500$, and $\sigma \approx 5$ are suitable candidates to detect the fractured nature for this level of battery degradation while maximizing the number of segmented objects.
 \textcolor{red}{PLACEHOLDER [ITEM 15, R1/R4]: (OPTIONAL) ADD A NICE EXAMPLE CLUSTERING $(\boldsymbol{t},\boldsymbol{\ell})$ WITH MORPHOLOGICAL SEGMENTATION OF SUN DATA? PERHAPS A SHORT BLURB EMPHASIZING CLUSTERING COULD BE USEFUL HERE.}
+
+\subsection{Timings}
+\begin{table}
+    \centering
+    \begin{tabular}{c|c|c|c}
+        {Case} &
+        $(\rho_{\boldsymbol{t}}=\widehat{\rho}_{\boldsymbol{t}})$ &
+        $(\rho_{\boldsymbol{\ell}}=\widehat{\rho}_{\boldsymbol{\ell}})$ & $\text{pMMD}[\mathcal{H} \oplus \mathcal{Q},\cdot,\cdot]$ \\
+        \hline
+        $(1 \wedge 1)$ &
+        FTR & FTR & $\implies$ FTR\\
+        $(1 \wedge 0)$ &
+        FTR & Reject & $\implies$ Reject \\
+        $(0 \wedge 1)$ &
+        Reject & FTR & $\implies$ Reject \\
+        $(0 \wedge 0)$ &
+        Reject & Reject & $\implies$ Reject \\
+    \end{tabular}
+    \caption{A meaningful caption}
+    \label{tab:timing}
+\end{table}
 
 \section{Conclusion}\label{sec:conclude}
 We have established a formal interpretation between separable shape tensors (SSTs) and dual evaluation functionals of~\cite{micheli2013matrix}. We demonstrate that spectral methods, based on an interpretation with the Nyst\"om method, can be utilized to offer highly accurate approximations of SSTs provided sufficient regularity of curves. We then elaborate on the alignment of SSTs and caveats of utilizing a maximum mean discrepancy (MMD) analysis to inform explainable hypothesis testing of data.

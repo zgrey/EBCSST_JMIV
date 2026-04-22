@@ -25,7 +25,7 @@ Remaining gaps to close before resubmission. All 24 reviewer comments have a com
 [x] 7. **Remove or upgrade the pipeline-pseudocode placeholder.** (R4.4) [D] — done (upgrade path taken)
    `fig:placeholder` in §`subsec:mfld_learn` (line 810) is now a rendered pipeline diagram via `\input{pipeline_diagram}`. Additionally, a concise `algorithm` block (Algorithm~\ref{alg:pipeline}, `algo.tex`) has been added at the end of §`subsec:MMD` stating the full pipeline as pseudocode in manuscript notation with step-level section cross-references. Reply R4.4 updated.
 
-[ ] 8. **Clustering within an image — decline or short demo.** (R4.2) [W, optional D]
+ZG [ ] 8. **Clustering within an image — decline or short demo.** (R4.2) [W, optional D]
    Optional `\textcolor{red}{PLACEHOLDER ...}` line still present at end of §`sec:experiments` ``Segmentation Efficacy'' (currently line 1041 of `sn-article-revised.tex`). Reply R4.2 already declines a forward-reference (it says clustering "remains a valuable complementary analysis" without promising a demo), so the only remaining action is to delete the placeholder line.
 
 NF [ ] 9. **Type I / power simulated-curve study.** (R1.5, R2.3) [N]

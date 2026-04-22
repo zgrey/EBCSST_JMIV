@@ -1,5 +1,5 @@
 \begin{algorithm}[ht]
-\caption{\textcolor{blue}{Pseudo-code for Explainable binary classification of separable shape ensembles.}}
+\caption{\textcolor{blue}{Pseudo-code for explainable binary classification of separable shape ensembles.}}
 \label{alg:pipeline}
 \begin{algorithmic}[1]
 \color{blue}
@@ -15,12 +15,12 @@ $$
 (\widetilde{X}_q, P_q) \in Gr(d,n)\times S^d_{++}.
 $$ 
 (Section~\ref{subsec:func_approx}, Figure~\ref{fig:SRQD})
-\State \textbf{tPCA}: approximate Frech\'et means $[\widetilde{V}_0]\in\mathcal{G}_r$ and $P_0\in\mathcal{P}$, then project each $(\widetilde{X}_q, P_q)$ into an orthogonal basis of normal coordinates, e.g.,
+\State \textbf{tPCA}: approximate Frech\'et means $[\widetilde{V}_0]\in\mathcal{G}_r$ and $P_0\in\mathcal{P}$, then project each $(\widetilde{X}_q, P_q)$ into an $r$-dimensional orthogonal basis of normal coordinates, e.g.,
 $$
 (\boldsymbol{t}_q, \boldsymbol{\ell}_q) \in T_{[\widetilde{V}_0]}\mathcal{G}_r \times T_{P_0}\mathcal{P}.
 $$ 
 (Section~\ref{subsec:mfld_learn})
-\State \textbf{bootstrap}: randomly permute sample indices and recompute separate MMD values $B$ times over $\lbrace \boldsymbol{t} \rbrace$ and $\lbrace \boldsymbol{\ell} \rbrace$.
+\State \textbf{pMMD}: bootstrap separate MMD values $B$ times over $\lbrace \boldsymbol{t} \rbrace$ and $\lbrace \boldsymbol{\ell} \rbrace$.
 \State \textbf{test}: approximate $p$-values and compare to Bonferroni at level $\alpha/2$. 
 \State \Return $$(H_{\boldsymbol{t}}, H_{\boldsymbol{\ell}}) \in \lbrace 0,1 \rbrace^2$$
 \end{algorithmic}
