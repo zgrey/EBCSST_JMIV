@@ -13,9 +13,6 @@ These statements were removed from the submission copy so that it strictly refle
 - **Simulated-curve Type I / power study.** (REVISIONS item 9; R1.5)
   Synthetic ensembles with controlled $(\boldsymbol{t},\boldsymbol{\ell})$ differences; sweep effect size; report empirical Type I at the null and power on the alternative. One table plus one small figure panel in §`sec:experiments`. Current reply R1.5 in the `.tex` file cites decision-landscape ambiguity as empirical stability evidence; the simulated-curve table would formalize it.
 
-- **Per-stage runtime table.** (REVISIONS item 10; R1.6)
-  Wall-clock timings on a standard laptop for interpolation/arc-length reparametrization, SRQD, cyclic Procrustes, tangent PCA, and $B=1000$ permutation MMD. One small table in §`sec:experiments`. Reply R1.6 in the `.tex` file currently points to the existing "executes in seconds on a conventional laptop" statement in §`subsec:mfld_learn`.
-
 - **Clustering-within-an-image demonstration.** (REVISIONS item 8; R4.2, R4.3)
   Optional upgrade: short demo of clustering over $(\boldsymbol{t},\boldsymbol{\ell})$ features within a single image. An optional placeholder for this still exists at line ~1036 of `sn-article-revised.tex`. Minimal-effort path: delete the placeholder.
 
@@ -44,7 +41,7 @@ These statements were removed from the submission copy so that it strictly refle
 **Status:** Pending (REVISIONS item 9). Decision-landscape ambiguity is the currently reported empirical-stability proxy.
 
 ### R1.6 — Computational cost
-**Status:** Pending (REVISIONS item 10). `.tex` reply notes the dominant costs and the existing "seconds on a conventional laptop" statement; runtime table still to be added.
+**Status:** Done (REVISIONS item 10). New Subsection 4.3 ``Timings'' contains Table~\ref{tab:timing} with sequential wall-clock entries for cyclic Procrustes, SRQD, tPCA, and $B=1000$-permutation pMMD over $N\in\{100,\dots,2000\}$; a summary row reports the empirical scaling exponent $\widehat{\eta}$. Discussion paragraph partitions stages into embarrassingly-parallel (per-curve, pMMD permutations) versus intrinsically-sequential (tPCA Karcher reduction), quantifies a Numba parallel-JIT speedup that removes pMMD from the critical path, and cites an independent MATLAB R2024b \texttt{parfor} run on a separate workstation as a $\sim 50\times$ demonstration of SRQD acceleration headroom.
 
 ---
 

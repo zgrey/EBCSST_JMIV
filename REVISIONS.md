@@ -31,8 +31,8 @@ ZG [ ] 8. **Clustering within an image — decline or short demo.** (R4.2) [W, o
 NF [ ] 9. **Type I / power simulated-curve study.** (R1.5, R2.3) [N]
    Synthetic ensembles with controlled $(\boldsymbol{t},\boldsymbol{\ell})$ differences; sweep effect size; report empirical Type I at the null and power on the alternative. One table plus one small figure panel in §`sec:experiments`. Current reply R1.5 cites decision-landscape stability as partial evidence; the table closes the gap.
 
-ZG [ ] 10. **Per-stage runtime table.** (R1.6) [N]
-    Wall-clock timings on a standard laptop for interpolation/arc-length reparametrization, SRQD, cyclic Procrustes, tangent PCA, and $B=1000$ permutation MMD. One small table in §`sec:experiments`. Mirrors reply R1.6.
+[x] 10. **Per-stage runtime table.** (R1.6) [N] — done
+    Table~\ref{tab:timing} in §`sec:experiments` (Subsection 4.3 ``Timings'') reports wall-clock seconds for cyclic Procrustes, SRQD (which subsumes arc-length reparameterization), tPCA, and $B=1000$-permutation pMMD across $N\in\{100,\dots,2000\}$. A summary row reports the empirical scaling exponent $\widehat{\eta}$ fit to $t(N)\approx C\,N^{\widehat{\eta}}$. The accompanying paragraph partitions the pipeline into embarrassingly-parallel stages versus the intrinsically-sequential tPCA reduction, quantifies the Numba parallel-JIT speedup that removes pMMD from the critical path, and cites an independent MATLAB R2024b run with SRQD via \texttt{parfor} as a $\sim 50\times$ demonstration of SRQD acceleration headroom. Reply R1.6 rewritten.
 
 [x] 11. **Non-EBSD demonstration.** (R4.3) [W] — done
     Lithium-ion battery SEM study is now explicitly promoted as a primary experimental contribution in the §`sec:intro` Contributions \& Outline bullet (line 207) — the "non-EBSD" framing is visible from §1.2 rather than buried near the end of §`sec:experiments`. Speculative SUVI / MNIST / Kaltenmark promises have been trimmed from reply R4.3 and ported to `reviewer_responses.md` as shelved work.
@@ -41,7 +41,7 @@ ZG [ ] 10. **Per-stage runtime table.** (R1.6) [N]
 
 | Reviewer | Comments with gaps | Items |
 |----------|--------------------|-------|
-| R1 | R1.5, R1.6 | 9, 10 |
+| R1 | R1.5 | 9 |
 | R2 | none — all R2 comments fully answered by existing edits and replies | — |
 | R3 | none — all R3 comments fully answered by existing edits and replies | — |
 | R4 | R4.2 | 8 |
