@@ -1042,21 +1042,18 @@ In practice, this analysis would suggest that achieving the largest number of se
 \subsection{Timings}
 \begin{table}
     \centering
-    \begin{tabular}{c|c|c|c}
-        {Case} &
-        $(\rho_{\boldsymbol{t}}=\widehat{\rho}_{\boldsymbol{t}})$ &
-        $(\rho_{\boldsymbol{\ell}}=\widehat{\rho}_{\boldsymbol{\ell}})$ & $\text{pMMD}[\mathcal{H} \oplus \mathcal{Q},\cdot,\cdot]$ \\
+    \begin{tabular}{r|rrrr}
+        $N$ & Cyclic Procrustes & SRQD & PGA & pMMD \\
         \hline
-        $(1 \wedge 1)$ &
-        FTR & FTR & $\implies$ FTR\\
-        $(1 \wedge 0)$ &
-        FTR & Reject & $\implies$ Reject \\
-        $(0 \wedge 1)$ &
-        Reject & FTR & $\implies$ Reject \\
-        $(0 \wedge 0)$ &
-        Reject & Reject & $\implies$ Reject \\
+         100 & 0.22 &   8.64 & 0.18 & 0.003 \\
+         250 & 0.53 &  21.13 & 0.47 & 0.006 \\
+         500 & 1.04 &  42.47 & 0.91 & 0.022 \\
+         750 & 1.57 &  62.85 & 1.40 & 0.044 \\
+        1000 & 2.09 &  84.27 & 1.88 & 0.077 \\
+        1500 & 3.13 & 126.99 & 3.42 & 0.176 \\
+        2000 & 5.60 & 186.12 & 4.40 & 0.377 \\
     \end{tabular}
-    \caption{A meaningful caption}
+    \caption{Wall-clock timings (seconds) for the four principal pipeline stages as the ensemble size $N$ increases. The SRQD column subsumes the arc-length reparameterization it invokes internally. The pMMD two-sample test is evaluated on an even split ($N/2$ versus $N/2$) with $1000$ bootstrap permutations. Per-curve stages (Cyclic Procrustes, SRQD) were executed sequentially to expose clean $O(N)$ scaling. All measurements are from the Python reference implementation at $n=500$ landmarks and $r=50$ reduced dimensions, run on a $16$-core / $32$-thread x86-64 desktop CPU (up to $4.3$\,GHz boost) with $64$\,GB of system memory under Windows~11 and Python~3.13.}
     \label{tab:timing}
 \end{table}
 
