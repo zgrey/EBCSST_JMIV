@@ -1018,30 +1018,29 @@ Approximated MMD results depicted and aggregated as conditional averages at corr
 In practice, this analysis would suggest that achieving the largest number of segmented shapes in an ensemble with consistent decision making occurs near $\sigma = 4$ or $5$. This study could be used to set parameter ranges for more effective segmentation when detecting failure modalities in subsequent battery experiments. It appears that $r\approx 50$, $n\approx500$, and $\sigma \approx 5$ are suitable candidates to detect the fractured nature for this level of battery degradation while maximizing the number of segmented objects.
 
 \subsection{Computational Burdens}
-\textcolor{blue}{We report various timings in Table~\ref{tab:timing} using subsets of curves segmented from the battery data. The SRQD column subsumes an arc-length reparameterization it invokes internally. The pMMD two-sample test is evaluated on an even split ($N/2$ versus $N/2$) with $B =1000$ bootstrap permutations. All stages were executed sequentially (single-threaded) to expose clean scaling laws on the algorithm itself. Measurements are taken using a Python implementation at $n=500$ landmarks and $r=50$ reduced dimensions, run on a $16$-core / $32$-thread x86-64 desktop CPU (up to $4.3$\,GHz boost) with $64$\,GB of system memory under Windows~11 and Python~3.13.}
+\textcolor{blue}{We report timings in Table~\ref{tab:timing} using subsets of curves segmented from the battery data. The SRQD column subsumes the arc-length reparameterization it invokes internally. The pMMD two-sample test is evaluated on an even split ($N/2$ versus $N/2$) with $B = 1000$ bootstrap permutations. Each stage is reported in two configurations. The \emph{sequential} single-threaded reference exposes clean scaling laws on the algorithm itself. The \emph{parallel} configuration follows the default Python implementation, namely multiprocessing for SRQD's per-curve work and Numba's parallel JIT for the pMMD permutation loop. Measurements are taken using a Python implementation at $n=500$ landmarks and $r=50$ reduced dimensions, run on a $16$-core / $32$-thread x86-64 desktop CPU (up to $4.3$\,GHz boost) with $64$\,GB of system memory under Windows~11 and Python~3.13.}
 
 \begin{table}
     \centering
     \begin{tabular}{r|rrrr}
         $N$ & Cyclic Pro. & SRQD & tPCA & pMMD \\
+            & seq.\,/\,par. & seq.\,/\,par. & seq.\,/\,par. & seq.\,/\,par. \\
         \hline
-         100 & 0.21 &   8.47 & 0.21 &  0.06 \\
-         %250 & 0.52 &  21.12 & 0.57 &  0.25 \\
-         500 & 1.05 &  41.99 & 1.05 &  0.91 \\
-         %750 & 1.58 &  64.32 & 1.72 &  2.01 \\
-        1000 & 2.14 &  84.47 & 2.08 &  3.76 \\
-        %1500 & 3.54 & 126.60 & 3.18 & 15.45 \\
-        2000 & 4.19 & 167.58 & 4.48 & 30.47 \\
+         100 & 0.21\,/\,0.20 & 0.53\,/\,3.28 & 0.02\,/\,0.02 &  0.06\,/\,$<$0.01 \\
+         %250 & 0.52\,/\,0.52 & 1.17\,/\,3.46 & 0.06\,/\,0.06 &  0.25\,/\,0.01 \\
+         500 & 1.04\,/\,1.04 & 2.35\,/\,3.87 & 0.13\,/\,0.14 &  0.91\,/\,0.02 \\
+         %750 & 1.58\,/\,1.54 & 3.51\,/\,4.21 & 0.24\,/\,0.24 &  2.00\,/\,0.05 \\
+        1000 & 2.06\,/\,2.08 & 4.66\,/\,4.56 & 0.33\,/\,0.33 &  3.71\,/\,0.07 \\
+        %1500 & 3.12\,/\,3.12 & 7.08\,/\,5.28 & 0.51\,/\,0.54 & 15.72\,/\,0.18 \\
+        2000 & 4.15\,/\,4.15 & 9.38\,/\,6.11 & 0.63\,/\,0.73 & 30.71\,/\,0.38 \\
         \hline
-        $\eta$ & 1.02 & 1.00 & 1.01 & 2.07 \\
+        $\eta_{\text{seq}}$ & 1.00 & 0.97 & 1.13 & 2.08 \\
     \end{tabular}
-    \caption{Wall-clock timings (seconds) for the four principal pipeline stages as the ensemble size $N$ increases. The final row reports the empirical power-law exponent $\eta$ fit to $time(N) \approx C\, N^{\eta}$ via ordinary least squares on $(\log N,\,\log time)$; values near unity indicate linear scaling in ensemble size.}
+    \caption{Wall-clock timings (seconds) for the four principal pipeline stages as the ensemble size $N$ increases, reported side-by-side for sequential (single-threaded) and parallel (default) configurations of the Python implementation. The final row reports the empirical power-law exponent $\eta_{\text{seq}}$ fit to $time(N) \approx C\, N^{\eta}$ via ordinary least squares on $(\log N,\,\log time)$ in the sequential column. Values near unity indicate linear scaling in ensemble size. The combined planar+SRQD slope of $0.97$ reflects a small-$N$ transient at $N=100$, since refitting on $N \geq 250$ recovers $\eta = 1.00$. The parallel SRQD column carries an approximately three-second multiprocess pool initialization cost. This cost dominates the small-$N$ entries and is responsible for the column remaining nearly flat through $N=1000$. Cyclic Procrustes runs single-threaded by default in both configurations because the FFT-based implementation already has a low constant factor.}
     \label{tab:timing}
 \end{table}
 
-\textcolor{blue}{The per-curve stages (SRQD and cyclic Procrustes) scale linearly ($\eta\approx 1$) and the pMMD bootstrap scales quadratically ($\eta\approx 2$) because each of the $B=1000$ permutations touches the pooled $N\times N$ Gaussian kernel matrix. The per-curve stages and pMMD permutations are embarrassingly parallel. Enabling Numba's parallel JIT drops the $N=2000$ pMMD entry from $30.5$\,s to roughly $0.4$\,s and removes it from the critical path. The only intrinsically sequential stage is tPCA, because Karcher's algorithm to approximate the Fr\'echet mean is iterative and applied over the aggregate ensemble. Table~\ref{tab:timing} shows tPCA is among the cheapest columns at every $N$, so SRQD dominates and is the highest-leverage optimization target.}
-
-\textcolor{blue}{An equivalent workflow in MATLAB~R2024b on a $20$-thread Ubuntu workstation with SRQD invoked through \texttt{parfor} reduces the $N=2000$ SRQD entry to $3.45$\,s, an approximately $50\times$ improvement over the single-threaded Python reference. Likewise, on a modest laptop of $16$ GB system memory running Windows 11, MATLAB R2024b \texttt{parfor} over 8 threads (4 cores/workers, 11th Gen intel i7 3 GHz), the entire workflow of Algorithm~\ref{alg:pipeline} using the total ensemble size $N=2000$ runs in approximately $45$ seconds. Full software packages in MATLAB and Python are forthcoming.}
+\textcolor{blue}{In the sequential configuration, the per-curve stages (cyclic Procrustes and SRQD) scale linearly ($\eta\approx 1$) and the pMMD bootstrap scales quadratically ($\eta\approx 2$) because each of the $B=1000$ permutations touches the pooled $N\times N$ Gaussian kernel matrix. The per-curve stages and pMMD permutations are embarrassingly parallel, which the parallel column reflects directly. Numba's parallel JIT drops the $N=2000$ pMMD entry from $30.7$\,s to $0.38$\,s and removes it from the critical path. tPCA contains an inherently sequential outer iteration because Karcher's algorithm to approximate the Fr\'echet mean is iterative. Its inner per-iteration work of $N$ independent log maps is itself batched through LAPACK's gufunc machinery, so the (typically $5$--$6$) outer iterations set the wall-clock floor. Across both configurations tPCA is among the cheapest columns at every $N$. The dominant column at large $N$ is pMMD in the sequential configuration and SRQD in the parallel configuration. Full software packages in MATLAB and Python are forthcoming.}
 
 \section{Conclusion}\label{sec:conclude}
 We established a formal connection between separable shape tensors and the dual evaluation functionals of~\cite{micheli2013matrix}, developed a spectral (Nystr\"om) approximation of SSTs that is accurate for sufficiently regular curves, and combined the resulting features with cyclic Procrustes alignment and product-MMD hypothesis testing. Four EBSD examples spanning Truth Table~\ref{tab:logical_conjunction} and a lithium-ion battery SEM segmentation study illustrate the framework end-to-end.
