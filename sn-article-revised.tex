@@ -1026,23 +1026,23 @@ We report timings in Table~\ref{tab:timing} using subsets of curves segmented fr
         $N$ &  SRQD & tPCA & pMMD \\
         (total) & (seq.\,/\,par.) & (seq.\,/\,par.) & (seq.\,/\,par.) \\
         \hline
-         100 & \textbf{0.45}\,/\,2.29 & 0.02\,/\,-- &  0.06\,/\,$<$\textbf{0.01} \\
+         100 & \textbf{0.43}\,/\,2.29 & 0.03\,/\,-- &  0.07\,/\,$<$\textbf{0.01} \\
          %250 & 0.52\,/\,0.52 & 1.17\,/\,3.46 & 0.06\,/\,0.06 &  0.25\,/\,0.01 \\
-         500 & \textbf{1.93}\,/\,2.43 & 0.13\,/\,-- &  0.91\,/\,\textbf{0.02} \\
+         500 & \textbf{1.93}\,/\,2.43 & 0.15\,/\,-- &  0.93\,/\,\textbf{0.03} \\
          %750 & 1.58\,/\,1.54 & 3.51\,/\,4.21 & 0.24\,/\,0.24 &  2.00\,/\,0.05 \\
-        1000 & 3.74\,/\,\textbf{2.52} & 0.33\,/\,-- &  3.71\,/\,\textbf{0.07} \\
+        1000 & 3.74\,/\,\textbf{2.52} & 0.36\,/\,-- &  4.92\,/\,\textbf{0.07} \\
         %1500 & 3.12\,/\,3.12 & 7.08\,/\,5.28 & 0.51\,/\,0.54 & 15.72\,/\,0.18 \\
-        2000 & 7.41\,/\,\textbf{3.01} & 0.63\,/\,-- & 30.71\,/\,\textbf{0.38} \\
+        2000 & 7.41\,/\,\textbf{3.01} & 0.66\,/\,-- & 31.91\,/\,\textbf{0.36} \\
         \hline
-        $\eta_{\text{seq}}$ & 0.95\,/\, 0.08 & 1.13\,/\, -- & 2.08 \,/\, 1.69 \\
+        $\eta_{\text{seq}}$ & 0.96\,/\, 0.08 & 1.10\,/\, -- & 2.09 \,/\, 1.61 \\
     \end{tabular}
     \caption{Wall-clock timings (seconds) for the principal pipeline stages as the ensemble size $N$ increases, reported side-by-side for sequential (seq., single-threaded) and parallel (par.) configurations of a Python implementation. The SRQD column subsumes the first three steps of Algorithm~\ref{alg:pipeline}. The final row reports the empirical power-law exponent $\eta_{\text{seq}}$ fit to $time(N) \approx C\, N^{\eta}$ via ordinary least squares. Values near unity indicate linear scaling in ensemble size.}
     \label{tab:timing}
 \end{table}
 
-In the sequential configuration, the aggregated per-curve stages labeled `SRQD' (planar reparametrization, cyclic Procrustes, and SRQD) scale linearly ($\eta\approx 1$) and the pMMD bootstrap scales quadratically ($\eta\approx 2$) because each of the $B=1000$ permutations touches the pooled $N\times N$ Gaussian kernel matrix. The per-curve stages and pMMD permutations are embarrassingly parallel. The combined planar reparametrization and SRQD slope of $0.97$ reflects a small-$N$ transient at $N=100$ and refitting on $N \geq 250$ (not shown) recovers $\eta = 1.00$. The parallel SRQD column carries an approximately three-second multiprocess pool initialization cost. This cost dominates the small-$N$ entries and is responsible for the column remaining nearly flat through $N=1000$. Cyclic Procrustes runs single-threaded by default in both configurations because the fast FFT-based implementation already has a low constant factor.
+In the sequential configuration, the aggregated per-curve stages labeled `SRQD' (planar reparametrization, cyclic Procrustes, and SRQD) scale linearly ($\eta\approx 1$) and the pMMD bootstrap scales quadratically ($\eta\approx 2$) because each of the $B=1000$ permutations touches the pooled $N\times N$ Gaussian kernel matrix. The per-curve stages and pMMD permutations are embarrassingly parallel. The sequential SRQD slope of $0.96$ reflects a small-$N$ transient at $N=100$, and refitting on $N \geq 250$ (not shown) recovers $\eta = 1.00$. The parallel SRQD column carries an approximately three-second multiprocess pool initialization cost. This cost dominates the small-$N$ entries and is responsible for the column remaining nearly flat through $N=1000$. Among the per-curve stages aggregated into the SRQD column, cyclic Procrustes contributes a low constant factor courtesy of its FFT-based implementation, and is not separately accelerated.
 
-Numba's parallel JIT drops the $N=2000$ pMMD entry from $30.7$\,s to $0.38$\,s and removes it from the critical path. The tPCA step contains an inherently sequential outer iteration because Karcher's algorithm to approximate the Fr\'echet mean is iterative---details in Appendix~\ref{secA0} and~\cite{grey2023separable}. However, across both configurations tPCA is among the cheapest columns at every $N$. The dominant column at large $N$ is pMMD in the sequential configuration and SRQD in the parallel configuration. Full software packages in MATLAB and Python are forthcoming.
+Numba's parallel JIT drops the $N=2000$ pMMD entry from $31.9$\,s to $0.36$\,s and removes it from the critical path. The tPCA step contains an inherently sequential outer iteration because Karcher's algorithm to approximate the Fr\'echet mean is iterative---details in Appendix~\ref{secA0} and~\cite{grey2023separable}. However, across both configurations tPCA is among the cheapest columns at every $N$. The dominant column at large $N$ is pMMD in the sequential configuration and SRQD in the parallel configuration. Full software packages in MATLAB and Python are forthcoming.
 
 \section{Conclusion}\label{sec:conclude}
 We established a formal connection between separable shape tensors and the dual evaluation functionals of~\cite{micheli2013matrix}, developed a spectral (Nystr\"om) approximation of SSTs that is accurate for sufficiently regular curves, and combined the resulting features with cyclic Procrustes alignment and product-MMD hypothesis testing. Four EBSD examples spanning Truth Table~\ref{tab:logical_conjunction} and a lithium-ion battery SEM segmentation study illustrate the framework end-to-end.
