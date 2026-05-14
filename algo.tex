@@ -1,8 +1,7 @@
 \begin{algorithm}[ht]
-\caption{\textcolor{blue}{Pseudo-code for explainable binary classification of separable shape ensembles.}}
+\caption{Pseudo-code for explainable binary classification of separable shape ensembles.}
 \label{alg:pipeline}
 \begin{algorithmic}[1]
-\color{blue}
 \Require Curve ensembles $\lbrace \boldsymbol{c}_q \rbrace_{q=1}^{N}$ and $\lbrace \widehat{\boldsymbol{c}}_q \rbrace_{q=1}^{\widehat{N}}$; quadrature rule $\lbrace (w_i,s_i)\rbrace$ of cardinality $n$; undulation rank $r$; total number of bootstrap samples $B$, significance level $\alpha$.
 \Ensure Marginal and joint decisions $(H_{\boldsymbol{t}}, H_{\boldsymbol{\ell}}, H)$ keyed to Truth Table~\ref{tab:logical_conjunction}.
 \State \textbf{fix reparametrization}: collocate at $n$ quadrature nodes $\lbrace s_i \rbrace$ to form landmarks, e.g.,
